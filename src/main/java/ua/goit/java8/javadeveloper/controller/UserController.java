@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * Controller for {@link User}'s pages.
  *
@@ -76,8 +80,59 @@ public class UserController {
         return "admin";
     }
 
+
     @RequestMapping(value = "/showUsers", method = {RequestMethod.GET,RequestMethod.POST})
-    public String showUsers(Model model){
+    public String showUsers(Model model,
+                            @ModelAttribute("userId") String userId,
+                            @ModelAttribute("Delete") String deleteButton){
+
+        if(!deleteButton.trim().isEmpty()) {  //при натисканні на кнопку Delete
+            if (!userId.trim().isEmpty()) {
+                userService.delete(userService.getById(UUID.fromString(userId)));
+            }
+        }
+        model.addAttribute("list",userService.getAll());
+        return "usersList";
+    }
+
+
+    @RequestMapping(value = "/addUser", method = {RequestMethod.GET,RequestMethod.POST})
+    public String addUser(Model model,
+                          @ModelAttribute("username") String username,
+                          @ModelAttribute("firstName") String firstName,
+                          @ModelAttribute("lastName") String lastName,
+                          @ModelAttribute("email") String email,
+                          @ModelAttribute("password") String password){
+
+        // Обробка реквесту: перевіряємо введені дані і виводимо результат в тому самому JSP
+
+        // підговка повідомлення.
+        Map<String, String> messages = new HashMap<String, String>();
+        model.addAttribute("messages", messages);
+
+        // Отримуємо імя та перевіряєм чи воно непорожнє.
+        String name = username;
+        if (name == null || name.trim().isEmpty()) {    // посилаємо повідомлення про недобре введені дані
+            messages.put("username", "Please enter username");
+        }
+
+        // Перевіряєм пароль.
+        String pass = password;
+        if (pass == null || pass.trim().isEmpty()) {    // посилаємо повідомлення про недобре введені дані
+            messages.put("password", "Please enter password");
+        }
+
+        // Якщо немає помилок, створюємо юзера
+        if (messages.isEmpty()) {
+            User user = new User(); //створюєм екземпляр класу моделі бази даних
+            user.setUsername(username);
+            user.setPassword(password);
+            if (firstName != null && !firstName.trim().isEmpty()) { user.setFirstName(firstName); }
+            if (lastName != null && !lastName.trim().isEmpty()) { user.setLastName(lastName); }
+            if (email != null && !email.trim().isEmpty()) { user.setEmail(email); }
+            userService.create(user);   //створюєм нового юзера
+        }
+
         model.addAttribute("list",userService.getAll());
         return "usersList";
     }

@@ -20,6 +20,7 @@
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
 
 <form action="<c:url value="/showUsers"/>" method="POST">
+    <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 <table border="1">
     <CAPTION>List of Users</CAPTION>
     <tr class="grey">
@@ -52,7 +53,10 @@
 </table>
 
     <p></p>
+</form>
 
+<form action="<c:url value="/addUser"/>" method="POST">
+    <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 <table>
     <CAPTION>Create new user</CAPTION>
     <tr>
@@ -76,7 +80,7 @@
     </tr>
     <tr>
         <td>Password</td>
-        <td><input type="text" name="password"></td>
+        <td><input type="password" name="password"></td>
     </tr>
     <tr>
         <td><input type="submit" value="Add" name="Add"/></td>
