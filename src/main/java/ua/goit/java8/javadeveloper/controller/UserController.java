@@ -12,16 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-/**
- * Controller for {@link User}'s pages.
- *
- * @author Eugene Suleimanov
- * @version 1.0
- */
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -81,10 +72,20 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/showUsers", method = {RequestMethod.GET,RequestMethod.POST})
+
+
+    @RequestMapping(value = "/admin/showUsers", method = {RequestMethod.GET,RequestMethod.POST})
     public String showUsers(Model model,
                             @ModelAttribute("userId") String userId,
+                            @ModelAttribute("Edit") String editButton,
                             @ModelAttribute("Delete") String deleteButton){
+
+        if(!editButton.trim().isEmpty()) {  //при натисканні на кнопку Edit
+            if (!userId.trim().isEmpty()) {
+                model.addAttribute("user",userService.getById(UUID.fromString(userId)));
+                return "userEdit";
+            }
+        }
 
         if(!deleteButton.trim().isEmpty()) {  //при натисканні на кнопку Delete
             if (!userId.trim().isEmpty()) {
@@ -96,7 +97,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/addUser", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/admin/addUser", method = {RequestMethod.GET,RequestMethod.POST})
     public String addUser(Model model,
                           @ModelAttribute("username") String username,
                           @ModelAttribute("firstName") String firstName,
@@ -134,6 +135,71 @@ public class UserController {
         }
 
         model.addAttribute("list",userService.getAll());
+        return "usersList";
+    }
+
+    @RequestMapping(value = "/admin/editUser", method = RequestMethod.POST)
+    public String editUser(Model model,
+                              @ModelAttribute("Save") String saveButton,
+                              @ModelAttribute("Cancel") String cancelButton,
+                              @ModelAttribute("username") String username,
+                              @ModelAttribute("firstName") String firstName,
+                              @ModelAttribute("lastName") String lastName,
+                              @ModelAttribute("email") String email,
+                              @ModelAttribute("password") String password,
+                              @ModelAttribute("admin") String admin,
+                              @ModelAttribute("userId") String userId){
+        if(!saveButton.trim().isEmpty()) {  //при натисканні на кнопку Save
+
+            // Обробка реквесту: перевіряємо введені дані і виводимо результат в тому самому JSP
+
+            // підговка повідомлення.
+            Map<String, String> messages = new HashMap<String, String>();
+            model.addAttribute("messages", messages);
+
+            // Отримуємо імя та перевіряєм чи воно непорожнє.
+            if (username == null || username.trim().isEmpty()) {    // посилаємо повідомлення про недобре введені дані
+                messages.put("username", "Please enter username");
+            }
+
+            // Отримуємо пароль та перевіряєм чи він непорожній.
+            if (password == null || password.trim().isEmpty()) {    // посилаємо повідомлення про недобре введені дані
+                messages.put("password", "Please enter password");
+            }
+
+            if (messages.isEmpty()) {   // Якщо немає помилок, втілюєм бізнес-логіку
+                User user = new User(); //створюєм екземпляр класу моделі бази даних
+                user.setId(UUID.fromString(userId));
+                user.setUsername(username);
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setEmail(email);
+                user.setPassword(password);
+
+                if(!admin.trim().isEmpty()) {
+
+                }
+                user.setRoles(userService.getById(UUID.fromString(userId)).getRoles());
+
+                userService.update(user);   //оновлюєм юзера
+
+                model.addAttribute("list",userService.getAll());  //створюєм атрибут який виводить список всіх юзерів
+                return "usersList";
+            } else {
+                if (!userId.trim().isEmpty()) {
+                    model.addAttribute("user",userService.getById(UUID.fromString(userId)));
+                    return "userEdit";
+                }
+            }
+
+        }
+
+        if(!cancelButton.trim().isEmpty()) {  //при натисканні на кнопку Cancel
+            model.addAttribute("list",userService.getAll());  //створюєм атрибут який виводить список всіх юзерів
+            return "usersList";
+        }
+
+        model.addAttribute("list",userService.getAll());  //створюєм атрибут який виводить список всіх юзерів
         return "usersList";
     }
 }

@@ -13,12 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Implementation of {@link UserService} interface.
- *
- * @author Eugene Suleimanov
- * @version 1.0
- */
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,6 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -65,4 +61,5 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userDao.findByUsername(username);
     }
+
 }

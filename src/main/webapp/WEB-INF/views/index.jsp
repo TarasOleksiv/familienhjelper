@@ -15,7 +15,7 @@
     <tr>
         <td class="pad"><a href="${pageContext.request.contextPath}/showManufacturers"><h3>Manufacturers</h3></a></td>
         <td class="pad"><a href="${pageContext.request.contextPath}/showProducts"><h3>Products</h3></a></td>
-        <td class="pad"><a href="${pageContext.request.contextPath}/showUsers"><h3>Users</h3></a></td>
+        <td class="pad"><a href="${pageContext.request.contextPath}/admin/showUsers"><h3>Users</h3></a></td>
     </tr>
 </table>
 
