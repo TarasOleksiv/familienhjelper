@@ -30,6 +30,7 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
+        <th>Admin</th>
     </tr>
     <c:forEach items="${list}" var="list">
         <tr>
@@ -39,6 +40,22 @@
             <th>${list.firstName}</th>
             <th>${list.lastName}</th>
             <th>${list.email}</th>
+            <c:set var="isAdmin" value="False" />
+            <c:forEach var="role" items="${list.roles}">
+                <c:choose>
+                    <c:when test="${role.name == 'ROLE_ADMIN'}">
+                        <c:set var="isAdmin" value="True" />
+                    </c:when>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${isAdmin == 'True'}">
+                    <th>+</th>
+                </c:when>
+                <c:otherwise>
+                    <th></th>
+                </c:otherwise>
+            </c:choose>
         </tr>
     </c:forEach>
 </table>
@@ -80,7 +97,10 @@
     </tr>
     <tr>
         <td>Password</td>
-        <td><input type="password" name="password"></td>
+        <td>
+            <input type="password" name="password">
+            <span class="error">${messages.password}</span>
+        </td>
     </tr>
     <tr>
         <td><input type="submit" value="Add" name="Add"/></td>
