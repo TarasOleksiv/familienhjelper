@@ -7,6 +7,9 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <html>
 <head>
     <title>Users</title>
@@ -14,8 +17,24 @@
         tr.grey { background: lightgrey;}
         .error { color: red; }
     </style>
+
+    <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="container">
+
+    <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+
+        <h5>User: ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+        </h5>
+
+    </c:if>
+
+</div>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
 
@@ -62,51 +81,63 @@
 
 <p></p>
 
-<table>
-    <tr>
-        <td><input type="submit" value="Edit" name="Edit"/></td>
-        <td><input type="submit" value="Delete" name="Delete"/></td>
-    </tr>
-</table>
+    <c:if test="${not empty pageContext.request.userPrincipal}">
+        <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+
+            <table>
+                <tr>
+                    <td><input type="submit" value="Edit" name="Edit"/></td>
+                    <td><input type="submit" value="Delete" name="Delete"/></td>
+                </tr>
+            </table>
+
+        </c:if>
+    </c:if>
 
     <p></p>
 </form>
 
-<form action="<c:url value="/admin/addUser"/>" method="POST">
-    <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-<table>
-    <CAPTION>Create new user</CAPTION>
-    <tr>
-        <td>Username</td>
-        <td>
-            <input type="text" name="username">
-            <span class="error">${messages.username}</span>
-        </td>
-    </tr>
-    <tr>
-        <td>First Name</td>
-        <td><input type="text" name="firstName"></td>
-    </tr>
-    <tr>
-        <td>Last Name</td>
-        <td><input type="text" name="lastName"></td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td><input type="text" name="email"></td>
-    </tr>
-    <tr>
-        <td>Password</td>
-        <td>
-            <input type="password" name="password">
-            <span class="error">${messages.password}</span>
-        </td>
-    </tr>
-    <tr>
-        <td><input type="submit" value="Add" name="Add"/></td>
-    </tr>
-</table>
-</form>
+<c:if test="${not empty pageContext.request.userPrincipal}">
+    <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+
+        <form action="<c:url value="/admin/addUser"/>" method="POST">
+            <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+            <table>
+                <CAPTION>Create new user</CAPTION>
+                <tr>
+                    <td>Username</td>
+                    <td>
+                        <input type="text" name="username">
+                        <span class="error">${messages.username}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><input type="text" name="firstName"></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><input type="text" name="lastName"></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="text" name="email"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input type="password" name="password">
+                        <span class="error">${messages.password}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Add" name="Add"/></td>
+                </tr>
+            </table>
+        </form>
+
+    </c:if>
+</c:if>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
 

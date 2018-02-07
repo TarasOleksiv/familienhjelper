@@ -1,6 +1,8 @@
 package ua.goit.java8.javadeveloper.controller;
 
+import ua.goit.java8.javadeveloper.model.Role;
 import ua.goit.java8.javadeveloper.model.User;
+import ua.goit.java8.javadeveloper.service.RoleService;
 import ua.goit.java8.javadeveloper.service.SecurityService;
 import ua.goit.java8.javadeveloper.service.UserService;
 import ua.goit.java8.javadeveloper.validator.UserValidator;
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -177,9 +182,12 @@ public class UserController {
                 user.setPassword(password);
 
                 if(!admin.trim().isEmpty()) {
-
+                    user.setRoles(new HashSet<Role>(roleService.getAll()));
+                } else {
+                    Set<Role> roles = new HashSet<>();
+                    roles.add(roleService.findByName("ROLE_USER"));
+                    user.setRoles(roles);
                 }
-                user.setRoles(userService.getById(UUID.fromString(userId)).getRoles());
 
                 userService.update(user);   //оновлюєм юзера
 

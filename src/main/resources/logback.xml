@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <logger name="net.proselyte.springsecurityapp">
+    <logger name="ua.goit.java8.javadeveloper">
         <level value="debug"/>
     </logger>
 
