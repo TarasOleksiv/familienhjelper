@@ -12,7 +12,7 @@
         td.pad { padding: 10px; }
     </style>
 
-    <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
 </head>

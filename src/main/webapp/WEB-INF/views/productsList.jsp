@@ -19,7 +19,7 @@
         .error { color: red; }
     </style>
 
-    <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
