@@ -12,6 +12,7 @@
         td.pad { padding: 10px; }
     </style>
 
+    <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
@@ -29,7 +30,6 @@
 
     </c:if>
 
-</div>
 
 <h1>Manufacturers and Products</h1>
 
@@ -44,6 +44,11 @@
         </c:if>
     </tr>
 </table>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 
 </body>
 </html>

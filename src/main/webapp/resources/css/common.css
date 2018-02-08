@@ -46,3 +46,36 @@ body {
 .has-error {
     color: red
 }
+
+
+.table-grid th {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px;
+}
+
+.table-grid td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px;
+}
+
+.table-grid caption {
+    font-weight: bold;
+}
+
+
+.table-input th {
+    color: #777;
+    text-align: left;
+    padding: 5px;
+}
+
+.table-input td {
+    text-align: left;
+    padding: 5px;
+}
+
+.table-input caption {
+    font-weight: bold;
+}

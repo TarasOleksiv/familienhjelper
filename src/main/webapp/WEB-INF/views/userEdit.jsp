@@ -18,6 +18,8 @@
     </style>
 
     <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -33,21 +35,23 @@
 
     </c:if>
 
-</div>
 
 <p><a href="${pageContext.request.contextPath}/admin/showUsers">Back to Users</a></p>
 
 <form action="<c:url value="/admin/editUser"/>" method="POST">
     <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
     <input type="hidden" name="userId" value="${user.id}"/>
-    <table>
+
+    <table class="table-input">
         <tr>
             <th>Edit user:</th>
             <th><i><u>${user.username}</u></i></th>
         </tr>
     </table>
+
     <p></p>
-    <table>
+
+    <table class="table-input">
         <tr>
             <td>Username</td>
             <td>
@@ -114,6 +118,11 @@
 </form>
 
 <p><a href="${pageContext.request.contextPath}/admin/showUsers">Back to Users</a></p>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 
 </body>
 </html>

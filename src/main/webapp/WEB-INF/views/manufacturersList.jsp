@@ -19,6 +19,8 @@
     </style>
 
     <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -34,14 +36,13 @@
 
     </c:if>
 
-</div>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
 
 <form action="<c:url value="/showManufacturers"/>" method="POST">
     <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-<table border="1">
+<table border="1" class="table-grid">
     <CAPTION>List of Manufacturers</CAPTION>
     <tr class="grey">
         <th></th>
@@ -50,9 +51,9 @@
     </tr>
     <c:forEach items="${list}" var="list">
         <tr>
-            <th><input type="radio" id="manufacturerId" name="manufacturerId" value="${list.id}" onclick="getManufacturerId(${list.id})"></th>
-            <th>${list.id}</th>
-            <th><a href="${pageContext.request.contextPath}/showProducts?filterProducts=yes&idManufacturer=${list.id}">${list.name}</a></th>
+            <td><input type="radio" id="manufacturerId" name="manufacturerId" value="${list.id}" onclick="getManufacturerId(${list.id})"></td>
+            <td>${list.id}</td>
+            <td><a href="${pageContext.request.contextPath}/showProducts?filterProducts=yes&idManufacturer=${list.id}">${list.name}</a></td>
         </tr>
     </c:forEach>
 </table>
@@ -62,7 +63,7 @@
     <c:if test="${not empty pageContext.request.userPrincipal}">
         <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
 
-            <table>
+            <table class="table-input">
                 <tr>
                     <td><input type="submit" value="Edit" name="Edit"/></td>
                     <td><input type="submit" value="Delete" name="Delete"/></td>
@@ -71,7 +72,7 @@
 
             <p></p>
 
-            <table>
+            <table class="table-input">
                 <CAPTION>Create new manufacturer</CAPTION>
                 <tr>
                     <td>Name</td>
@@ -89,6 +90,11 @@
 </form>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 
 </body>
 </html>

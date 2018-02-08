@@ -19,6 +19,8 @@
     </style>
 
     <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -34,13 +36,12 @@
 
     </c:if>
 
-</div>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
 
 <form action="<c:url value="/admin/showUsers"/>" method="POST">
     <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-<table border="1">
+<table border="1" class="table-grid">
     <CAPTION>List of Users</CAPTION>
     <tr class="grey">
         <th></th>
@@ -53,12 +54,12 @@
     </tr>
     <c:forEach items="${list}" var="list">
         <tr>
-            <th><input type="radio" name="userId" value="${list.id}"></th>
-            <th>${list.id}</th>
-            <th>${list.username}</th>
-            <th>${list.firstName}</th>
-            <th>${list.lastName}</th>
-            <th>${list.email}</th>
+            <td><input type="radio" name="userId" value="${list.id}"></td>
+            <td>${list.id}</td>
+            <td>${list.username}</td>
+            <td>${list.firstName}</td>
+            <td>${list.lastName}</td>
+            <td>${list.email}</td>
             <c:set var="isAdmin" value="False" />
             <c:forEach var="role" items="${list.roles}">
                 <c:choose>
@@ -69,10 +70,10 @@
             </c:forEach>
             <c:choose>
                 <c:when test="${isAdmin == 'True'}">
-                    <th>+</th>
+                    <td>+</td>
                 </c:when>
                 <c:otherwise>
-                    <th></th>
+                    <td></td>
                 </c:otherwise>
             </c:choose>
         </tr>
@@ -84,7 +85,7 @@
     <c:if test="${not empty pageContext.request.userPrincipal}">
         <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
 
-            <table>
+            <table class="table-input">
                 <tr>
                     <td><input type="submit" value="Edit" name="Edit"/></td>
                     <td><input type="submit" value="Delete" name="Delete"/></td>
@@ -102,7 +103,7 @@
 
         <form action="<c:url value="/admin/addUser"/>" method="POST">
             <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-            <table>
+            <table class="table-input">
                 <CAPTION>Create new user</CAPTION>
                 <tr>
                     <td>Username</td>
@@ -140,6 +141,11 @@
 </c:if>
 
 <p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 
 </body>
 </html>
