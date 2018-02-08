@@ -1,6 +1,6 @@
 # Create new DB on server;
-DROP SCHEMA IF EXISTS toleksiv_store;
-CREATE SCHEMA toleksiv_store DEFAULT CHARACTER SET utf8 ;
+#DROP SCHEMA IF EXISTS toleksiv_store;
+#CREATE SCHEMA toleksiv_store DEFAULT CHARACTER SET utf8 ;
 USE toleksiv_store;
 # 01. Create table manufacturers;
 CREATE TABLE manufacturers (
