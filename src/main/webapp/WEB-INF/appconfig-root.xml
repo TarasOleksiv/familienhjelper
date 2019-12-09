@@ -12,7 +12,7 @@
 
     <import resource="appconfig-security.xml"/>
 
-    <context:component-scan base-package="ua.goit.java8.javadeveloper.*"/>
+    <context:component-scan base-package="ua.petros.*"/>
 
     <context:property-placeholder location="classpath:database.properties"/>
 

@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true">
-        <intercept-url pattern="/" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT')"/>
         <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')"/>
 
         <form-login login-page="/login" default-target-url="/index" authentication-failure-url="/login?error"
@@ -24,7 +24,7 @@
     </authentication-manager>
 
     <beans:bean id="userDetailsServiceImpl"
-                class="ua.goit.java8.javadeveloper.service.UserDetailsServiceImpl"></beans:bean>
+                class="ua.petros.service.UserDetailsServiceImpl"></beans:bean>
 
     <beans:bean id="encoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">

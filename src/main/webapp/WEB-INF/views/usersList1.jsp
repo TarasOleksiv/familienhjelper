@@ -25,21 +25,21 @@
 <body>
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-2 col-sm-2">
-            <jsp:include page="includes/menu.jsp" />
-        </div>
 
-        <div class="col-lg-10 col-sm-10">
-            <header>
-                <div class="container">
-                    <h4>Users</h4>
-                    <p>
-                        <a class="btn btn-primary btn-sm" href="/campgrounds/new">Add New User</a>
-                    </p>
-                </div>
-            </header>
-        <form action="<c:url value="/admin/showUsers"/>" method="POST">
+    <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+
+        <h5>User: ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+        </h5>
+
+    </c:if>
+
+
+<p><a href="${pageContext.request.contextPath}/index">Back to the main page</a></p>
+
+<form action="<c:url value="/admin/showUsers"/>" method="POST">
     <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 <table border="1" class="table-grid">
     <CAPTION>List of Users</CAPTION>
@@ -135,8 +135,9 @@
 
     </c:if>
 </c:if>
-        </div>
-    </div>
+
+<p><a href="${pageContext.request.contextPath}">Back to the main page</a></p>
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
