@@ -103,7 +103,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input class="btn btn-secondary btn-sm btn-block" type="submit" value="Cancel" name="Cancel"/></td>
+                                <td><input class="btn btn-secondary btn-sm btn-cancel btn-block" type="submit" value="Cancel" name="Cancel"/></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
                             </tr>
                         </table>

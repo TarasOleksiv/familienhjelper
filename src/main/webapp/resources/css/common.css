@@ -116,3 +116,8 @@ body {
 .tooltip-wrap:hover .tooltip-content {
     display: block;
 }
+
+.btn-cancel {
+    background-color: rgba(28, 9, 0, 0.52);
+    color: white;
+}
