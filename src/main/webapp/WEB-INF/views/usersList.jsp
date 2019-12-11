@@ -13,128 +13,66 @@
 <html>
 <head>
     <title>Users</title>
-    <style type="text/css">
-        tr.grey { background: lightgrey;}
-        .error { color: red; }
-    </style>
 
-    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+    <script defer src="${contextPath}/resources/js/all.js"></script>
 
 </head>
 <body>
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-2 col-sm-2">
+        <div class="col-sm-2">
             <jsp:include page="includes/menu.jsp" />
         </div>
 
-        <div class="col-lg-10 col-sm-10">
+        <div class="col-sm-10">
             <header>
                 <div class="container">
                     <h4>Users</h4>
                     <p>
-                        <a class="btn btn-primary btn-sm" href="/campgrounds/new">Add New User</a>
+                        <a class="btn btn-primary btn-sm" href="/users/new">Add New User</a>
                     </p>
                 </div>
             </header>
-        <form action="<c:url value="/admin/showUsers"/>" method="POST">
-    <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-<table border="1" class="table-grid">
-    <CAPTION>List of Users</CAPTION>
-    <tr class="grey">
-        <th></th>
-        <th>Id</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Admin</th>
-    </tr>
-    <c:forEach items="${list}" var="list">
-        <tr>
-            <td><input type="radio" name="userId" value="${list.id}"></td>
-            <td>${list.id}</td>
-            <td>${list.username}</td>
-            <td>${list.email}</td>
-            <c:set var="isAdmin" value="False" />
-            <c:forEach var="role" items="${list.roles}">
-                <c:choose>
-                    <c:when test="${role.name == 'ROLE_ADMIN'}">
-                        <c:set var="isAdmin" value="True" />
-                    </c:when>
-                </c:choose>
-            </c:forEach>
-            <c:choose>
-                <c:when test="${isAdmin == 'True'}">
-                    <td>+</td>
-                </c:when>
-                <c:otherwise>
-                    <td></td>
-                </c:otherwise>
-            </c:choose>
-        </tr>
-    </c:forEach>
-</table>
+            <form action="<c:url value="/users"/>" method="POST">
+                <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-<p></p>
-
-    <c:if test="${not empty pageContext.request.userPrincipal}">
-        <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
-
-            <table class="table-input">
-                <tr>
-                    <td><input type="submit" value="Edit" name="Edit"/></td>
-                    <td><input type="submit" value="Delete" name="Delete"/></td>
-                </tr>
-            </table>
-
-        </c:if>
-    </c:if>
-
-    <p></p>
-</form>
-
-<c:if test="${not empty pageContext.request.userPrincipal}">
-    <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
-
-        <form action="<c:url value="/admin/addUser"/>" method="POST">
-            <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-            <table class="table-input">
-                <CAPTION>Create new user</CAPTION>
-                <tr>
-                    <td>Username</td>
-                    <td>
-                        <input type="text" name="username">
-                        <span class="error">${messages.username}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>First Name</td>
-                    <td><input type="text" name="firstName"></td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td><input type="text" name="lastName"></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input type="text" name="email"></td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td>
-                        <input type="password" name="password">
-                        <span class="error">${messages.password}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="submit" value="Add" name="Add"/></td>
-                </tr>
-            </table>
-        </form>
-
-    </c:if>
-</c:if>
+                <table class="table-grid">
+                    <tr>
+                        <th></th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Mobile1</th>
+                        <th>Mobile2</th>
+                        <th>Address</th>
+                        <th>Account</th>
+                        <th>Bank</th>
+                        <th>Role</th>
+                        <!--th></th-->
+                    </tr>
+                    <c:forEach items="${list}" var="list">
+                        <tr>
+                            <!--td><input type="radio" name="userId" value="${list.id}"></td-->
+                            <td>
+                                <a href="/users/${list.id}/edit">
+                                    <span class="button-edit"><i class="far fa-edit"></i></span>
+                                </a>
+                            </td>
+                            <td>${list.username}</td>
+                            <td>${list.email}</td>
+                            <td>${list.mobile1}</td>
+                            <td>${list.mobile2}</td>
+                            <td>${list.address}</td>
+                            <td>${list.account}</td>
+                            <td>${list.bank}</td>
+                            <c:set var="userrole" value="${list.roles.stream().findFirst().get().name}"/>
+                            <td>${userrole.substring(userrole.indexOf('_')+1).toLowerCase()}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </form>
         </div>
     </div>
 </div>

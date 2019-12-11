@@ -43,27 +43,40 @@ body {
     margin-top: 10px;
 }
 
+.form-edit {
+    width: 30%;
+    margin: 25px auto
+}
+
 .has-error {
     color: red
 }
 
+.table-grid {
+    font-size: 90%;
+}
+
+.table-input {
+    font-size: 90%;
+}
 
 .table-grid th {
     border: 1px solid #ddd;
     text-align: center;
     padding: 5px;
+    background: lightgrey;
 }
 
 .table-grid td {
     border: 1px solid #ddd;
     text-align: center;
     padding: 5px;
+    background: white;
 }
 
 .table-grid caption {
     font-weight: bold;
 }
-
 
 .table-input th {
     color: #777;
@@ -76,6 +89,30 @@ body {
     padding: 5px;
 }
 
+.table-input input, select {
+    width: 220px;
+}
+
 .table-input caption {
     font-weight: bold;
+}
+
+.button-edit {
+    background: yellow;
+}
+
+.tooltip-wrap {
+    position: relative;
+}
+.tooltip-wrap .tooltip-content {
+    display: none;
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+    background-color: #fff;
+    padding: .1em;
+}
+.tooltip-wrap:hover .tooltip-content {
+    display: block;
 }

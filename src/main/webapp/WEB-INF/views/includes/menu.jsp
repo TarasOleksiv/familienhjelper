@@ -3,6 +3,12 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+</head>
+
 <div class="thumbnail">
     <img src="${contextPath}/resources/img/logo.jpg">
 </div>
@@ -12,8 +18,11 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h5>${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
-        </h5>
+        <div>
+            <h5>User: ${pageContext.request.userPrincipal.name}</h5>
+        </div>
+        <a class="btn btn-sm btn-primary btn-block" type="submit" onclick="document.forms['logoutForm'].submit()">Sign Out</a>
+
 
     </c:if>
 </div>
@@ -23,19 +32,19 @@
             <h4>Admin</h4>
             <ul>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Users</a>
+                    <a href="${pageContext.request.contextPath}/users">Users</a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers" target="targetframe">Members</a>
+                    <a href="${pageContext.request.contextPath}/users">Members</a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Projects</a>
+                    <a href="${pageContext.request.contextPath}/users">Projects</a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Beneficiary</a>
+                    <a href="${pageContext.request.contextPath}/users">Beneficiaries</a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Transactions</a>
+                    <a href="${pageContext.request.contextPath}/users">Transactions</a>
                 </li>
             </ul>
         </c:if>
@@ -43,7 +52,7 @@
             <h4>FU</h4>
             <ul>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Projects</a>
+                    <a href="${pageContext.request.contextPath}/users">Projects</a>
                 </li>
             </ul>
         </c:if>
@@ -51,7 +60,7 @@
             <h4>Field Contact</h4>
             <ul>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/showUsers">Projects</a>
+                    <a href="${pageContext.request.contextPath}/users">Projects</a>
                 </li>
             </ul>
         </c:if>

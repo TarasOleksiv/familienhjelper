@@ -13,27 +13,23 @@
 <html>
 <head>
     <title>New User</title>
-    <style type="text/css">
-        tr.grey { background: lightgrey;}
-        .error { color: red; }
-    </style>
 
-    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
 
 </head>
 <body>
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-2 col-sm-2">
+        <div class="col-sm-2">
             <jsp:include page="includes/menu.jsp" />
         </div>
-        <div class="col-lg-10 col-sm-10">
+        <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
                 <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
 
-                    <form action="<c:url value="/admin/addUser"/>" method="POST">
+                    <form class="form-edit" action="<c:url value="/users"/>" method="POST">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-input">
                             <CAPTION>Create new user</CAPTION>
@@ -41,30 +37,53 @@
                                 <td>Username</td>
                                 <td>
                                     <input type="text" name="username">
-                                    <span class="error">${messages.username}</span>
+                                    <span class="has-error">${messages.username}</span>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>First Name</td>
-                                <td><input type="text" name="firstName"></td>
-                            </tr>
-                            <tr>
-                                <td>Last Name</td>
-                                <td><input type="text" name="lastName"></td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td><input type="text" name="email"></td>
                             </tr>
                             <tr>
-                                <td>Password</td>
+                                <td>Address</td>
+                                <td><input type="text" name="address"></td>
+                            </tr>
+                            <tr>
+                                <td>Mobile1</td>
+                                <td><input type="text" name="mobile1"></td>
+                            </tr>
+                            <tr>
+                                <td>Mobile2</td>
+                                <td><input type="text" name="mobile2"></td>
+                            </tr>
+                            <tr>
+                                <td>Account</td>
+                                <td><input type="text" name="account"></td>
+                            </tr>
+                            <tr>
+                                <td>Bank</td>
+                                <td><input type="text" name="bank"></td>
+                            </tr>
+                            <tr>
+                                <td>Role</td>
                                 <td>
-                                    <input type="password" name="password">
-                                    <span class="error">${messages.password}</span>
+                                <select name="roleName">
+                                    <c:forEach var="role" items="${listRoles}">
+                                        <option value="${role.name}"><c:out value="${role.name}"/></option>
+                                    </c:forEach>
+                                </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="Add" name="Add"/></td>
+                                <td>Password</td>
+                                <td>
+                                    <input type="password" name="password">
+                                    <span class="has-error">${messages.password}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input class="btn btn-secondary btn-sm btn-block" type="submit" value="Cancel" name="Cancel"/></td>
+                                <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Submit" name="Add"/></td>
                             </tr>
                         </table>
                     </form>

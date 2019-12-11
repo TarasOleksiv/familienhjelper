@@ -13,112 +13,119 @@
 <html>
 <head>
     <title>Edit User</title>
-    <style type="text/css">
-        .error { color: red; }
-    </style>
 
-    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
 
 </head>
 <body>
 
 <div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <jsp:include page="includes/menu.jsp" />
+        </div>
 
-    <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <form id="logoutForm" method="POST" action="${contextPath}/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
+        <div class=class="col-sm-10">
+            <c:if test="${not empty pageContext.request.userPrincipal}">
+                <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
 
-        <h5>User: ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
-        </h5>
+                    <form class="form-edit" action="<c:url value="/users/${user.id}"/>" method="POST">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden" name="userId" value="${user.id}"/>
 
-    </c:if>
+                        <table class="table-input">
+                            <CAPTION>User details: <strong>${user.username}</strong></CAPTION>
+                            <tr>
+                                <td>Username</td>
+                                <td>
+                                    <input type="text" name="username" value="${user.username}">
+                                    <span class="has-error">${messages.username}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>
+                                    <input type="text" name="email" value="${user.email}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>
+                                    <input type="text" name="address" value="${user.address}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mobile1</td>
+                                <td>
+                                    <input type="text" name="mobile1" value="${user.mobile1}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mobile2</td>
+                                <td>
+                                    <input type="text" name="mobile2" value="${user.mobile2}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Account</td>
+                                <td><input type="text" name="account" value="${user.account}"></td>
+                            </tr>
+                            <tr>
+                                <td>Bank</td>
+                                <td><input type="text" name="bank" value="${user.bank}"></td>
+                            </tr>
+                            <tr>
+                                <td>Role</td>
+                                <td>
+                                    <select name="roleName">
+                                        <c:forEach var="role" items="${listRoles}">
+                                            <c:forEach var="userrole" items="${user.roles}">
+                                                <c:choose>
+                                                    <c:when test="${userrole.name == role.name}">
+                                                        <option value="${role.name}" selected><c:out value="${role.name}"/></option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${role.name}"><c:out value="${role.name}"/></option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td>
+                                    <input type="password" name="password">
+                                    <span class="has-error">${messages.password}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input class="btn btn-secondary btn-sm btn-block" type="submit" value="Cancel" name="Cancel"/></td>
+                                <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
+                            </tr>
+                        </table>
+                    </form>
 
+                    <form class="form-edit" action="<c:url value="/users/${user.id}"/>" method="POST">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden" name="userId" value="${user.id}"/>
 
-<p><a href="${pageContext.request.contextPath}/admin/showUsers">Back to Users</a></p>
-
-<form action="<c:url value="/admin/editUser"/>" method="POST">
-    <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-    <input type="hidden" name="userId" value="${user.id}"/>
-
-    <table class="table-input">
-        <tr>
-            <th>Edit user:</th>
-            <th><i><u>${user.username}</u></i></th>
-        </tr>
-    </table>
-
-    <p></p>
-
-    <table class="table-input">
-        <tr>
-            <td>Username</td>
-            <td>
-                <input type="text" name="username" value="${user.username}" size="30">
-                <span class="error">${messages.username}</span>
-            </td>
-        </tr>
-        <tr>
-            <td>First name</td>
-            <td>
-                <input type="text" name="firstName" value="${user.firstName}" size="30">
-            </td>
-        </tr>
-        <tr>
-            <td>Last name</td>
-            <td>
-                <input type="text" name="lastName" value="${user.lastName}" size="30">
-            </td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>
-                <input type="text" name="email" value="${user.email}" size="30">
-            </td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td>
-                <input type="password" name="password" size="30">
-                <span class="error">${messages.password}</span>
-            </td>
-        </tr>
-        <tr>
-            <td>Admin</td>
-            <td>
-                <c:set var="isAdmin" value="False" />
-                <c:forEach var="role" items="${user.roles}">
-                    <c:choose>
-                        <c:when test="${role.name == 'ROLE_ADMIN'}">
-                            <c:set var="isAdmin" value="True" />
-                        </c:when>
-                    </c:choose>
-                </c:forEach>
-                <c:choose>
-                    <c:when test="${isAdmin == 'True'}">
-                        <input type="checkbox" name="admin" value="true" checked>
-                    </c:when>
-                    <c:otherwise>
-                        <input type="checkbox" name="admin" value="true">
-                    </c:otherwise>
-                </c:choose>
-            </td>
-        </tr>
-
-        <tr>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td><input type="submit" value="Save" name="Save"/></td>
-            <td><input type="submit" value="Cancel" name="Cancel"/></td>
-        </tr>
-    </table>
-</form>
-
-<p><a href="${pageContext.request.contextPath}/admin/showUsers">Back to Users</a></p>
-
+                        <table class="table-input">
+                            <tr>
+                                <td>
+                                    <input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </c:if>
+            </c:if>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

@@ -8,23 +8,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Main Page</title>
-    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-    	body { padding-top: 10px; }
-    </style>
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+
 </head>
 <body>
 
 <div class="container">
   	<div class="row">
-      <div class="col-lg-2 col-sm-2">
+      <div class="col-sm-2">
           <jsp:include page="includes/menu.jsp" />
       </div>
-      <div class="col-lg-10 col-sm-10">
-          <div class="thumbnail">
-              <img src="${contextPath}/resources/img/logo.jpg">
-          </div>
+      <div class="col-sm-10">
+
       </div>
     </div>
   </div>
