@@ -60,11 +60,19 @@ body {
     font-size: 90%;
 }
 
+.table-show {
+    font-size: 90%;
+}
+
 .table-grid th {
     border: 1px solid #ddd;
     text-align: center;
     padding: 5px;
     background: lightgrey;
+}
+
+.table-grid th:hover {
+    cursor: pointer;
 }
 
 .table-grid td {
@@ -75,6 +83,17 @@ body {
 }
 
 .table-grid caption {
+    font-weight: bold;
+}
+
+.table-show td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 5px;
+    background: white;
+}
+
+.table-show caption {
     font-weight: bold;
 }
 

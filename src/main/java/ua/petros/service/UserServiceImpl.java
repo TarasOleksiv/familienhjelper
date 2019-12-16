@@ -31,8 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
-        user.setId(UUID.randomUUID());
+    public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
@@ -40,12 +39,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User user) {
         userDao.delete(user);
-    }
-
-    @Override
-    public void update(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userDao.save(user);
     }
 
     @Override

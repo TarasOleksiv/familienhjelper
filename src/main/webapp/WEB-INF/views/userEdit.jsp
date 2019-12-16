@@ -41,7 +41,7 @@
                                 <td>Username</td>
                                 <td>
                                     <input type="text" name="username" value="${user.username}">
-                                    <span class="has-error">${messages.username}</span>
+                                    <div class="has-error">${messages.username}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -99,29 +99,16 @@
                                 <td>Password</td>
                                 <td>
                                     <input type="password" name="password">
-                                    <span class="has-error">${messages.password}</span>
+                                    <div class="has-error">${messages.password}</div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><input class="btn btn-secondary btn-sm btn-cancel btn-block" type="submit" value="Cancel" name="Cancel"/></td>
+                                <td><a class="btn btn-cancel btn-sm btn-block" href="/users/${user.id}">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
                             </tr>
                         </table>
                     </form>
 
-                    <form class="form-edit" action="<c:url value="/users/${user.id}"/>" method="POST">
-                        <input type="hidden" name="_method" value="delete"/>
-                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                        <input type="hidden" name="userId" value="${user.id}"/>
-
-                        <table class="table-input">
-                            <tr>
-                                <td>
-                                    <input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
                 </c:if>
             </c:if>
         </div>

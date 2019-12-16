@@ -14,55 +14,58 @@
 </div>
 <div>
     <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <form id="logoutForm" method="POST" action="${contextPath}/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
-
         <div>
-            <h5>User: ${pageContext.request.userPrincipal.name}</h5>
+            <form id="logoutForm" method="POST" action="${contextPath}/logout">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
         </div>
-        <a class="btn btn-sm btn-primary btn-block" type="submit" onclick="document.forms['logoutForm'].submit()">Sign Out</a>
-
-
+        <div class="list-group">
+            <li class="list-group-item">
+                User: ${pageContext.request.userPrincipal.name}
+            </li>
+            <li class="list-group-item">
+                <a class="btn btn-sm btn-primary btn-block" type="submit" onclick="document.forms['logoutForm'].submit()">Sign Out</a>
+            </li>
+        </div>
     </c:if>
 </div>
 <div>
     <c:if test="${not empty pageContext.request.userPrincipal}">
         <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
-            <h4>Admin</h4>
-            <ul>
-                <li>
+            <p class="lead">Admin</p>
+            <div class="list-group">
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Users</a>
                 </li>
-                <li>
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Members</a>
                 </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/users">Projects</a>
-                </li>
-                <li>
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Beneficiaries</a>
                 </li>
-                <li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/users">Projects</a>
+                </li>
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Transactions</a>
                 </li>
-            </ul>
+            </div>
         </c:if>
         <c:if test="${pageContext.request.isUserInRole('ROLE_FU')}">
-            <h4>FU</h4>
-            <ul>
-                <li>
+            <p class="lead">FU</p>
+            <div class="list-group">
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Projects</a>
                 </li>
-            </ul>
+            </div>
         </c:if>
         <c:if test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
-            <h4>Field Contact</h4>
-            <ul>
-                <li>
+            <p class="lead">Field Contact</p>
+            <div class="list-group">
+                <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/users">Projects</a>
                 </li>
-            </ul>
+            </div>
         </c:if>
     </c:if>
 </div>

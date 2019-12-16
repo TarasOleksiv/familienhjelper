@@ -39,34 +39,32 @@
             <form action="<c:url value="/users"/>" method="POST">
                 <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-                <table class="table-grid">
+                <table id="userTable" class="table-grid">
                     <tr>
-                        <th></th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Mobile1</th>
-                        <th>Mobile2</th>
-                        <th>Address</th>
-                        <th>Account</th>
-                        <th>Bank</th>
-                        <th>Role</th>
-                        <!--th></th-->
+                        <th onclick="sortTable(0,'userTable')"></th>
+                        <th onclick="sortTable(1,'userTable')">Username</th>
+                        <th onclick="sortTable(2,'userTable')">Email</th>
+                        <th onclick="sortTable(3,'userTable')">Mobile1</th>
+                        <!--th onclick="sortTable(4,'userTable')">Mobile2</th>
+                        <th onclick="sortTable(5,'userTable')">Address</th>
+                        <th onclick="sortTable(6,'userTable')">Account</th>
+                        <th onclick="sortTable(7,'userTable')">Bank</th-->
+                        <th onclick="sortTable(4,'userTable')">Role</th>
                     </tr>
                     <c:forEach items="${list}" var="list">
                         <tr>
-                            <!--td><input type="radio" name="userId" value="${list.id}"></td-->
                             <td>
-                                <a href="/users/${list.id}/edit">
-                                    <span class="button-edit"><i class="far fa-edit"></i></span>
+                                <a href="/users/${list.id}">
+                                    <span><i class="far fa-hand-pointer"></i></span>
                                 </a>
                             </td>
                             <td>${list.username}</td>
                             <td>${list.email}</td>
                             <td>${list.mobile1}</td>
-                            <td>${list.mobile2}</td>
+                            <!--td>${list.mobile2}</td>
                             <td>${list.address}</td>
                             <td>${list.account}</td>
-                            <td>${list.bank}</td>
+                            <td>${list.bank}</td-->
                             <c:set var="userrole" value="${list.roles.stream().findFirst().get().name}"/>
                             <td>${userrole.substring(userrole.indexOf('_')+1).toLowerCase()}</td>
                         </tr>
@@ -79,6 +77,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+<script src="${contextPath}/resources/js/app.js"></script>
 
 </body>
 </html>

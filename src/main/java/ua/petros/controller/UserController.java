@@ -8,6 +8,7 @@ import ua.petros.model.User;
 import ua.petros.service.RoleService;
 import ua.petros.service.SecurityService;
 import ua.petros.service.UserService;
+import ua.petros.validator.UserSimpleValidator;
 import ua.petros.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class UserController {
     private UserValidator userValidator;
 
     @Autowired
+    private UserSimpleValidator userSimpleValidator;
+
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -54,7 +58,7 @@ public class UserController {
             return "registration";
         }
 
-        userService.create(userForm);
+        userService.save(userForm);
 
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
 
@@ -89,6 +93,13 @@ public class UserController {
         return "usersList";
     }
 
+    //Show user
+    @RequestMapping(value = "/users/{userId}", method = {RequestMethod.GET})
+    public String showUser(Model model, @PathVariable("userId") String userId){
+        model.addAttribute("user",userService.getById(UUID.fromString(userId)));
+        return "userShow";
+    }
+
     // Show form to create new user
     @RequestMapping(value = "/users/new", method = {RequestMethod.GET})
     public String showNewUserForm(Model model){
@@ -99,7 +110,6 @@ public class UserController {
     // Create user
     @RequestMapping(value = "/users", method = {RequestMethod.POST})
     public String addUser(Model model,
-                          @ModelAttribute("Cancel") String cancelButton,
                           @ModelAttribute("username") String username,
                           @ModelAttribute("email") String email,
                           @ModelAttribute("mobile1") String mobile1,
@@ -110,49 +120,38 @@ public class UserController {
                           @ModelAttribute("roleName") String roleName,
                           @ModelAttribute("password") String password){
 
-        // Cancel button - Return all users
-        if(!cancelButton.trim().isEmpty()) {
-            return "redirect:/users";
-        }
+        // prepare user info
+        User user = new User();
+        UUID uuid = UUID.randomUUID();
+        user.setId(uuid);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setAccount(account);
+        user.setMobile1(mobile1);
+        user.setMobile2(mobile2);
+        user.setAddress(address);
+        user.setBank(bank);
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleDao.findByName(roleName));
+        user.setRoles(roles);
 
-        // Configure error messages.
-        Map<String, String> messages = new HashMap<String, String>();
-        model.addAttribute("messages", messages);
-
-        // Check username.
-        String name = username;
-        if (name == null || name.trim().isEmpty()) {
-            messages.put("username", "Please enter username");
-        }  else if (userService.findByUsername(name) != null) {
-            messages.put("username", "User " + name + " exists already");
-        }
-
-        // Check password.
-        String pass = password;
-        if (pass == null || pass.trim().isEmpty()) {
-            messages.put("password", "Please enter password");
-        }
+        // validate user
+        Map<String, String> messages = userSimpleValidator.validate(user);
 
         // If no errors, create user
         if (messages.isEmpty()) {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            if (account != null && !account.trim().isEmpty()) {user.setAccount(account); }
-            if (address != null && !address.trim().isEmpty()) { user.setAddress(address); }
-            if (bank != null && !bank.trim().isEmpty()) { user.setBank(bank); }
-            if (mobile1 != null && !mobile1.trim().isEmpty()) { user.setMobile1(mobile1); }
-            if (mobile2 != null && !mobile2.trim().isEmpty()) { user.setMobile2(mobile2); }
-            if (email != null && !email.trim().isEmpty()) { user.setEmail(email); }
-            Set<Role> roles = new HashSet<>();
-            roles.add(roleDao.findByName(roleName));
-            user.setRoles(roles);
-
-            userService.create(user);
+            userService.save(user);
+        } else {
+            // back to the new user form
+            model.addAttribute("messages", messages);
+            model.addAttribute("user",user);
+            model.addAttribute("listRoles",roleService.getAll());
+            return "userNew";
         }
 
-        model.addAttribute("list",userService.getAll());
-        return "usersList";
+        //show user
+        return "redirect:/users/" + uuid;
     }
 
     // Show form to edit user
@@ -166,8 +165,6 @@ public class UserController {
     // Edit user
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
     public String editUser(Model model,
-                          @ModelAttribute("Save") String saveButton,
-                          @ModelAttribute("Cancel") String cancelButton,
                           @ModelAttribute("username") String username,
                           @ModelAttribute("email") String email,
                           @ModelAttribute("mobile1") String mobile1,
@@ -179,65 +176,39 @@ public class UserController {
                           @ModelAttribute("password") String password,
                           @ModelAttribute("userId") String userId){
 
-        // Cancel button - Return all users
-        if(!cancelButton.trim().isEmpty()) {
-            return "redirect:/users";
-        }
+        // prepare user info
+        User user = new User();
+        user.setId(UUID.fromString(userId));
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setAccount(account);
+        user.setMobile1(mobile1);
+        user.setMobile2(mobile2);
+        user.setAddress(address);
+        user.setBank(bank);
+        user.setPassword(password);
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.findByName(roleName));
+        user.setRoles(roles);
 
-        // Save button
+        // validate user
+        Map<String, String> messages = userSimpleValidator.validate(user);
 
-        // Error messages to send if any
-        Map<String, String> messages = new HashMap<String, String>();
-        model.addAttribute("messages", messages);
-
-        // check username for empty
-        if (username == null || username.trim().isEmpty()) {
-            messages.put("username", "Please enter username");
-            // check if new username exists already
-        }  else {
-            User user = userService.findByUsername(username);
-            if ((user != null) && (!user.getId().equals(UUID.fromString(userId)))){
-                messages.put("username", "User " + username + " exists already");
-            }
-        }
-
-        // check password for empty
-        if (password == null || password.trim().isEmpty()) {
-            messages.put("password", "Please enter password");
-        }
-
-        // if no validation errors
+        // if no validation errors update user
         if (messages.isEmpty()) {
-            User user = new User();
-            user.setId(UUID.fromString(userId));
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setAccount(account);
-            user.setMobile1(mobile1);
-            user.setMobile2(mobile2);
-            user.setAddress(address);
-            user.setBank(bank);
-            user.setPassword(password);
-            Set<Role> roles = new HashSet<>();
-            roles.add(roleService.findByName(roleName));
-            user.setRoles(roles);
-
-            // update user
-            userService.update(user);
-
-            model.addAttribute("list",userService.getAll());
-            return "usersList";
+            userService.save(user);
             // else redirect back to the edit page showing error messages
         } else {
             if (!userId.trim().isEmpty()) {
-                model.addAttribute("user",userService.getById(UUID.fromString(userId)));
+                model.addAttribute("messages", messages);
+                model.addAttribute("user",user);
                 model.addAttribute("listRoles",roleService.getAll());
                 return "userEdit";
             }
         }
 
-        // Return all users
-        return "redirect:/users";
+        // show user
+        return "redirect:/users/" + userId;
     }
 
     // delete user
