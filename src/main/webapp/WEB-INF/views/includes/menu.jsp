@@ -38,16 +38,16 @@
                     <a href="${pageContext.request.contextPath}/users">Users</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Members</a>
+                    <a href="${pageContext.request.contextPath}/members">Members</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Beneficiaries</a>
+                    <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Projects</a>
+                    <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Transactions</a>
+                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
                 </li>
             </div>
         </c:if>
@@ -55,7 +55,16 @@
             <p class="lead">FU</p>
             <div class="list-group">
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Projects</a>
+                    <a href="${pageContext.request.contextPath}/members">Members</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/projects">Projects</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
                 </li>
             </div>
         </c:if>
@@ -63,7 +72,13 @@
             <p class="lead">Field Contact</p>
             <div class="list-group">
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/users">Projects</a>
+                    <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/projects">Projects</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
                 </li>
             </div>
         </c:if>

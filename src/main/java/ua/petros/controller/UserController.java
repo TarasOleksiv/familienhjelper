@@ -1,6 +1,5 @@
 package ua.petros.controller;
 
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import ua.petros.dao.RoleDao;
 import ua.petros.model.Role;

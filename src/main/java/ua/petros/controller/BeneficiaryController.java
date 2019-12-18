@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-public class MemberController {
+public class BeneficiaryController {
 
-    // Show all members
-    @RequestMapping(value = "/members", method = {RequestMethod.GET})
+    // Show all beneficiaries
+    @RequestMapping(value = "/beneficiaries", method = {RequestMethod.GET})
     public String showMembers(Model model){
         //model.addAttribute("list",userService.getAll());
-        return "membersList";
+        return "beneficiariesList";
     }
 }
