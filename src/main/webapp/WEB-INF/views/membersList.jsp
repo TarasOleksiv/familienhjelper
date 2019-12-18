@@ -23,9 +23,38 @@
       <div class="col-sm-10">
           <header>
               <div class="container">
-                  <h4>Under Construction</h4>
+                  <h4>Members</h4>
+                  <p>
+                      <a class="btn btn-primary btn-sm" href="/members/new">Add New Member</a>
+                  </p>
               </div>
           </header>
+          <form action="<c:url value="/members"/>" method="POST">
+              <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+
+              <table id="memberTable" class="table-grid">
+                  <c:if test="${list.size()>0}">
+                      <tr>
+                          <th onclick="sortTable(0,'memberTable')"></th>
+                          <th onclick="sortTable(1,'memberTable')">Name</th>
+                          <th onclick="sortTable(2,'memberTable')">Email</th>
+                          <th onclick="sortTable(3,'memberTable')">Mobile</th>
+                      </tr>
+                  </c:if>
+                  <c:forEach items="${list}" var="list">
+                      <tr>
+                          <td>
+                              <a href="/members/${list.id}">
+                                  <span><i class="far fa-hand-pointer"></i></span>
+                              </a>
+                          </td>
+                          <td>${list.name}</td>
+                          <td>${list.email}</td>
+                          <td>${list.mobile}</td>
+                      </tr>
+                  </c:forEach>
+              </table>
+          </form>
       </div>
     </div>
 </div>

@@ -17,15 +17,15 @@
 --  price DECIMAL(7,2) NOT NULL,
 --  PRIMARY KEY (id),
 --  UNIQUE (name,manufac
--- 03. Create table roles;turer_id),
 
+-- 01. Create table roles;turer_id),
 CREATE TABLE roles (
   id UUID NOT NULL,
   name VARCHAR(45) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE (name))
   ;
--- 04. Create table users;
+-- 02. Create table users;
 CREATE TABLE users (
   id UUID NOT NULL,
   username VARCHAR(48) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE users (
   PRIMARY KEY (id),
   UNIQUE (username))
   ;
--- 05. Table for mapping user and roles: user_roles
+-- 03. Table for mapping user and roles: user_roles
 CREATE TABLE user_roles (
   user_id UUID NOT NULL,
   role_id UUID NOT NULL,
