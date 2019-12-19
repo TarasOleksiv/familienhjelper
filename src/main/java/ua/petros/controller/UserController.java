@@ -212,7 +212,7 @@ public class UserController {
 
     // delete user
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
-    public String editUser(Model model, @ModelAttribute("userId") String userId){
+    public String deleteUser(Model model, @ModelAttribute("userId") String userId){
 
         if (!userId.trim().isEmpty()) {
             userService.delete(userService.getById(UUID.fromString(userId)));

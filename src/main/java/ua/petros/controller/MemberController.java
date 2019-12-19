@@ -88,7 +88,7 @@ public class MemberController {
 
     // delete member
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.DELETE)
-    public String editMember(Model model, @ModelAttribute("memberId") String memberId){
+    public String deleteMember(Model model, @ModelAttribute("memberId") String memberId){
 
         if (!memberId.trim().isEmpty()) {
             memberService.delete(memberService.getById(UUID.fromString(memberId)));

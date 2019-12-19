@@ -35,7 +35,7 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 
     @Override
     public void delete(Beneficiary beneficiary) {
-        delete(beneficiary);
+        beneficiaryDao.delete(beneficiary);
     }
 
     @Override

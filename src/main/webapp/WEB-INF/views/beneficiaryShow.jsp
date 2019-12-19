@@ -45,7 +45,10 @@
                             </tr>
                             <tr>
                                 <td>Family</td>
-                                <td colspan="2">${beneficiary.family}</td>
+                                <td colspan="2">
+                                    <textarea rows="4" cols="25" name="family" maxlength="480" disabled>
+                                            <c:out value="${beneficiary.family}"/></textarea>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Description</td>

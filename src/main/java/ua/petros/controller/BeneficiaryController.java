@@ -77,7 +77,7 @@ public class BeneficiaryController {
         }
         Date date= null;
         try {
-            date = new SimpleDateFormat("dd.MM.yyyy").parse(datefield);
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -100,6 +100,72 @@ public class BeneficiaryController {
 
         //show beneficiary
         return "redirect:/beneficiaries/" + uuid;
+    }
+
+    // delete beneficiary
+    @RequestMapping(value = "/beneficiaries/{beneficiaryId}", method = RequestMethod.DELETE)
+    public String deleteBeneficiary(Model model, @ModelAttribute("beneficiaryId") String beneficiaryId){
+
+        if (!beneficiaryId.trim().isEmpty()) {
+            beneficiaryService.delete(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
+        }
+        // Return all beneficiaries
+        return "redirect:/beneficiaries";
+    }
+
+    // Show form to edit beneficiary
+    @RequestMapping(value = "/beneficiaries/{beneficiaryId}/edit", method = {RequestMethod.GET})
+    public String showEditBeneficiaryForm(Model model, @PathVariable("beneficiaryId") String beneficiaryId){
+        model.addAttribute("beneficiary",beneficiaryService.getById(UUID.fromString(beneficiaryId)));
+        model.addAttribute("listStatuses",statusService.getAll());
+        return "beneficiaryEdit";
+    }
+
+    // Edit beneficiary
+    @RequestMapping(value = "/beneficiaries/{beneficiaryId}", method = RequestMethod.PUT)
+    public String editBeneficiary(Model model,
+                                  @ModelAttribute("name") String name,
+                                  @ModelAttribute("family") String family,
+                                  @ModelAttribute("description") String description,
+                                  @ModelAttribute("income") String income,
+                                  @ModelAttribute("datefield") String datefield,
+                                  @ModelAttribute("statusName") String statusName,
+                                  @ModelAttribute("beneficiaryId") String beneficiaryId){
+
+        // prepare beneficiary info
+        Beneficiary beneficiary = new Beneficiary();
+        beneficiary.setId(UUID.fromString(beneficiaryId));
+        beneficiary.setName(name);
+        beneficiary.setFamily(family);
+        beneficiary.setDescription(description);
+        if (income != null && !income.trim().isEmpty()) {
+            beneficiary.setIncome(new BigDecimal(income));
+        }
+        Date date= null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        beneficiary.setDatefield(date);
+        beneficiary.setStatus(statusService.findByName(statusName));
+
+        // validate beneficiary
+        Map<String, String> messages = beneficiaryValidator.validate(beneficiary);
+
+        // If no errors, update beneficiary
+        if (messages.isEmpty()) {
+            beneficiaryService.save(beneficiary);
+        } else {
+            // back to the new beneficiary form
+            model.addAttribute("messages", messages);
+            model.addAttribute("beneficiary",beneficiary);
+            model.addAttribute("listStatuses",statusService.getAll());
+            return "beneficiaryEdit";
+        }
+
+        //show beneficiary
+        return "redirect:/beneficiaries/" + beneficiaryId;
     }
 
 }
