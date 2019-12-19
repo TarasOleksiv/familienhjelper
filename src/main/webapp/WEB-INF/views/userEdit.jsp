@@ -47,7 +47,7 @@
                             <tr>
                                 <td>Email</td>
                                 <td>
-                                    <input type="text" name="email" value="${user.email}">
+                                    <input type="email" name="email" value="${user.email}">
                                 </td>
                             </tr>
                             <tr>
@@ -59,13 +59,13 @@
                             <tr>
                                 <td>Mobile1</td>
                                 <td>
-                                    <input type="text" name="mobile1" value="${user.mobile1}">
+                                    <input type="tel" pattern="^\+[0-9 ]+$" placeholder="+99 999 999 9999" name="mobile1" value="${user.mobile1}">
                                 </td>
                             </tr>
                             <tr>
                                 <td>Mobile2</td>
                                 <td>
-                                    <input type="text" name="mobile2" value="${user.mobile2}">
+                                    <input type="tel" pattern="^\+[0-9 ]+$" placeholder="+99 999 999 9999" name="mobile2" value="${user.mobile2}">
                                 </td>
                             </tr>
                             <tr>

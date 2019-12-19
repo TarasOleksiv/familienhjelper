@@ -46,13 +46,14 @@
                             <tr>
                                 <td>Family</td>
                                 <td colspan="2">
-                                    <textarea rows="4" cols="25" name="family" maxlength="480" disabled>
-                                            <c:out value="${beneficiary.family}"/></textarea>
+                                    <textarea rows="4" cols="25" name="family" maxlength="480" readonly>${beneficiary.family}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
-                                <td colspan="2">${beneficiary.description}</td>
+                                <td colspan="2">
+                                    <textarea rows="6" cols="25" name="description" maxlength="2000" readonly>${beneficiary.description}</textarea>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Income</td>

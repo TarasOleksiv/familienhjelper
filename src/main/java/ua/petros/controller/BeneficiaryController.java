@@ -76,10 +76,12 @@ public class BeneficiaryController {
             beneficiary.setIncome(new BigDecimal(income));
         }
         Date date= null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (datefield != null && !datefield.trim().isEmpty()) {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         beneficiary.setDatefield(date);
         beneficiary.setStatus(statusService.findByName(statusName));
@@ -142,11 +144,14 @@ public class BeneficiaryController {
             beneficiary.setIncome(new BigDecimal(income));
         }
         Date date= null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (datefield != null && !datefield.trim().isEmpty()) {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(datefield);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
         beneficiary.setDatefield(date);
         beneficiary.setStatus(statusService.findByName(statusName));
 
@@ -167,5 +172,4 @@ public class BeneficiaryController {
         //show beneficiary
         return "redirect:/beneficiaries/" + beneficiaryId;
     }
-
 }

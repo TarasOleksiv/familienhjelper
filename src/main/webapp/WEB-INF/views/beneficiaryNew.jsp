@@ -12,7 +12,7 @@
 
 <html>
 <head>
-    <title>New User</title>
+    <title>New Beneficiary</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -28,8 +28,7 @@
         <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
 
-
-                    <form id="usrform" class="form-edit" action="<c:url value="/beneficiaries"/>" method="POST">
+                    <form id="benNew" class="form-edit" action="<c:url value="/beneficiaries"/>" method="POST">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-input">
                             <CAPTION>Create new beneficiary</CAPTION>
@@ -44,16 +43,14 @@
                                 <td>Family</td>
                                 <!--td><input type="text" name="family" value="${beneficiary.family}"></td-->
                                 <td>
-                                    <textarea rows="4" cols="25" name="family" form="usrform" maxlength="480">
-                                    ${beneficiary.family}</textarea>
+                                    <textarea rows="4" cols="25" name="family" form="benNew" maxlength="480">${beneficiary.family}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
                                 <!--td><input type="text" name="description" value="${beneficiary.description}"></td-->
                                 <td>
-                                    <textarea rows="6" cols="25" name="description" form="usrform" maxlength="2000">
-                                            ${beneficiary.description}</textarea>
+                                    <textarea rows="6" cols="25" name="description" form="benNew" maxlength="2000">${beneficiary.description}</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +77,6 @@
                             </tr>
                         </table>
                     </form>
-
 
             </c:if>
         </div>

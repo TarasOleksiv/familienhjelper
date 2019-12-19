@@ -49,11 +49,11 @@
                             </tr>
                             <tr>
                                 <td>Email</td>
-                                <td><input type="text" name="email" value="${member.email}"></td>
+                                <td><input type="email" name="email" value="${member.email}"></td>
                             </tr>
                             <tr>
                                 <td>Mobile</td>
-                                <td><input type="text" name="mobile" value="${member.mobile}"></td>
+                                <td><input type="tel" pattern="^\+[0-9 ]+$" placeholder="+99 999 999 9999" name="mobile" value="${member.mobile}"></td>
                             </tr>
                             <tr>
                                 <td>City</td>

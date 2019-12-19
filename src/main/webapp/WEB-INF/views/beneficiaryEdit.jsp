@@ -29,7 +29,7 @@
         <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
 
-                    <form id="usrform" class="form-edit" action="<c:url value="/beneficiaries/${beneficiary.id}"/>" method="POST">
+                    <form id="benEdit" class="form-edit" action="<c:url value="/beneficiaries/${beneficiary.id}"/>" method="POST">
                         <input type="hidden" name="_method" value="put"/>
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <input type="hidden" name="beneficiaryId" value="${beneficiary.id}"/>
@@ -48,15 +48,13 @@
                             <tr>
                                 <td>Family</td>
                                 <td>
-                                    <textarea rows="4" cols="25" name="family" form="usrform" maxlength="480">
-                                            ${beneficiary.family}</textarea>
+                                    <textarea rows="4" cols="25" name="family" form="benEdit" maxlength="480">${beneficiary.family}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
                                 <td>
-                                    <textarea rows="6" cols="25" name="description" form="usrform" maxlength="2000">
-                                            ${beneficiary.description}</textarea>
+                                    <textarea rows="6" cols="25" name="description" form="benEdit" maxlength="2000">${beneficiary.description}</textarea>
                                 </td>
                             </tr>
                             <tr>
