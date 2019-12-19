@@ -25,7 +25,7 @@ CREATE TABLE beneficiaries (
   family VARCHAR(480) NULL,
   income DECIMAL(11,2) NULL,
   description VARCHAR(2000) NULL,
-  datafield DATE,
+  datefield DATE,
   status_id UUID NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT FK_STATUS_BENEFICIARY FOREIGN KEY (status_id) REFERENCES statuses (id) ON DELETE NO ACTION ON UPDATE NO ACTION

@@ -3,6 +3,7 @@ package ua.petros.model;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -22,6 +23,9 @@ public class Status {
     @Column(name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    private Set<Beneficiary> beneficiaries;
+
     public UUID getId() {
         return id;
     }
@@ -37,4 +41,13 @@ public class Status {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Beneficiary> getBeneficiaries() {
+        return beneficiaries;
+    }
+
+    public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
+        this.beneficiaries = beneficiaries;
+    }
+
 }

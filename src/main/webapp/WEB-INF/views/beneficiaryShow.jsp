@@ -6,13 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <html>
 <head>
-    <title>Member Details</title>
+    <title>Beneficiary Details</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -28,51 +29,48 @@
 
         <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
-                <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN') ||
-                            pageContext.request.isUserInRole('ROLE_FU')}">
 
-                    <form class="form-edit" action="<c:url value="/members/${member.id}"/>" method="POST">
+                    <form class="form-edit" action="<c:url value="/beneficiaries/${beneficiary.id}"/>" method="POST">
                         <input type="hidden" name="_method" value="delete"/>
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                        <input type="hidden" name="memberId" value="${member.id}"/>
+                        <input type="hidden" name="beneficiaryId" value="${beneficiary.id}"/>
 
                         <table class="table-show">
-                            <CAPTION>Member details:
-                                <p><strong>${member.name}</strong></p>
+                            <CAPTION>Beneficiary details:
+                                <p><strong>${beneficiary.name}</strong></p>
                             </CAPTION>
                             <tr>
                                 <td>Name</td>
-                                <td colspan="2">${member.name}</td>
+                                <td colspan="2">${beneficiary.name}</td>
                             </tr>
                             <tr>
-                                <td>Email</td>
-                                <td colspan="2">${member.email}</td>
+                                <td>Family</td>
+                                <td colspan="2">${beneficiary.family}</td>
                             </tr>
                             <tr>
-                                <td>Mobile</td>
-                                <td colspan="2">${member.mobile}</td>
+                                <td>Description</td>
+                                <td colspan="2">${beneficiary.description}</td>
                             </tr>
                             <tr>
-                                <td>City</td>
-                                <td colspan="2">${member.city}</td>
+                                <td>Income</td>
+                                <td colspan="2">${beneficiary.income}</td>
                             </tr>
                             <tr>
-                                <td>Account</td>
-                                <td colspan="2">${member.account}</td>
+                                <td>Date</td>
+                                <td colspan="2"><fmt:formatDate value="${beneficiary.datefield}" pattern="dd.MM.yyyy" /></td>
                             </tr>
                             <tr>
-                                <td>Bank</td>
-                                <td colspan="2">${member.bank}</td>
+                                <td>Status</td>
+                                <td colspan="2">${beneficiary.status.name}</td>
                             </tr>
                             <tr>
-                                <td><a class="btn btn-cancel btn-sm btn-block" href="/members">Cancel</a></td>
-                                <td><a class="btn btn-warning btn-sm btn-block" href="/members/${member.id}/edit">Edit</a></td>
+                                <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>
+                                <td><a class="btn btn-warning btn-sm btn-block" href="/beneficiaries/${beneficiary.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
                             </tr>
                         </table>
                     </form>
 
-                </c:if>
             </c:if>
         </div>
     </div>

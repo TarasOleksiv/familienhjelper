@@ -23,9 +23,38 @@
       <div class="col-sm-10">
           <header>
               <div class="container">
-                  <h4>Under Construction</h4>
+                  <h4>Beneficiaries</h4>
+                  <p>
+                      <a class="btn btn-primary btn-sm" href="/beneficiaries/new">Add New Beneficiary</a>
+                  </p>
               </div>
           </header>
+          <form action="<c:url value="/beneficiaries"/>" method="POST">
+              <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+
+              <table id="beneficiaryTable" class="table-grid">
+                  <c:if test="${list.size()>0}">
+                      <tr>
+                          <th onclick="sortTable(0,'beneficiaryTable')"></th>
+                          <th onclick="sortTable(1,'beneficiaryTable')">Name</th>
+                          <th onclick="sortTable(2,'beneficiaryTable')">Income</th>
+                          <th onclick="sortTable(3,'beneficiaryTable')">Status</th>
+                      </tr>
+                  </c:if>
+                  <c:forEach items="${list}" var="list">
+                      <tr>
+                          <td>
+                              <a href="/beneficiaries/${list.id}">
+                                  <span><i class="far fa-hand-pointer"></i></span>
+                              </a>
+                          </td>
+                          <td>${list.name}</td>
+                          <td>${list.income}</td>
+                          <td>${list.status.name}</td>
+                      </tr>
+                  </c:forEach>
+              </table>
+          </form>
       </div>
     </div>
 </div>
