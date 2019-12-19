@@ -51,7 +51,8 @@
                         <tr>
                             <td>
                                 <a href="/users/${list.id}">
-                                    <span><i class="far fa-hand-pointer"></i></span>
+                                    <img src="${contextPath}/resources/img/icons8-edit-16.png">
+                                    <!--span><i class="far fa-hand-pointer"></i></span-->
                                 </a>
                             </td>
                             <td>${list.username}</td>
