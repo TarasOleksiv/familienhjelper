@@ -60,7 +60,7 @@
                                 <td colspan="2">${beneficiary.income}</td>
                             </tr>
                             <tr>
-                                <td>Date</td>
+                                <td>Start date</td>
                                 <td colspan="2"><fmt:formatDate value="${beneficiary.datefield}" pattern="dd.MM.yyyy" /></td>
                             </tr>
                             <tr>

@@ -28,7 +28,7 @@
 <div class="container">
 
     <div class="thumbnail">
-        <img src="${contextPath}/resources/img/logo.jpg">
+        <img class="img-responsive" src="${contextPath}/resources/img/logo.jpg">
     </div>
 
     <form method="POST" action="${contextPath}/login" class="form-signin">

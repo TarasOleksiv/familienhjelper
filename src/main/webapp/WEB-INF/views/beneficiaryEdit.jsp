@@ -62,7 +62,7 @@
                                 <td><input type="number" step="0.01" min="0" name="income" value="${beneficiary.income}"></td>
                             </tr>
                             <tr>
-                                <td>Date</td>
+                                <td>Start date</td>
                                 <td><input type="date" name="datefield" value="${beneficiary.datefield}"></td>
                             </tr>
                             <tr>
@@ -75,7 +75,9 @@
                                                     <option value="${status.name}" selected><c:out value="${status.name}"/></option>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <option value="${status.name}"><c:out value="${status.name}"/></option>
+                                                    <c:if test="${!pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                                        <option value="${status.name}"><c:out value="${status.name}"/></option>
+                                                    </c:if>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
