@@ -25,11 +25,14 @@ CREATE TABLE roles (
   PRIMARY KEY (id),
   UNIQUE (name))
   ;
+
 -- 02. Create table users;
 CREATE TABLE users (
   id UUID NOT NULL,
   username VARCHAR(48) NOT NULL,
   password VARCHAR(255) NOT NULL,
+  firstname VARCHAR(48),
+  lastname VARCHAR(48),
   email VARCHAR(96) NULL,
   mobile1 VARCHAR(25) NULL,
   mobile2 VARCHAR(25) NULL,
@@ -39,6 +42,7 @@ CREATE TABLE users (
   PRIMARY KEY (id),
   UNIQUE (username))
   ;
+
 -- 03. Table for mapping user and roles: user_roles
 CREATE TABLE user_roles (
   user_id UUID NOT NULL,
@@ -47,4 +51,38 @@ CREATE TABLE user_roles (
   FOREIGN KEY (role_id) REFERENCES roles (id),
   UNIQUE (user_id, role_id))
   ;
+
+-- 04. Create table members;
+CREATE TABLE members (
+  id UUID NOT NULL,
+  name VARCHAR(48) NOT NULL,
+  email VARCHAR(96) NULL,
+  mobile VARCHAR(25) NULL,
+  city VARCHAR(96) NULL,
+  account VARCHAR(255) NULL,
+  bank VARCHAR(96) NULL,
+  PRIMARY KEY (id))
+;
+
+-- 05. Create table statuses
+CREATE TABLE statuses (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+  )
+;
+
+-- 06. Create table beneficiaries
+CREATE TABLE beneficiaries (
+  id UUID NOT NULL,
+  name VARCHAR(48) NOT NULL,
+  family VARCHAR(480) NULL,
+  income DECIMAL(11,2) NULL,
+  description VARCHAR(2000) NULL,
+  datefield DATE,
+  status_id UUID NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_STATUS_BENEFICIARY FOREIGN KEY (status_id) REFERENCES statuses (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  )
+;
 
