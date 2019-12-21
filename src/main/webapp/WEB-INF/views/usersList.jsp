@@ -43,9 +43,10 @@
                     <tr>
                         <th onclick="sortTable(0,'userTable')"></th>
                         <th onclick="sortTable(1,'userTable')">Username</th>
-                        <th onclick="sortTable(2,'userTable')">Email</th>
-                        <th onclick="sortTable(3,'userTable')">Mobile1</th>
-                        <th onclick="sortTable(4,'userTable')">Role</th>
+                        <th onclick="sortTable(2,'userTable')">Full Name</th>
+                        <th onclick="sortTable(3,'userTable')">Email</th>
+                        <th onclick="sortTable(4,'userTable')">Mobile1</th>
+                        <th onclick="sortTable(5,'userTable')">Role</th>
                     </tr>
                     <c:forEach items="${list}" var="list">
                         <tr>
@@ -56,6 +57,7 @@
                                 </a>
                             </td>
                             <td>${list.username}</td>
+                            <td>${list.lastName} ${list.firstName}</td>
                             <td>${list.email}</td>
                             <td>${list.mobile1}</td>
                             <c:set var="userrole" value="${list.roles.stream().findFirst().get().name}"/>

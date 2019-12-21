@@ -45,6 +45,18 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>First Name</td>
+                                <td>
+                                    <input type="text" name="firstName" value="${user.firstName}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td>
+                                    <input type="text" name="lastName" value="${user.lastName}">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Email</td>
                                 <td>
                                     <input type="email" name="email" value="${user.email}">

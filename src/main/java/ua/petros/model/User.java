@@ -24,6 +24,12 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "firstname")
+    private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
+
     @Column(name = "email")
     private String email;
 
@@ -139,5 +145,21 @@ public class User {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

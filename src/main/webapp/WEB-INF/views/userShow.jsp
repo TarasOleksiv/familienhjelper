@@ -42,6 +42,14 @@
                                 <td colspan="2">${user.username}</td>
                             </tr>
                             <tr>
+                                <td>First Name</td>
+                                <td colspan="2">${user.firstName}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td colspan="2">${user.lastName}</td>
+                            </tr>
+                            <tr>
                                 <td>Email</td>
                                 <td colspan="2">${user.email}</td>
                             </tr>

@@ -110,6 +110,8 @@ public class UserController {
     @RequestMapping(value = "/users", method = {RequestMethod.POST})
     public String addUser(Model model,
                           @ModelAttribute("username") String username,
+                          @ModelAttribute("firstName") String firstName,
+                          @ModelAttribute("lastName") String lastName,
                           @ModelAttribute("email") String email,
                           @ModelAttribute("mobile1") String mobile1,
                           @ModelAttribute("mobile2") String mobile2,
@@ -124,6 +126,8 @@ public class UserController {
         UUID uuid = UUID.randomUUID();
         user.setId(uuid);
         user.setUsername(username);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setPassword(password);
         user.setEmail(email);
         user.setAccount(account);
@@ -165,6 +169,8 @@ public class UserController {
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
     public String editUser(Model model,
                           @ModelAttribute("username") String username,
+                          @ModelAttribute("firstName") String firstName,
+                          @ModelAttribute("lastName") String lastName,
                           @ModelAttribute("email") String email,
                           @ModelAttribute("mobile1") String mobile1,
                           @ModelAttribute("mobile2") String mobile2,
@@ -179,6 +185,8 @@ public class UserController {
         User user = new User();
         user.setId(UUID.fromString(userId));
         user.setUsername(username);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setEmail(email);
         user.setAccount(account);
         user.setMobile1(mobile1);
