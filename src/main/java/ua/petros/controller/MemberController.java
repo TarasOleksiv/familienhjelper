@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.Member;
+import ua.petros.service.DonorTypeService;
 import ua.petros.service.MemberService;
 import ua.petros.validator.MemberValidator;
 
@@ -23,6 +24,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private DonorTypeService donorTypeService;
 
     @Autowired
     private MemberValidator memberValidator;
@@ -44,6 +48,7 @@ public class MemberController {
     // Show form to create new member
     @RequestMapping(value = "/members/new", method = {RequestMethod.GET})
     public String showNewMemberForm(Model model){
+        model.addAttribute("listDonorTypes",donorTypeService.getAll());
         return "memberNew";
     }
 
@@ -55,7 +60,8 @@ public class MemberController {
                           @ModelAttribute("mobile") String mobile,
                           @ModelAttribute("bank") String bank,
                           @ModelAttribute("city") String city,
-                          @ModelAttribute("account") String account
+                          @ModelAttribute("account") String account,
+                          @ModelAttribute("donorTypeId") String donorTypeId
                           ){
 
         // prepare member info
@@ -68,6 +74,7 @@ public class MemberController {
         member.setMobile(mobile);
         member.setCity(city);
         member.setBank(bank);
+        member.setDonorType(donorTypeService.getById(UUID.fromString(donorTypeId)));
 
         // validate member
         Map<String, String> messages = memberValidator.validate(member);
@@ -79,6 +86,7 @@ public class MemberController {
             // back to the new member form
             model.addAttribute("messages", messages);
             model.addAttribute("member",member);
+            model.addAttribute("listDonorTypes",donorTypeService.getAll());
             return "memberNew";
         }
 
@@ -101,6 +109,7 @@ public class MemberController {
     @RequestMapping(value = "/members/{memberId}/edit", method = {RequestMethod.GET})
     public String showEditMemberForm(Model model, @PathVariable("memberId") String memberId){
         model.addAttribute("member",memberService.getById(UUID.fromString(memberId)));
+        model.addAttribute("listDonorTypes",donorTypeService.getAll());
         return "memberEdit";
     }
 
@@ -113,7 +122,9 @@ public class MemberController {
                            @ModelAttribute("bank") String bank,
                            @ModelAttribute("account") String account,
                            @ModelAttribute("city") String city,
-                           @ModelAttribute("memberId") String memberId){
+                           @ModelAttribute("memberId") String memberId,
+                           @ModelAttribute("donorTypeId") String donorTypeId
+                           ){
 
         // prepare member info
         Member member = new Member();
@@ -124,6 +135,7 @@ public class MemberController {
         member.setMobile(mobile);
         member.setCity(city);
         member.setBank(bank);
+        member.setDonorType(donorTypeService.getById(UUID.fromString(donorTypeId)));
 
         // validate member
         Map<String, String> messages = memberValidator.validate(member);
@@ -136,6 +148,7 @@ public class MemberController {
             if (!memberId.trim().isEmpty()) {
                 model.addAttribute("messages", messages);
                 model.addAttribute("member",member);
+                model.addAttribute("listDonorTypes",donorTypeService.getAll());
                 return "memberEdit";
             }
         }

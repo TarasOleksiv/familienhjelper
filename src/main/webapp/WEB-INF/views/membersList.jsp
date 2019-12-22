@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Members</title>
+	<title>Donors</title>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
@@ -23,9 +23,9 @@
       <div class="col-sm-10">
           <header>
               <div class="container">
-                  <h4>Members</h4>
+                  <h4>Donors</h4>
                   <p>
-                      <a class="btn btn-primary btn-sm" href="/members/new">Add New Member</a>
+                      <a class="btn btn-primary btn-sm" href="/members/new">Add New Donor</a>
                   </p>
               </div>
           </header>
@@ -39,6 +39,7 @@
                           <th onclick="sortTable(1,'memberTable')">Name</th>
                           <th onclick="sortTable(2,'memberTable')">Email</th>
                           <th onclick="sortTable(3,'memberTable')">Mobile</th>
+                          <th onclick="sortTable(4,'memberTable')">Donor type</th>
                       </tr>
                   </c:if>
                   <c:forEach items="${list}" var="list">
@@ -52,6 +53,7 @@
                           <td>${list.name}</td>
                           <td>${list.email}</td>
                           <td>${list.mobile}</td>
+                          <td>${list.donorType.name}</td>
                       </tr>
                   </c:forEach>
               </table>

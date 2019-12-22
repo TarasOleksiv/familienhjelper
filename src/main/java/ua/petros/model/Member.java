@@ -34,6 +34,10 @@ public class Member {
     @Column(name = "bank")
     private String bank;
 
+    @ManyToOne
+    @JoinColumn(name = "donortype_id", referencedColumnName = "id")
+    private DonorType donorType;
+
     public UUID getId() {
         return id;
     }
@@ -88,5 +92,13 @@ public class Member {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public DonorType getDonorType() {
+        return donorType;
+    }
+
+    public void setDonorType(DonorType donorType) {
+        this.donorType = donorType;
     }
 }

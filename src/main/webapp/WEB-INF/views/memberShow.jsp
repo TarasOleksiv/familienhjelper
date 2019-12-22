@@ -12,7 +12,7 @@
 
 <html>
 <head>
-    <title>Member Details</title>
+    <title>Donor Details</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -37,7 +37,7 @@
                         <input type="hidden" name="memberId" value="${member.id}"/>
 
                         <table class="table-show">
-                            <CAPTION>Member details:
+                            <CAPTION>Donor details:
                                 <p><strong>${member.name}</strong></p>
                             </CAPTION>
                             <tr>
@@ -63,6 +63,10 @@
                             <tr>
                                 <td>Bank</td>
                                 <td colspan="2">${member.bank}</td>
+                            </tr>
+                            <tr>
+                                <td>Donor type</td>
+                                <td colspan="2">${member.donorType.name}</td>
                             </tr>
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/members">Cancel</a></td>

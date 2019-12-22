@@ -38,7 +38,7 @@
                     <a href="${pageContext.request.contextPath}/users">Users</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/members">Members</a>
+                    <a href="${pageContext.request.contextPath}/members">Donors</a>
                 </li>
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>
@@ -55,7 +55,7 @@
             <p class="lead">FU</p>
             <div class="list-group">
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/members">Members</a>
+                    <a href="${pageContext.request.contextPath}/members">Donors</a>
                 </li>
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>

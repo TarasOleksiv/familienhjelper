@@ -12,7 +12,7 @@
 
 <html>
 <head>
-    <title>Edit Member</title>
+    <title>Edit Donor</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -37,7 +37,7 @@
                         <input type="hidden" name="memberId" value="${member.id}"/>
 
                         <table class="table-input">
-                            <CAPTION>Member details:
+                            <CAPTION>Donor details:
                                 <p><strong>${member.name}</strong></p>
                             </CAPTION>
                             <tr>
@@ -67,6 +67,24 @@
                                 <td>Bank</td>
                                 <td><input type="text" name="bank" value="${member.bank}"></td>
                             </tr>
+                            <tr>
+                                <td>Donor Type</td>
+                                <td>
+                                    <select name="donorTypeId">
+                                        <c:forEach var="donorType" items="${listDonorTypes}">
+                                            <c:choose>
+                                                <c:when test="${member.donorType.id == donorType.id}">
+                                                    <option value="${donorType.id}" selected><c:out value="${donorType.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${donorType.id}"><c:out value="${donorType.name}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/members/${member.id}">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>

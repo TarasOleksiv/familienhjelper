@@ -52,7 +52,39 @@ CREATE TABLE user_roles (
   UNIQUE (user_id, role_id))
   ;
 
--- 04. Create table members;
+-- 04. Create table statuses
+CREATE TABLE statuses (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+)
+;
+
+-- 05. Create table income_types
+CREATE TABLE income_types (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+)
+;
+
+-- 06. Create table currency
+CREATE TABLE currency (
+  id UUID NOT NULL,
+  name VARCHAR(3),
+  PRIMARY KEY (id)
+)
+;
+
+-- 07. Create table donor_types
+CREATE TABLE donor_types (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+)
+;
+
+-- 08. Create table members;
 CREATE TABLE members (
   id UUID NOT NULL,
   name VARCHAR(48) NOT NULL,
@@ -61,18 +93,13 @@ CREATE TABLE members (
   city VARCHAR(96) NULL,
   account VARCHAR(255) NULL,
   bank VARCHAR(96) NULL,
-  PRIMARY KEY (id))
+  donortype_id UUID,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_DONORTYPE_ID FOREIGN KEY (donortype_id) REFERENCES donor_types (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
 ;
 
--- 05. Create table statuses
-CREATE TABLE statuses (
-  id UUID NOT NULL,
-  name VARCHAR(48),
-  PRIMARY KEY (id)
-  )
-;
-
--- 06. Create table beneficiaries
+-- 09. Create table beneficiaries
 CREATE TABLE beneficiaries (
   id UUID NOT NULL,
   name VARCHAR(48) NOT NULL,
@@ -90,18 +117,4 @@ CREATE TABLE beneficiaries (
   )
 ;
 
--- 07. Create table income_types
-CREATE TABLE income_types (
-  id UUID NOT NULL,
-  name VARCHAR(48),
-  PRIMARY KEY (id)
-)
-;
 
--- 08. Create table currency
-CREATE TABLE currency (
-  id UUID NOT NULL,
-  name VARCHAR(3),
-  PRIMARY KEY (id)
-)
-;

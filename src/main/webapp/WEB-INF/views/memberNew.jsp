@@ -12,7 +12,7 @@
 
 <html>
 <head>
-    <title>New Member</title>
+    <title>New Donor</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -33,7 +33,7 @@
                     <form class="form-edit" action="<c:url value="/members"/>" method="POST">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-input">
-                            <CAPTION>Create new member</CAPTION>
+                            <CAPTION>Create new donor</CAPTION>
                             <tr>
                                 <td>Name</td>
                                 <td>
@@ -60,6 +60,16 @@
                             <tr>
                                 <td>Bank</td>
                                 <td><input type="text" name="bank" value="${member.bank}"></td>
+                            </tr>
+                            <tr>
+                                <td>Donor Type</td>
+                                <td>
+                                    <select name="donorTypeId">
+                                        <c:forEach var="donorType" items="${listDonorTypes}">
+                                            <option value="${donorType.id}"><c:out value="${donorType.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
                             </tr>
 
                             <tr>
