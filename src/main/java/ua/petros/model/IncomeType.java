@@ -11,9 +11,9 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "statuses")
+@Table(name = "income_types")
 @Proxy(lazy = false)
-public class Status {
+public class IncomeType {
     
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -23,8 +23,8 @@ public class Status {
     @Column(name = "name")
     private String name;
 
-    //@OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
-    //private Set<Beneficiary> beneficiaries;
+    @OneToMany(mappedBy = "incomeType", fetch = FetchType.EAGER)
+    private Set<Beneficiary> beneficiaries;
 
     public UUID getId() {
         return id;
@@ -42,4 +42,11 @@ public class Status {
         this.name = name;
     }
 
+    public Set<Beneficiary> getBeneficiaries() {
+        return beneficiaries;
+    }
+
+    public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
+        this.beneficiaries = beneficiaries;
+    }
 }

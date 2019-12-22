@@ -56,16 +56,24 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Born</td>
+                                <td colspan="2"><fmt:formatDate value="${beneficiary.datefield}" pattern="dd.MM.yyyy" /></td>
+                            </tr>
+                            <tr>
                                 <td>Income</td>
                                 <td colspan="2">${beneficiary.income}</td>
                             </tr>
                             <tr>
-                                <td>Start date</td>
-                                <td colspan="2"><fmt:formatDate value="${beneficiary.datefield}" pattern="dd.MM.yyyy" /></td>
+                                <td>Income Type</td>
+                                <td colspan="2">${beneficiary.incomeType.name}</td>
                             </tr>
                             <tr>
-                                <td>Status</td>
-                                <td colspan="2">${beneficiary.status.name}</td>
+                                <td>Currency</td>
+                                <td colspan="2">${beneficiary.currency.name}</td>
+                            </tr>
+                            <tr>
+                                <td>User</td>
+                                <td colspan="2">${beneficiary.user.username} ${beneficiary.user.lastName} ${beneficiary.user.firstName}</td>
                             </tr>
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>

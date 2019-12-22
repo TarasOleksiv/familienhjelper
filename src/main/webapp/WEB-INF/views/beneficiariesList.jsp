@@ -38,7 +38,7 @@
                           <th onclick="sortTable(0,'beneficiaryTable')"></th>
                           <th onclick="sortTable(1,'beneficiaryTable')">Name</th>
                           <th onclick="sortTable(2,'beneficiaryTable')">Income</th>
-                          <th onclick="sortTable(3,'beneficiaryTable')">Status</th>
+                          <th onclick="sortTable(3,'beneficiaryTable')">User</th>
                       </tr>
                   </c:if>
                   <c:forEach items="${list}" var="list">
@@ -51,7 +51,7 @@
                           </td>
                           <td>${list.name}</td>
                           <td>${list.income}</td>
-                          <td>${list.status.name}</td>
+                          <td>${list.user.username} ${list.user.lastName} ${list.user.firstName}</td>
                       </tr>
                   </c:forEach>
               </table>

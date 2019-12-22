@@ -7,15 +7,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ua.petros.model.Beneficiary;
+import ua.petros.model.*;
 import ua.petros.service.BeneficiaryService;
-import ua.petros.service.StatusService;
+import ua.petros.service.CurrencyService;
+import ua.petros.service.IncomeTypeService;
+import ua.petros.service.UserService;
 import ua.petros.validator.BeneficiaryValidator;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by Taras on 18.12.2019.
@@ -28,7 +34,13 @@ public class BeneficiaryController {
     private BeneficiaryService beneficiaryService;
 
     @Autowired
-    private StatusService statusService;
+    private UserService userService;
+
+    @Autowired
+    private IncomeTypeService incomeTypeService;
+
+    @Autowired
+    private CurrencyService currencyService;
 
     @Autowired
     private BeneficiaryValidator beneficiaryValidator;
@@ -50,7 +62,17 @@ public class BeneficiaryController {
     // Show form to create new beneficiary
     @RequestMapping(value = "/beneficiaries/new", method = {RequestMethod.GET})
     public String showNewBeneficiaryForm(Model model){
-        model.addAttribute("listStatuses",statusService.getAll());
+        List<User>listUsers = userService.getAll();
+        List<User>resultUsers = listUsers.stream()
+                .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
+                .collect(Collectors.toList());
+        List<Currency>listCurrency = currencyService.getAll();
+        List<Currency>resultCurrency = listCurrency.stream()
+                .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
+                .collect(Collectors.toList());
+        model.addAttribute("listUsers",resultUsers);
+        model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
+        model.addAttribute("listCurrency",resultCurrency);
         return "beneficiaryNew";
     }
 
@@ -62,7 +84,9 @@ public class BeneficiaryController {
                           @ModelAttribute("description") String description,
                           @ModelAttribute("income") String income,
                           @ModelAttribute("datefield") String datefield,
-                          @ModelAttribute("statusName") String statusName
+                          @ModelAttribute("incomeTypeId") String incomeTypeId,
+                          @ModelAttribute("currencyId") String currencyId,
+                          @ModelAttribute("userId") String userId
                           ){
 
         // prepare beneficiary info
@@ -84,7 +108,11 @@ public class BeneficiaryController {
             }
         }
         beneficiary.setDatefield(date);
-        beneficiary.setStatus(statusService.findByName(statusName));
+        beneficiary.setIncomeType(incomeTypeService.getById(UUID.fromString(incomeTypeId)));
+        beneficiary.setCurrency(currencyService.getById(UUID.fromString(currencyId)));
+        if (userId != null && !userId.trim().isEmpty()) {
+            beneficiary.setUser(userService.getById(UUID.fromString(userId)));
+        }
 
         // validate beneficiary
         Map<String, String> messages = beneficiaryValidator.validate(beneficiary);
@@ -94,9 +122,19 @@ public class BeneficiaryController {
             beneficiaryService.save(beneficiary);
         } else {
             // back to the new beneficiary form
+            List<User>listUsers = userService.getAll();
+            List<User>resultUsers = listUsers.stream()
+                    .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
+                    .collect(Collectors.toList());
+            List<Currency>listCurrency = currencyService.getAll();
+            List<Currency>resultCurrency = listCurrency.stream()
+                    .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
+                    .collect(Collectors.toList());
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
-            model.addAttribute("listStatuses",statusService.getAll());
+            model.addAttribute("listUsers",resultUsers);
+            model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
+            model.addAttribute("listCurrency",resultCurrency);
             return "beneficiaryNew";
         }
 
@@ -119,7 +157,17 @@ public class BeneficiaryController {
     @RequestMapping(value = "/beneficiaries/{beneficiaryId}/edit", method = {RequestMethod.GET})
     public String showEditBeneficiaryForm(Model model, @PathVariable("beneficiaryId") String beneficiaryId){
         model.addAttribute("beneficiary",beneficiaryService.getById(UUID.fromString(beneficiaryId)));
-        model.addAttribute("listStatuses",statusService.getAll());
+        List<User>listUsers = userService.getAll();
+        List<User>resultUsers = listUsers.stream()
+                .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
+                .collect(Collectors.toList());
+        List<Currency>listCurrency = currencyService.getAll();
+        List<Currency>resultCurrency = listCurrency.stream()
+                .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
+                .collect(Collectors.toList());
+        model.addAttribute("listUsers",resultUsers);
+        model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
+        model.addAttribute("listCurrency",resultCurrency);
         return "beneficiaryEdit";
     }
 
@@ -131,7 +179,9 @@ public class BeneficiaryController {
                                   @ModelAttribute("description") String description,
                                   @ModelAttribute("income") String income,
                                   @ModelAttribute("datefield") String datefield,
-                                  @ModelAttribute("statusName") String statusName,
+                                  @ModelAttribute("incomeTypeId") String incomeTypeId,
+                                  @ModelAttribute("currencyId") String currencyId,
+                                  @ModelAttribute("userId") String userId,
                                   @ModelAttribute("beneficiaryId") String beneficiaryId){
 
         // prepare beneficiary info
@@ -153,7 +203,11 @@ public class BeneficiaryController {
         }
 
         beneficiary.setDatefield(date);
-        beneficiary.setStatus(statusService.findByName(statusName));
+        beneficiary.setIncomeType(incomeTypeService.getById(UUID.fromString(incomeTypeId)));
+        beneficiary.setCurrency(currencyService.getById(UUID.fromString(currencyId)));
+        if (userId != null && !userId.trim().isEmpty()) {
+            beneficiary.setUser(userService.getById(UUID.fromString(userId)));
+        }
 
         // validate beneficiary
         Map<String, String> messages = beneficiaryValidator.validate(beneficiary);
@@ -163,9 +217,19 @@ public class BeneficiaryController {
             beneficiaryService.save(beneficiary);
         } else {
             // back to the new beneficiary form
+            List<User>listUsers = userService.getAll();
+            List<User>resultUsers = listUsers.stream()
+                    .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
+                    .collect(Collectors.toList());
+            List<Currency>listCurrency = currencyService.getAll();
+            List<Currency>resultCurrency = listCurrency.stream()
+                    .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
+                    .collect(Collectors.toList());
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
-            model.addAttribute("listStatuses",statusService.getAll());
+            model.addAttribute("listUsers",resultUsers);
+            model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
+            model.addAttribute("listCurrency",resultCurrency);
             return "beneficiaryEdit";
         }
 

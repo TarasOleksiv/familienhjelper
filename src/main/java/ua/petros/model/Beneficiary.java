@@ -38,8 +38,16 @@ public class Beneficiary {
     private Date datefield;
 
     @ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status status;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "incometype_id", referencedColumnName = "id")
+    private IncomeType incomeType;
+
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    private Currency currency;
 
     public UUID getId() {
         return id;
@@ -89,11 +97,27 @@ public class Beneficiary {
         this.datefield = datefield;
     }
 
-    public Status getStatus() {
-        return status;
+    public User getUser() {
+        return user;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public IncomeType getIncomeType() {
+        return incomeType;
+    }
+
+    public void setIncomeType(IncomeType incomeType) {
+        this.incomeType = incomeType;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

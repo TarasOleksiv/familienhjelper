@@ -54,45 +54,32 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Born</td>
-                                <td><input type="date" name="datefield" value="${beneficiary.datefield}"></td>
-                            </tr>
-                            <tr>
                                 <td>Income</td>
                                 <td><input type="number" step="0.01" min="0" name="income" value="${beneficiary.income}"></td>
                             </tr>
                             <tr>
-                                <td>Income Type</td>
-                                <td>
-                                    <select name="incomeTypeId">
-                                        <c:forEach var="incomeType" items="${listIncomeTypes}">
-                                            <option value="${incomeType.id}"><c:out value="${incomeType.name}"/></option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
+                                <td>Start date</td>
+                                <td><input type="date" name="datefield" value="${beneficiary.datefield}"></td>
                             </tr>
                             <tr>
-                                <td>Currency</td>
+                                <td>Status</td>
                                 <td>
-                                    <select name="currencyId">
-                                        <c:forEach var="currency" items="${listCurrency}">
-                                            <option value="${currency.id}"><c:out value="${currency.name}"/></option>
-                                        </c:forEach>
-                                    </select>
+                                <select name="statusName">
+                                    <c:forEach var="status" items="${listStatuses}">
+                                        <c:choose>
+                                            <c:when test="${!pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                                <option value="${status.name}"><c:out value="${status.name}"/></option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:if test="${status.name == 'idea'}">
+                                                    <option value="${status.name}"><c:out value="${status.name}"/></option>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>User</td>
-                                <td>
-                                    <select name="userId">
-                                        <option></option>
-                                        <c:forEach var="user" items="${listUsers}">
-                                            <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
-                            </tr>
-
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Submit" name="Add"/></td>

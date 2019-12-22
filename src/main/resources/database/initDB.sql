@@ -80,9 +80,28 @@ CREATE TABLE beneficiaries (
   income DECIMAL(11,2) NULL,
   description VARCHAR(2000) NULL,
   datefield DATE,
-  status_id UUID NOT NULL,
+  user_id UUID,
+  incometype_id UUID,
+  currency_id UUID,
   PRIMARY KEY (id),
-  CONSTRAINT FK_STATUS_BENEFICIARY FOREIGN KEY (status_id) REFERENCES statuses (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT FK_USER_ID FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_INCOMETYPE_ID FOREIGN KEY (incometype_id) REFERENCES income_types (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_CURRENCY_ID FOREIGN KEY (currency_id) REFERENCES currency (id) ON DELETE NO ACTION ON UPDATE NO ACTION
   )
 ;
 
+-- 07. Create table income_types
+CREATE TABLE income_types (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+)
+;
+
+-- 08. Create table currency
+CREATE TABLE currency (
+  id UUID NOT NULL,
+  name VARCHAR(3),
+  PRIMARY KEY (id)
+)
+;

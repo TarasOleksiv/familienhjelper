@@ -1,6 +1,7 @@
--- 02. Add column to the table beneficiaries
-ALTER TABLE beneficiaries
-    ADD COLUMN user_id UUID;
+-- 02. Delete foreign key from beneficiaries
+ALTER TABLE beneficiaries DROP CONSTRAINT fk_status_beneficiary;
 
-ALTER TABLE users
-    ADD COLUMN lastname VARCHAR(48);
+-- 03. Delete column status_id from beneficiaries
+ALTER TABLE beneficiaries
+  DROP COLUMN status_id;
+
