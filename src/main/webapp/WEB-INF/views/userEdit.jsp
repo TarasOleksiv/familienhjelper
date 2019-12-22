@@ -31,7 +31,7 @@
                 <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
 
                     <form class="form-edit" action="<c:url value="/users/${user.id}"/>" method="POST">
-                        <input type="hidden" name="_method" value="put"/>
+                        <!--input type="hidden" name="_method" value="put"/-->
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <input type="hidden" name="userId" value="${user.id}"/>
 

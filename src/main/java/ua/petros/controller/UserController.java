@@ -106,8 +106,8 @@ public class UserController {
         return "userNew";
     }
 
-    // Create user
-    @RequestMapping(value = "/users", method = {RequestMethod.POST})
+    // Create, edit user
+    @RequestMapping(value = {"/users","/users/{userId}"}, method = {RequestMethod.POST})
     public String addUser(Model model,
                           @ModelAttribute("username") String username,
                           @ModelAttribute("firstName") String firstName,
@@ -119,12 +119,17 @@ public class UserController {
                           @ModelAttribute("address") String address,
                           @ModelAttribute("account") String account,
                           @ModelAttribute("roleName") String roleName,
-                          @ModelAttribute("password") String password){
+                          @ModelAttribute("password") String password,
+                          @ModelAttribute("userId") String userId){
 
         // prepare user info
         User user = new User();
-        UUID uuid = UUID.randomUUID();
-        user.setId(uuid);
+        if (userId == null || userId.isEmpty()) {
+            UUID uuid = UUID.randomUUID();
+            user.setId(uuid);
+        } else {
+            user.setId(UUID.fromString(userId));
+        }
         user.setUsername(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -150,11 +155,15 @@ public class UserController {
             model.addAttribute("messages", messages);
             model.addAttribute("user",user);
             model.addAttribute("listRoles",roleService.getAll());
-            return "userNew";
+            if (userId == null || userId.isEmpty()){
+                return "userNew";
+            } else {
+                return "userEdit";
+            }
         }
 
         //show user
-        return "redirect:/users/" + uuid;
+        return "redirect:/users/" + user.getId();
     }
 
     // Show form to edit user
@@ -163,59 +172,6 @@ public class UserController {
         model.addAttribute("user",userService.getById(UUID.fromString(userId)));
         model.addAttribute("listRoles",roleService.getAll());
         return "userEdit";
-    }
-
-    // Edit user
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
-    public String editUser(Model model,
-                          @ModelAttribute("username") String username,
-                          @ModelAttribute("firstName") String firstName,
-                          @ModelAttribute("lastName") String lastName,
-                          @ModelAttribute("email") String email,
-                          @ModelAttribute("mobile1") String mobile1,
-                          @ModelAttribute("mobile2") String mobile2,
-                          @ModelAttribute("bank") String bank,
-                          @ModelAttribute("address") String address,
-                          @ModelAttribute("account") String account,
-                          @ModelAttribute("roleName") String roleName,
-                          @ModelAttribute("password") String password,
-                          @ModelAttribute("userId") String userId){
-
-        // prepare user info
-        User user = new User();
-        user.setId(UUID.fromString(userId));
-        user.setUsername(username);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setAccount(account);
-        user.setMobile1(mobile1);
-        user.setMobile2(mobile2);
-        user.setAddress(address);
-        user.setBank(bank);
-        user.setPassword(password);
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleService.findByName(roleName));
-        user.setRoles(roles);
-
-        // validate user
-        Map<String, String> messages = userSimpleValidator.validate(user);
-
-        // if no validation errors update user
-        if (messages.isEmpty()) {
-            userService.save(user);
-            // else redirect back to the edit page showing error messages
-        } else {
-            if (!userId.trim().isEmpty()) {
-                model.addAttribute("messages", messages);
-                model.addAttribute("user",user);
-                model.addAttribute("listRoles",roleService.getAll());
-                return "userEdit";
-            }
-        }
-
-        // show user
-        return "redirect:/users/" + userId;
     }
 
     // delete user
