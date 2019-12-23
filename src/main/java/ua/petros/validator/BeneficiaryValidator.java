@@ -1,18 +1,15 @@
 package ua.petros.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import ua.petros.model.Beneficiary;
+import ua.petros.model.User;
 import ua.petros.service.BeneficiaryService;
-import ua.petros.service.StatusService;
+import ua.petros.service.UserService;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Taras on 15.12.2019.
@@ -25,7 +22,23 @@ public class BeneficiaryValidator {
     private BeneficiaryService beneficiaryService;
 
     @Autowired
-    private StatusService statusService;
+    private UserService userService;
+
+    public List<Beneficiary> getUserBeneficiaryList(Authentication authentication){
+        String currentPrincipalName = authentication.getName();
+        User user = userService.findByUsername(currentPrincipalName);
+
+        List<Beneficiary>listBeneficiary = beneficiaryService.getAll();
+        if ("ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName())){
+            List<Beneficiary>listResultBeneficiary = listBeneficiary.stream()
+                    .filter(beneficiary -> (beneficiary.getUser() != null && beneficiary.getUser().getId().equals(user.getId())))
+                    .collect(Collectors.toList());
+            return listResultBeneficiary;
+        }
+
+        return listBeneficiary;
+
+    }
 
     public Map<String, String> validate(Beneficiary beneficiary){
 

@@ -1,6 +1,7 @@
 package ua.petros.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,10 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.*;
-import ua.petros.service.BeneficiaryService;
-import ua.petros.service.CurrencyService;
-import ua.petros.service.IncomeTypeService;
-import ua.petros.service.UserService;
+import ua.petros.service.*;
 import ua.petros.validator.BeneficiaryValidator;
 
 import java.math.BigDecimal;
@@ -47,8 +45,9 @@ public class BeneficiaryController {
 
     // Show all beneficiaries
     @RequestMapping(value = "/beneficiaries", method = {RequestMethod.GET})
-    public String showBeneficiaries(Model model){
-        model.addAttribute("list",beneficiaryService.getAll());
+    public String showBeneficiaries(Model model, Authentication authentication){
+        List<Beneficiary>listBeneficiary = beneficiaryValidator.getUserBeneficiaryList(authentication);
+        model.addAttribute("list",listBeneficiary);
         return "beneficiariesList";
     }
 
