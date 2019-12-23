@@ -42,14 +42,12 @@
                             </tr>
                             <tr>
                                 <td>Family</td>
-                                <!--td><input type="text" name="family" value="${beneficiary.family}"></td-->
                                 <td>
                                     <textarea rows="4" cols="25" name="family" form="benNew" maxlength="480">${beneficiary.family}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
-                                <!--td><input type="text" name="description" value="${beneficiary.description}"></td-->
                                 <td>
                                     <textarea rows="6" cols="25" name="description" form="benNew" maxlength="2000">${beneficiary.description}</textarea>
                                 </td>
@@ -86,10 +84,17 @@
                                 <td>Field Contact</td>
                                 <td>
                                     <select name="userId">
-                                        <option></option>
-                                        <c:forEach var="user" items="${listUsers}">
-                                            <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                                <option value="${userPrincipal.id}"><c:out value="${userPrincipal.username}: ${userPrincipal.lastName} ${userPrincipal.firstName}"/></option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option></option>
+                                                <c:forEach var="user" items="${listUsers}">
+                                                    <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </select>
                                 </td>
                             </tr>

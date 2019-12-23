@@ -104,17 +104,24 @@
                                 <td>Field Contact</td>
                                 <td>
                                     <select name="userId">
-                                        <option></option>
-                                        <c:forEach var="user" items="${listUsers}">
-                                            <c:choose>
-                                                <c:when test="${beneficiary.user.id == user.id}">
-                                                    <option value="${user.id}" selected><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                                <option value="${userPrincipal.id}"><c:out value="${userPrincipal.username}: ${userPrincipal.lastName} ${userPrincipal.firstName}"/></option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option></option>
+                                                <c:forEach var="user" items="${listUsers}">
+                                                    <c:choose>
+                                                        <c:when test="${beneficiary.user.id == user.id}">
+                                                            <option value="${user.id}" selected><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </select>
                                 </td>
                             </tr>

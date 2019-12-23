@@ -60,7 +60,7 @@ public class BeneficiaryController {
 
     // Show form to create new beneficiary
     @RequestMapping(value = "/beneficiaries/new", method = {RequestMethod.GET})
-    public String showNewBeneficiaryForm(Model model){
+    public String showNewBeneficiaryForm(Model model, Authentication authentication){
         List<User>listUsers = userService.getAll();
         List<User>resultUsers = listUsers.stream()
                 .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
@@ -69,6 +69,9 @@ public class BeneficiaryController {
         List<Currency>resultCurrency = listCurrency.stream()
                 .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
                 .collect(Collectors.toList());
+        String currentPrincipalName = authentication.getName();
+        User userPrincipal = userService.findByUsername(currentPrincipalName);
+        model.addAttribute("userPrincipal",userPrincipal);
         model.addAttribute("listUsers",resultUsers);
         model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
         model.addAttribute("listCurrency",resultCurrency);
@@ -77,7 +80,7 @@ public class BeneficiaryController {
 
     // Create beneficiary
     @RequestMapping(value = "/beneficiaries", method = {RequestMethod.POST})
-    public String addUser(Model model,
+    public String addUser(Model model, Authentication authentication,
                           @ModelAttribute("name") String name,
                           @ModelAttribute("family") String family,
                           @ModelAttribute("description") String description,
@@ -129,6 +132,9 @@ public class BeneficiaryController {
             List<Currency>resultCurrency = listCurrency.stream()
                     .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
                     .collect(Collectors.toList());
+            String currentPrincipalName = authentication.getName();
+            User userPrincipal = userService.findByUsername(currentPrincipalName);
+            model.addAttribute("userPrincipal",userPrincipal);
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
             model.addAttribute("listUsers",resultUsers);
@@ -154,7 +160,8 @@ public class BeneficiaryController {
 
     // Show form to edit beneficiary
     @RequestMapping(value = "/beneficiaries/{beneficiaryId}/edit", method = {RequestMethod.GET})
-    public String showEditBeneficiaryForm(Model model, @PathVariable("beneficiaryId") String beneficiaryId){
+    public String showEditBeneficiaryForm(Model model, Authentication authentication,
+                                          @PathVariable("beneficiaryId") String beneficiaryId){
         model.addAttribute("beneficiary",beneficiaryService.getById(UUID.fromString(beneficiaryId)));
         List<User>listUsers = userService.getAll();
         List<User>resultUsers = listUsers.stream()
@@ -164,6 +171,9 @@ public class BeneficiaryController {
         List<Currency>resultCurrency = listCurrency.stream()
                 .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
                 .collect(Collectors.toList());
+        String currentPrincipalName = authentication.getName();
+        User userPrincipal = userService.findByUsername(currentPrincipalName);
+        model.addAttribute("userPrincipal",userPrincipal);
         model.addAttribute("listUsers",resultUsers);
         model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
         model.addAttribute("listCurrency",resultCurrency);
@@ -172,7 +182,7 @@ public class BeneficiaryController {
 
     // Edit beneficiary
     @RequestMapping(value = "/beneficiaries/{beneficiaryId}", method = RequestMethod.PUT)
-    public String editBeneficiary(Model model,
+    public String editBeneficiary(Model model, Authentication authentication,
                                   @ModelAttribute("name") String name,
                                   @ModelAttribute("family") String family,
                                   @ModelAttribute("description") String description,
@@ -224,6 +234,9 @@ public class BeneficiaryController {
             List<Currency>resultCurrency = listCurrency.stream()
                     .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
                     .collect(Collectors.toList());
+            String currentPrincipalName = authentication.getName();
+            User userPrincipal = userService.findByUsername(currentPrincipalName);
+            model.addAttribute("userPrincipal",userPrincipal);
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
             model.addAttribute("listUsers",resultUsers);
