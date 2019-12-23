@@ -14,6 +14,7 @@
 <head>
     <title>Users</title>
 
+    <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
@@ -42,17 +43,24 @@
                 <table id="userTable" class="table-grid">
                     <tr>
                         <th onclick="sortTable(0,'userTable')"></th>
-                        <th onclick="sortTable(1,'userTable')">Username</th>
-                        <th onclick="sortTable(2,'userTable')">Full Name</th>
-                        <th onclick="sortTable(3,'userTable')">Email</th>
-                        <th onclick="sortTable(4,'userTable')">Mobile1</th>
-                        <th onclick="sortTable(5,'userTable')">Role</th>
+                        <th onclick="sortTable(1,'userTable')"></th>
+                        <th onclick="sortTable(2,'userTable')">Username</th>
+                        <th onclick="sortTable(3,'userTable')">Full Name</th>
+                        <th onclick="sortTable(4,'userTable')">Email</th>
+                        <th onclick="sortTable(5,'userTable')">Mobile1</th>
+                        <th onclick="sortTable(6,'userTable')">Role</th>
                     </tr>
                     <c:forEach items="${list}" var="list">
                         <tr>
                             <td>
                                 <a href="/users/${list.id}">
                                     <img src="${contextPath}/resources/img/icons8-edit-16.png">
+                                    <!--span><i class="far fa-hand-pointer"></i></span-->
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/users/${list.id}/password">
+                                    <img src="${contextPath}/resources/img/icons8-password-16.png">
                                     <!--span><i class="far fa-hand-pointer"></i></span-->
                                 </a>
                             </td>

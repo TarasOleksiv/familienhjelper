@@ -1,5 +1,6 @@
 package ua.petros.controller;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import ua.petros.dao.RoleDao;
 import ua.petros.model.Role;
@@ -39,6 +40,9 @@ public class UserController {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // Registration page
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -133,7 +137,9 @@ public class UserController {
         user.setUsername(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setPassword(password);
+        if (userId == null || userId.isEmpty()) {
+            user.setPassword(password);
+        }
         user.setEmail(email);
         user.setAccount(account);
         user.setMobile1(mobile1);
@@ -145,10 +151,14 @@ public class UserController {
         user.setRoles(roles);
 
         // validate user
-        Map<String, String> messages = userSimpleValidator.validate(user);
+        boolean checkPassword = (userId == null || userId.isEmpty());
+        Map<String, String> messages = userSimpleValidator.validate(user, checkPassword);
 
         // If no errors, create user
         if (messages.isEmpty()) {
+            if (userId == null || userId.isEmpty()) {
+                user.setPassword(bCryptPasswordEncoder.encode(password));
+            }
             userService.save(user);
         } else {
             // back to the new user form
@@ -160,6 +170,42 @@ public class UserController {
             } else {
                 return "userEdit";
             }
+        }
+
+        //show user
+        return "redirect:/users/" + user.getId();
+    }
+
+    // Show form to reset password
+    @RequestMapping(value = "/users/{userId}/password", method = {RequestMethod.GET})
+    public String showResetPasswordForm(Model model, @PathVariable("userId") String userId){
+        model.addAttribute("user",userService.getById(UUID.fromString(userId)));
+        return "userResetPassword";
+    }
+
+    // Change user password
+    @RequestMapping(value = "/users/{userId}/password", method = {RequestMethod.POST})
+    public String addUser(Model model,
+                          @ModelAttribute("password") String password,
+                          @ModelAttribute("confirmPassword") String confirmPassword,
+                          @ModelAttribute("userId") String userId){
+
+        User user = userService.getById(UUID.fromString(userId));
+        user.setPassword(password);
+        user.setConfirmPassword(confirmPassword);
+
+        // validate user
+        Map<String, String> messages = userSimpleValidator.validatePassword(user);
+
+        // If no errors, change password
+        if (messages.isEmpty()) {
+            user.setPassword(bCryptPasswordEncoder.encode(password));
+            userService.save(user);
+        } else {
+            // back to the reset password form
+            model.addAttribute("messages", messages);
+            model.addAttribute("user",user);
+            return "userResetPassword";
         }
 
         //show user

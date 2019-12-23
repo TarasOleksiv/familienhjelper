@@ -107,13 +107,13 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr>
+                            <!--tr>
                                 <td>Password</td>
                                 <td>
                                     <input type="password" name="password">
                                     <div class="has-error">${messages.password}</div>
                                 </td>
-                            </tr>
+                            </tr-->
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/users/${user.id}">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
