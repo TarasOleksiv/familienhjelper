@@ -52,6 +52,11 @@ body {
     color: red
 }
 
+.has-success {
+    color: green;
+    background-color: #c1e2b3;
+}
+
 .table-grid {
     font-size: 90%;
 }

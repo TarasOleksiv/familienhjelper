@@ -14,6 +14,7 @@
 <head>
     <title>User details</title>
 
+    <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
 
@@ -37,6 +38,9 @@
 
                         <table class="table-show">
                             <CAPTION>User details: <strong>${user.username}</strong></CAPTION>
+                            <c:if test="${passwordNotification != null}">
+                                <CAPTION class="has-success">${passwordNotification}</CAPTION>
+                            </c:if>
                             <tr>
                                 <td>Username</td>
                                 <td colspan="2">${user.username}</td>

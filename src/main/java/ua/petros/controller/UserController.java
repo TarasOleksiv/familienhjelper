@@ -209,7 +209,9 @@ public class UserController {
         }
 
         //show user
-        return "redirect:/users/" + user.getId();
+        model.addAttribute("user",user);
+        model.addAttribute("passwordNotification","Password successfully changed!");
+        return "userShow";
     }
 
     // Show form to edit user
