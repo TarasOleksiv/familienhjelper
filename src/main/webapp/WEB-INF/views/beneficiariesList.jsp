@@ -38,7 +38,7 @@
                           <th onclick="sortTable(0,'beneficiaryTable')"></th>
                           <th onclick="sortTable(1,'beneficiaryTable')">Name</th>
                           <th onclick="sortTable(2,'beneficiaryTable')">Income</th>
-                          <th onclick="sortTable(3,'beneficiaryTable')">User</th>
+                          <th onclick="sortTable(3,'beneficiaryTable')">Field Contact</th>
                       </tr>
                   </c:if>
                   <c:forEach items="${list}" var="list">

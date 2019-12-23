@@ -72,7 +72,7 @@
                                 <td colspan="2">${beneficiary.currency.name}</td>
                             </tr>
                             <tr>
-                                <td>User</td>
+                                <td>Field Contact</td>
                                 <td colspan="2">${beneficiary.user.username} ${beneficiary.user.lastName} ${beneficiary.user.firstName}</td>
                             </tr>
                             <tr>

@@ -100,7 +100,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>User</td>
+                                <td>Field Contact</td>
                                 <td>
                                     <select name="userId">
                                         <option></option>
