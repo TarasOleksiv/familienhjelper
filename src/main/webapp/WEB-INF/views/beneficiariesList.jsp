@@ -11,6 +11,9 @@
 
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!--link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
+    <!--link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css" rel="stylesheet"-->
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
 
@@ -34,15 +37,19 @@
           <form action="<c:url value="/beneficiaries"/>" method="POST">
               <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-              <table id="beneficiaryTable" class="table-grid">
+              <table id="beneficiaryTable" class="table table-striped table-bordered display">
+                  <thead>
                   <c:if test="${list.size()>0}">
                       <tr>
-                          <th onclick="sortTable(0,'beneficiaryTable')"></th>
-                          <th onclick="sortTable(1,'beneficiaryTable')">Name</th>
-                          <th onclick="sortTable(2,'beneficiaryTable')">Income</th>
-                          <th onclick="sortTable(3,'beneficiaryTable')">Field Contact</th>
+                          <!--th onclick="sortTable(0,'beneficiaryTable')"></th-->
+                          <th></th>
+                          <th>Name</th>
+                          <th>Income</th>
+                          <th>Field Contact</th>
                       </tr>
                   </c:if>
+                  </thead>
+                  <tbody>
                   <c:forEach items="${list}" var="list">
                       <tr>
                           <td>
@@ -56,13 +63,20 @@
                           <td>${list.user.username} ${list.user.lastName} ${list.user.firstName}</td>
                       </tr>
                   </c:forEach>
+                  </tbody>
               </table>
           </form>
       </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script-->
+<script src="${contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+<script src="${contextPath}/resources/js/jquery.dataTables.min.js"></script>
+<script src="${contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
+<!--script src="https://code.jquery.com/jquery-3.3.1.js"></script-->
+<!--script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script-->
+<!--script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script-->
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/app.js"></script>
 

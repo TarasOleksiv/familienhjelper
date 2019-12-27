@@ -16,6 +16,7 @@
 
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
 
@@ -40,16 +41,19 @@
             <form action="<c:url value="/users"/>" method="POST">
                 <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-                <table id="userTable" class="table-grid">
+                <table id="userTable" class="table table-striped table-bordered display">
+                    <thead>
                     <tr>
-                        <th onclick="sortTable(0,'userTable')"></th>
-                        <th onclick="sortTable(1,'userTable')"></th>
-                        <th onclick="sortTable(2,'userTable')">Username</th>
-                        <th onclick="sortTable(3,'userTable')">Full Name</th>
-                        <th onclick="sortTable(4,'userTable')">Email</th>
-                        <th onclick="sortTable(5,'userTable')">Mobile1</th>
-                        <th onclick="sortTable(6,'userTable')">Role</th>
+                        <th></th>
+                        <th></th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Mobile1</th>
+                        <th>Role</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <c:forEach items="${list}" var="list">
                         <tr>
                             <td>
@@ -72,13 +76,16 @@
                             <td>${userrole.substring(userrole.indexOf('_')+1).toLowerCase()}</td>
                         </tr>
                     </c:forEach>
+                    </tbody>
                 </table>
             </form>
         </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+<script src="${contextPath}/resources/js/jquery.dataTables.min.js"></script>
+<script src="${contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/app.js"></script>
 

@@ -57,7 +57,7 @@ body {
     background-color: #c1e2b3;
 }
 
-.table-grid {
+/*.table-grid {
     font-size: 90%;
 }
 
@@ -67,29 +67,28 @@ body {
 
 .table-show {
     font-size: 90%;
-}
+}*/
 
-.table-grid th {
+/*.table-grid th:hover {
+    cursor: pointer;
+}*/
+
+/*.table-grid th {
     border: 1px solid #ddd;
     text-align: center;
     padding: 5px;
     background: lightgrey;
 }
 
-.table-grid th:hover {
-    cursor: pointer;
-}
-
 .table-grid td {
     border: 1px solid #ddd;
     text-align: center;
     padding: 5px;
-    background: white;
-}
+}*/
 
-.table-grid caption {
+/*.table-grid caption {
     font-weight: bold;
-}
+}*/
 
 .table-show td {
     border: 1px solid #ddd;

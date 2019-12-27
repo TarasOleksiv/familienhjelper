@@ -11,6 +11,7 @@
 
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
 
@@ -34,16 +35,19 @@
           <form action="<c:url value="/members"/>" method="POST">
               <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
-              <table id="memberTable" class="table-grid">
+              <table id="memberTable" class="table table-striped table-bordered display">
                   <c:if test="${list.size()>0}">
+                      <thead>
                       <tr>
-                          <th onclick="sortTable(0,'memberTable')"></th>
-                          <th onclick="sortTable(1,'memberTable')">Name</th>
-                          <th onclick="sortTable(2,'memberTable')">Email</th>
-                          <th onclick="sortTable(3,'memberTable')">Mobile</th>
-                          <th onclick="sortTable(4,'memberTable')">Donor type</th>
+                          <th></th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Mobile</th>
+                          <th>Donor type</th>
                       </tr>
+                      </thead>
                   </c:if>
+                  <tbody>
                   <c:forEach items="${list}" var="list">
                       <tr>
                           <td>
@@ -58,13 +62,16 @@
                           <td>${list.donorType.name}</td>
                       </tr>
                   </c:forEach>
+                  </tbody>
               </table>
           </form>
       </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+<script src="${contextPath}/resources/js/jquery.dataTables.min.js"></script>
+<script src="${contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/app.js"></script>
 
