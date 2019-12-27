@@ -62,6 +62,12 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Beneficiary> beneficiaries;
 
+    @OneToMany(mappedBy = "fieldContactUser", fetch = FetchType.EAGER)
+    private Set<Project> projectsFieldContact;
+
+    @OneToMany(mappedBy = "fuUser", fetch = FetchType.EAGER)
+    private Set<Project> projectsFU;
+
     public UUID getId() {
         return id;
     }
@@ -172,5 +178,21 @@ public class User {
 
     public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
         this.beneficiaries = beneficiaries;
+    }
+
+    public Set<Project> getProjectsFieldContact() {
+        return projectsFieldContact;
+    }
+
+    public void setProjectsFieldContact(Set<Project> projectsFieldContact) {
+        this.projectsFieldContact = projectsFieldContact;
+    }
+
+    public Set<Project> getProjectsFU() {
+        return projectsFU;
+    }
+
+    public void setProjectsFU(Set<Project> projectsFU) {
+        this.projectsFU = projectsFU;
     }
 }

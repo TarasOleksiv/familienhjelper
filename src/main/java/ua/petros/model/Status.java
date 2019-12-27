@@ -23,8 +23,8 @@ public class Status {
     @Column(name = "name")
     private String name;
 
-    //@OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
-    //private Set<Beneficiary> beneficiaries;
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    private Set<Project> projects;
 
     public UUID getId() {
         return id;
@@ -42,4 +42,11 @@ public class Status {
         this.name = name;
     }
 
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
 }

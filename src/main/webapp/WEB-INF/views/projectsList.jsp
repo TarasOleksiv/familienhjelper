@@ -11,6 +11,7 @@
 
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
 
@@ -25,14 +26,51 @@
       <div class="col-sm-10">
           <header>
               <div class="container">
-                  <h4>Under Construction</h4>
+                  <h4>Projects</h4>
+                  <p>
+                      <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>
+                  </p>
               </div>
           </header>
+          <form action="<c:url value="/projects"/>" method="POST">
+              <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+
+              <table id="projectTable" class="table table-striped table-bordered display">
+                  <c:if test="${list.size()>0}">
+                      <thead>
+                      <tr>
+                          <th></th>
+                          <th>Name</th>
+                          <th>FU</th>
+                          <th>Field contact</th>
+                          <th>Status</th>
+                      </tr>
+                      </thead>
+                  </c:if>
+                  <tbody>
+                  <c:forEach items="${list}" var="list">
+                      <tr>
+                          <td>
+                              <a href="/projects/${list.id}">
+                                  <img src="${contextPath}/resources/img/icons8-edit-16.png">
+                              </a>
+                          </td>
+                          <td>${list.name}</td>
+                          <td>${list.fuUser.username}</td>
+                          <td>${list.fieldContactUser.username}</td>
+                          <td>${list.status.name}</td>
+                      </tr>
+                  </c:forEach>
+                  </tbody>
+              </table>
+          </form>
       </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+<script src="${contextPath}/resources/js/jquery.dataTables.min.js"></script>
+<script src="${contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/app.js"></script>
 
