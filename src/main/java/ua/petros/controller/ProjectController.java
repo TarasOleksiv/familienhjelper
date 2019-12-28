@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.Currency;
+import ua.petros.model.Project;
 import ua.petros.model.Status;
 import ua.petros.model.User;
 import ua.petros.service.ProjectService;
 import ua.petros.service.StatusService;
 import ua.petros.service.UserService;
+import ua.petros.validator.BeneficiaryValidator;
+import ua.petros.validator.ProjectValidator;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,10 +37,14 @@ public class ProjectController {
     @Autowired
     private StatusService statusService;
 
+    @Autowired
+    private ProjectValidator projectValidator;
+
     // Show all projects
     @RequestMapping(value = "/projects", method = {RequestMethod.GET})
-    public String showMembers(Model model){
-        model.addAttribute("list",projectService.getAll());
+    public String showMembers(Model model, Authentication authentication){
+        List<Project>listProject = projectValidator.getUserProjectList(authentication);
+        model.addAttribute("list",listProject);
         return "projectsList";
     }
 
