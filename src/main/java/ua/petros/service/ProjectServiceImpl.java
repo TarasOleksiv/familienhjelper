@@ -25,9 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void create(Project project) {
-        UUID uuid = UUID.randomUUID();
-        project.setId(uuid);
+    public void save(Project project) {
         projectDao.save(project);
     }
 

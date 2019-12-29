@@ -12,7 +12,7 @@ public interface ProjectService {
 
     List<Project> getAll();
 
-    void create(Project project);
+    void save(Project project);
 
     void delete(Project project);
 
