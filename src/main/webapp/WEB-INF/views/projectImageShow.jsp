@@ -27,32 +27,30 @@
           <header>
               <div class="container">
                   <h4>Project: ${project.name}</h4>
-                  <h4>Images</h4>
-                  <c:if test="${listImages.size()<8}">
-                      <p>
-                          <a class="btn btn-primary btn-sm" href="/projects/${projectId}/images/new">Add image</a>
-                      </p>
-                  </c:if>
+                  <h4>Image</h4>
                   <p>
-                      <a class="btn btn-primary btn-sm" href="/projects/${projectId}">Back to Project</a>
+                      <a class="btn btn-primary btn-sm" href="/projects/${projectId}/images">Back to Images</a>
                   </p>
               </div>
           </header>
 
           <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-              <c:forEach var="image" items="${listImages}">
-                  <div class="col-md-3 col-sm-6">
-                      <div class="thumbnail fix">
-                          <img src="${image.link}">
-                          <div class="caption">
-                              <h5 class="limit">${image.description}</h5>
-                          </div>
-                          <p>
-                              <a href="/projects/${projectId}/images/${image.id}" class="btn btn-primary btn-sm">View</a>
-                          </p>
+              <div class="col-md-9">
+                  <div class="thumbnail">
+                      <img class="img-responsive" src="${image.link}">
+                      <div class="caption limit">${image.description}</div>
+                      <div class="caption">
+                      <form style="display: inline" action="/projects/${projectId}/images/${image.id}" method="POST">
+                          <input type="hidden" name="_method" value="delete"/>
+                          <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                          <input type="hidden" name="imageId" value="${image.id}"/>
+
+                          <a class="btn btn-warning btn-sm" href="/projects/${projectId}/images/${image.id}/edit">Edit image</a>
+                          <button class="btn btn-sm btn-danger">Delete image</button>
+                      </form>
                       </div>
                   </div>
-              </c:forEach>
+              </div>
           </div>
 
       </div>

@@ -57,39 +57,6 @@ body {
     background-color: #c1e2b3;
 }
 
-/*.table-grid {
-    font-size: 90%;
-}
-
-.table-input {
-    font-size: 90%;
-}
-
-.table-show {
-    font-size: 90%;
-}*/
-
-/*.table-grid th:hover {
-    cursor: pointer;
-}*/
-
-/*.table-grid th {
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 5px;
-    background: lightgrey;
-}
-
-.table-grid td {
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 5px;
-}*/
-
-/*.table-grid caption {
-    font-weight: bold;
-}*/
-
 .table-show td {
     border: 1px solid #ddd;
     text-align: left;
@@ -143,4 +110,15 @@ body {
 .btn-cancel {
     background-color: rgba(28, 9, 0, 0.52);
     color: white;
+}
+
+.fix{
+    width:100%;
+    padding:0px;
+    margin: 0px auto;
+}
+
+.limit{
+    width:100%;
+    word-wrap: break-word;
 }
