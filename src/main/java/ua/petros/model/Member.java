@@ -3,6 +3,7 @@ package ua.petros.model;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -37,6 +38,9 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "donortype_id", referencedColumnName = "id")
     private DonorType donorType;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private Set<ProjectMember> projectMembers;
 
     public UUID getId() {
         return id;
@@ -100,5 +104,13 @@ public class Member {
 
     public void setDonorType(DonorType donorType) {
         this.donorType = donorType;
+    }
+
+    public Set<ProjectMember> getProjectMembers() {
+        return projectMembers;
+    }
+
+    public void setProjectMembers(Set<ProjectMember> projectMembers) {
+        this.projectMembers = projectMembers;
     }
 }

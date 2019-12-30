@@ -5,6 +5,8 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -52,6 +54,9 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "fu_id", referencedColumnName = "id")
     private User fuUser;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private Set<ProjectMember> projectMembers;
 
     public UUID getId() {
         return id;
@@ -132,4 +137,13 @@ public class Project {
     public void setFuUser(User fuUser) {
         this.fuUser = fuUser;
     }
+
+    public Set<ProjectMember> getProjectMembers() {
+        return projectMembers;
+    }
+
+    public void setProjectMembers(Set<ProjectMember> projectMembers) {
+        this.projectMembers = projectMembers;
+    }
+
 }
