@@ -47,7 +47,7 @@
                     <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
+                    <a href="${pageContext.request.contextPath}/currencyrates">Currency Rates</a>
                 </li>
             </div>
         </c:if>
@@ -63,9 +63,9 @@
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
-                <li class="list-group-item">
+                <%--<li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
-                </li>
+                </li>--%>
             </div>
         </c:if>
         <c:if test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
@@ -77,9 +77,9 @@
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
-                <li class="list-group-item">
+                <%--<li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
-                </li>
+                </li>--%>
             </div>
         </c:if>
     </c:if>
