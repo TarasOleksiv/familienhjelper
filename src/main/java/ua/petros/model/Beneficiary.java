@@ -5,6 +5,7 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -48,6 +49,9 @@ public class Beneficiary {
     @ManyToOne
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
+
+    @OneToMany(mappedBy = "beneficiary", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions;
 
     public UUID getId() {
         return id;
@@ -119,5 +123,13 @@ public class Beneficiary {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

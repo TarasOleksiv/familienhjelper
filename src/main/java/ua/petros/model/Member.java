@@ -42,6 +42,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private Set<ProjectMember> projectMembers;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions;
+
     public UUID getId() {
         return id;
     }
@@ -112,5 +115,13 @@ public class Member {
 
     public void setProjectMembers(Set<ProjectMember> projectMembers) {
         this.projectMembers = projectMembers;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

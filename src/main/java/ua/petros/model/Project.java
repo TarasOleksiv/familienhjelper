@@ -61,6 +61,9 @@ public class Project {
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     private Set<Image> images;
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions;
+
     public UUID getId() {
         return id;
     }
@@ -155,5 +158,13 @@ public class Project {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

@@ -87,6 +87,9 @@
                                 <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/images">Images</a></td>
                             </tr>
                             <tr>
+                                <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/transactions">Transactions</a></td>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/projects">Cancel</a></td>
                                 <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>

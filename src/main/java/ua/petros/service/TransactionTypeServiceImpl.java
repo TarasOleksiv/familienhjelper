@@ -1,6 +1,7 @@
 package ua.petros.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.petros.dao.TransactionTypeDao;
 import ua.petros.model.TransactionType;
 
@@ -10,6 +11,8 @@ import java.util.UUID;
 /**
  * Created by Taras on 02.01.2020.
  */
+
+@Service
 public class TransactionTypeServiceImpl implements TransactionTypeService {
 
     @Autowired

@@ -87,6 +87,22 @@ body {
     font-weight: bold;
 }
 
+.table-radio td {
+    text-align: left;
+    padding: 10px;
+    font-size: 90%;
+    border: none;
+}
+
+.table-radio {
+    border: 1px solid black;
+}
+
+.table-padding td {
+    text-align: left;
+    padding: 10px;
+}
+
 .button-edit {
     background: yellow;
 }

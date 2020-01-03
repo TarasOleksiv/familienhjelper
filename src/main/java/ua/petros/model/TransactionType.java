@@ -23,6 +23,9 @@ public class TransactionType {
     @Column(name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "transactionType", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions;
+
     public UUID getId() {
         return id;
     }
@@ -39,4 +42,11 @@ public class TransactionType {
         this.name = name;
     }
 
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }

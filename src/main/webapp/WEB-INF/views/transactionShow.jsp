@@ -1,0 +1,102 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Taras
+  Date: 20.12.2017
+  Time: 20:17
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+<html>
+<head>
+    <title>Transaction Details</title>
+
+    <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <jsp:include page="includes/menu.jsp" />
+        </div>
+
+        <div class=class="col-sm-10">
+            <c:if test="${not empty pageContext.request.userPrincipal}">
+
+                    <form class="form-edit" action="<c:url value="/projects/${project.id}/transactions/${transaction.id}"/>" method="POST">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden" name="transactionId" value="${transaction.id}"/>
+
+                        <table class="table-show">
+                            <CAPTION>Transaction details:</CAPTION>
+                            <tr>
+                                <td>In/Out</td>
+                                <td colspan="2">
+                                    <c:choose>
+                                        <c:when test="${transaction.isIncome}">In</c:when>
+                                        <c:otherwise>Out</c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td colspan="2"><fmt:formatDate value="${transaction.tradingDate}" pattern="dd.MM.yyyy" /></td>
+                            </tr>
+                            <tr>
+                                <td>Amount</td>
+                                <td colspan="2">${transaction.amount}</td>
+                            </tr>
+                            <tr>
+                                <td>Currency</td>
+                                <td colspan="2">${transaction.currency.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Amount NOK</td>
+                                <td colspan="2">${transaction.amountNOK}</td>
+                            </tr>
+                            <tr>
+                                <td>From Donor</td>
+                                <td colspan="2">${transaction.member.name}</td>
+                            </tr>
+                            <tr>
+                                <td>To Beneficiary</td>
+                                <td colspan="2">${transaction.beneficiary.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Type</td>
+                                <td colspan="2">${transaction.transactionType.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td colspan="2">
+                                    <textarea rows="4" cols="25" name="description" maxlength="192" readonly>${transaction.description}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}/transactions">Cancel</a></td>
+                                <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a></td>
+                                <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                            </tr>
+                        </table>
+                    </form>
+
+            </c:if>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+
+</body>
+</html>

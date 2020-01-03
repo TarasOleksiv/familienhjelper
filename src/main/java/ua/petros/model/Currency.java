@@ -26,6 +26,9 @@ public class Currency {
     @OneToMany(mappedBy = "currency", fetch = FetchType.EAGER)
     private Set<Beneficiary> beneficiaries;
 
+    @OneToMany(mappedBy = "currency", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions;
+
     public UUID getId() {
         return id;
     }
@@ -42,4 +45,19 @@ public class Currency {
         this.name = name;
     }
 
+    public Set<Beneficiary> getBeneficiaries() {
+        return beneficiaries;
+    }
+
+    public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
+        this.beneficiaries = beneficiaries;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }
