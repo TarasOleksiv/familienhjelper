@@ -56,3 +56,27 @@ INSERT INTO donor_types (id, name) VALUES
   (uuid_in(md5(random()::text || now()::text)::cstring), 'Regular donor'),
   (uuid_in(md5(random()::text || now()::text)::cstring), 'Member')
 ;
+
+-- 08. Populate transaction_types;
+INSERT INTO transaction_types (id, name) VALUES
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Donation'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Regular donation'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Fund raiser'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Norsk Tipping'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Transfer fee'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Field expense'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Expense'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Individual'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Family'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Activity'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Institution')
+;
+
+-- 09. Populate currency_rates;
+INSERT INTO currency_rates (id, sourceCurrency, targetCurrency, rate) VALUES
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'NOK', 'EUR', 9.82),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'NOK', 'NOK', 1),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'NOK', 'RUB', 0.14),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'NOK', 'UAH', 0.37),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'NOK', 'USD', 8.80)
+;

@@ -38,4 +38,9 @@ public class CurrencyRateServiceImpl implements CurrencyRateService {
         currencyRateDao.delete(currencyRate);
     }
 
+    @Override
+    public CurrencyRate findByTargetCurrency(String targetCurrency) {
+        return currencyRateDao.findByTargetCurrency(targetCurrency);
+    }
+
 }

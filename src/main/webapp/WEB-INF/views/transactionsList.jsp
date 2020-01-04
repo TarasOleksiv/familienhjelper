@@ -28,7 +28,7 @@
           <header>
               <div class="container">
                   <h4>Project: ${project.name}</h4>
-                  <h4>Transactions</h4>
+                  <h5>Balance: ${project.balance==null?0.00:project.balance} NOK</h5>
                   <form action="/projects/${projectId}/transactions/new" method="GET">
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <table class="table-radio">
@@ -46,6 +46,7 @@
                           <td><a class="btn btn-primary btn-sm" href="/projects/${projectId}">Back to Project</a></td>
                       </tr>
                   </table>
+                  <h4>Transactions</h4>
               </div>
           </header>
 

@@ -56,3 +56,46 @@ function sortTable(n, tableName) {
         }
     }
 }
+
+function showCurrency(element) {
+    if (element.value == 'UAH'){
+        document.getElementById('UAH').style.display = 'block';
+        document.getElementById('NOK').style.display = 'none';
+        document.getElementById('USD').style.display = 'none';
+        document.getElementById('EUR').style.display = 'none';
+        document.getElementById('RUB').style.display = 'none';
+    }
+
+    if (element.value == 'NOK'){
+        document.getElementById('NOK').style.display = 'block';
+        document.getElementById('UAH').style.display = 'none';
+        document.getElementById('USD').style.display = 'none';
+        document.getElementById('EUR').style.display = 'none';
+        document.getElementById('RUB').style.display = 'none';
+    }
+
+    if (element.value == 'USD'){
+        document.getElementById('USD').style.display = 'block';
+        document.getElementById('NOK').style.display = 'none';
+        document.getElementById('UAH').style.display = 'none';
+        document.getElementById('EUR').style.display = 'none';
+        document.getElementById('RUB').style.display = 'none';
+    }
+
+    if (element.value == 'EUR'){
+        document.getElementById('EUR').style.display = 'block';
+        document.getElementById('NOK').style.display = 'none';
+        document.getElementById('USD').style.display = 'none';
+        document.getElementById('UAH').style.display = 'none';
+        document.getElementById('RUB').style.display = 'none';
+    }
+
+    if (element.value == 'RUB'){
+        document.getElementById('RUB').style.display = 'block';
+        document.getElementById('NOK').style.display = 'none';
+        document.getElementById('USD').style.display = 'none';
+        document.getElementById('EUR').style.display = 'none';
+        document.getElementById('UAH').style.display = 'none';
+    }
+
+}

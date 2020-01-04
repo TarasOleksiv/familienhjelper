@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.petros.model.Currency;
+import ua.petros.model.CurrencyRate;
 import ua.petros.model.Project;
 import ua.petros.model.User;
-import ua.petros.service.ProjectService;
-import ua.petros.service.StatusService;
-import ua.petros.service.UserService;
+import ua.petros.service.*;
 import ua.petros.validator.ProjectValidator;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +39,12 @@ public class ProjectController {
     private StatusService statusService;
 
     @Autowired
+    private CurrencyService currencyService;
+
+    @Autowired
+    private CurrencyRateService currencyRateService;
+
+    @Autowired
     private ProjectValidator projectValidator;
 
     private User userPrincipal;
@@ -57,6 +62,9 @@ public class ProjectController {
     //Show project
     @RequestMapping(value = "/projects/{projectId}", method = {RequestMethod.GET})
     public String showProject(Model model, @PathVariable("projectId") String projectId) {
+        Map<String,BigDecimal> currencyBalanceMap = getCurrencyBalanceMap(projectService.getById(UUID.fromString(projectId)));
+        model.addAttribute("listCurrency", currencyService.getAll());
+        model.addAttribute("currencyBalanceMap",currencyBalanceMap);
         model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
         return "projectShow";
     }
@@ -251,5 +259,22 @@ public class ProjectController {
 
         String currentPrincipalName = authentication.getName();
         userPrincipal = userService.findByUsername(currentPrincipalName);
+    }
+
+    // Generate list of currency balance
+    private Map<String, BigDecimal> getCurrencyBalanceMap(Project project){
+        Map<String, BigDecimal> currencyBalanceMap = new HashMap<>();
+        List<Currency> currencyList = currencyService.getAll();
+        List<CurrencyRate> currencyRateList = currencyRateService.getAll();
+        BigDecimal balance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+
+        for (Currency currency: currencyList){
+            String targetCurrency = currency.getName();
+            BigDecimal rate = currencyRateService.findByTargetCurrency(targetCurrency).getRate();
+            BigDecimal currencyBalance = balance.divide(rate,2, RoundingMode.HALF_EVEN);
+            currencyBalanceMap.put(targetCurrency,currencyBalance);
+        }
+
+        return currencyBalanceMap;
     }
 }

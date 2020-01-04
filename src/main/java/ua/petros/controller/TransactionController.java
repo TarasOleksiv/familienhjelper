@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ua.petros.model.Beneficiary;
-import ua.petros.model.Member;
-import ua.petros.model.User;
+import ua.petros.model.*;
 import ua.petros.service.*;
+import ua.petros.validator.TransactionValidator;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -35,9 +38,6 @@ public class TransactionController {
     private UserService userService;
 
     @Autowired
-    private MemberService memberService;
-
-    @Autowired
     private BeneficiaryService beneficiaryService;
 
     @Autowired
@@ -46,8 +46,18 @@ public class TransactionController {
     @Autowired
     private TransactionTypeService transactionTypeService;
 
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private CurrencyRateService currencyRateService;
+
+    @Autowired
+    private TransactionValidator transactionValidator;
+
     private User userPrincipal;
     private List<Beneficiary> beneficiaries;
+    private List<Member> members = new ArrayList<>();
 
     // Show all transactions for particular project
     @RequestMapping(value = "/projects/{projectId}/transactions", method = {RequestMethod.GET})
@@ -76,12 +86,132 @@ public class TransactionController {
         initializeModelAttributes(authentication, projectId);
         model.addAttribute("userPrincipal", userPrincipal);
         model.addAttribute("listCurrency", currencyService.getAll());
-        model.addAttribute("listMembers", projectService.getById(UUID.fromString(projectId)).getProjectMembers());
+        model.addAttribute("listMembers", members);
         model.addAttribute("listBeneficiaries", beneficiaries);
         model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
         model.addAttribute("isIncome", isIncome);
-        model.addAttribute("projectId", projectId);
+        model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
         return "transactionNew";
+    }
+
+    // Create new transaction
+    @RequestMapping(value = "/projects/{projectId}/transactions", method = {RequestMethod.POST})
+    public String createNewTransaction(Model model, Authentication authentication,
+                                       @PathVariable("projectId") String projectId,
+                                       @ModelAttribute("isIncome") String isIncome,
+                                       @ModelAttribute("description") String description,
+                                       @ModelAttribute("tradingDate") String tradingDate,
+                                       @ModelAttribute("amount") String amount,
+                                       @ModelAttribute("currencyId") String currencyId,
+                                       @ModelAttribute("memberId") String memberId,
+                                       @ModelAttribute("beneficiaryId") String beneficiaryId,
+                                       @ModelAttribute("transactionTypeId") String transactionTypeId){
+
+        // prepare transaction info
+        Transaction transaction = new Transaction();
+        UUID uuid = UUID.randomUUID();
+        transaction.setId(uuid);
+        boolean isIn = ("true".equals(isIncome));
+        transaction.setIsIncome(isIn);
+        transaction.setDescription(description);
+        BigDecimal amountBigDecimal = new BigDecimal(0);
+        if (amount != null && !amount.trim().isEmpty()) {
+            amountBigDecimal = new BigDecimal(amount);
+            transaction.setAmount(new BigDecimal(amount));
+        }
+        Date date= null;
+        if (tradingDate != null && !tradingDate.trim().isEmpty()) {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(tradingDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        transaction.setTradingDate(date);
+        transaction.setCurrency(currencyService.getById(UUID.fromString(currencyId)));
+        transaction.setTransactionType(transactionTypeService.getById(UUID.fromString(transactionTypeId)));
+        transaction.setProject(projectService.getById(UUID.fromString(projectId)));
+        if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
+            transaction.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
+        }
+        if (memberId != null && !memberId.trim().isEmpty()) {
+            transaction.setMember(memberService.getById(UUID.fromString(memberId)));
+        }
+
+        String targetCurrency = currencyService.getById(UUID.fromString(currencyId)).getName();
+        BigDecimal rate = currencyRateService.findByTargetCurrency(targetCurrency).getRate();
+        BigDecimal amountNOKBigDecimal = amountBigDecimal.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        transaction.setAmountNOK(amountNOKBigDecimal);
+
+        // validate transaction
+        Map<String, String> messages = transactionValidator.validate(transaction);
+
+        // If no errors, create transaction and change project balance
+        if (messages.isEmpty()) {
+            Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOKBigDecimal,isIn);
+            transactionService.save(transaction);
+            projectService.save(project);
+        } else {
+            // back to the new transaction form
+            initializeModelAttributes(authentication, projectId);
+            model.addAttribute("userPrincipal", userPrincipal);
+            model.addAttribute("messages", messages);
+            model.addAttribute("transaction", transaction);
+            model.addAttribute("listCurrency", currencyService.getAll());
+            model.addAttribute("listMembers", members);
+            model.addAttribute("listBeneficiaries", beneficiaries);
+            model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
+            model.addAttribute("isIncome", isIncome);
+            model.addAttribute("projectId", projectId);
+            return "transactionNew";
+        }
+
+        //show transaction
+        return "redirect:/projects/" + projectId + "/transactions/" + uuid;
+    }
+
+    // Show form to edit transaction
+    @RequestMapping(value = "/projects/{projectId}/transactions/{transactionId}/edit", method = {RequestMethod.GET})
+    public String showEditTransactionForm(Model model,
+                                         Authentication authentication,
+                                         @PathVariable("projectId") String projectId,
+                                         @PathVariable("transactionId") String transactionId
+                                         ) {
+        model.addAttribute("transaction", transactionService.getById(UUID.fromString(transactionId)));
+        model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
+        model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
+        return "transactionEdit";
+    }
+
+    // Edit transaction
+    @RequestMapping(value = "/projects/{projectId}/transactions/{transactionId}", method = {RequestMethod.PUT})
+    public String editTransaction(Model model,
+                                          Authentication authentication,
+                                          @PathVariable("projectId") String projectId,
+                                          @PathVariable("transactionId") String transactionId,
+                                          @ModelAttribute("description") String description,
+                                          @ModelAttribute("transactionTypeId") String transactionTypeId
+                                        ) {
+        Transaction transaction = transactionService.getById(UUID.fromString(transactionId));
+        transaction.setDescription(description);
+        transaction.setTransactionType(transactionTypeService.getById(UUID.fromString(transactionTypeId)));
+        transactionService.save(transaction);
+        //show transaction
+        return "redirect:/projects/" + projectId + "/transactions/" + transactionId;
+    }
+
+    // Remove transaction from project
+    @RequestMapping(value = "/projects/{projectId}/transactions/{transactionId}", method = {RequestMethod.DELETE})
+    public String removeTransactionFromProject(Model model,
+                                         @PathVariable("projectId") String projectId,
+                                         @PathVariable("transactionId") String transactionId){
+        Transaction transaction = transactionService.getById(UUID.fromString(transactionId));
+        BigDecimal amountNOK = transaction.getAmountNOK();
+        boolean isIn = !transaction.getIsIncome();
+        Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOK,isIn);
+        projectService.save(project);
+        transactionService.delete(transactionService.getById(UUID.fromString(transactionId)));
+        return "redirect:/projects/" + projectId + "/transactions";
     }
 
     // Generate lists to be passed to model views
@@ -90,25 +220,48 @@ public class TransactionController {
         userPrincipal = userService.findByUsername(currentPrincipalName);
 
         List<Beneficiary> listBeneficiary = beneficiaryService.getAll();
-
-        /*for (Beneficiary beneficiary: listBeneficiary) {
-            if (beneficiary.getUser() == null){
-                listBeneficiary.remove(beneficiary);
-            }
-        }*/
-
-        /*cars.stream()
-                .filter(Objects::nonNull)
-                .map(Car::getName)        // Assume the class name for car is Car
-                .filter(Objects::nonNull)
-                .filter(carName -> carName.startsWith("M"))
-                .collect(Collectors.toList());*/
-
+        List<Beneficiary> listBeneficiaryNotNullUser = listBeneficiary.stream()
+                .filter(beneficiary -> beneficiary.getUser() != null)
+                .collect(Collectors.toList());
         User fieldContactUser = projectService.getById(UUID.fromString(projectId)).getFieldContactUser();
-        /*final String fcuUsername = fieldContactUser.getUsername();
-        beneficiaries = listBeneficiary.stream()
-                .filter(beneficiary -> fcuUsername.equals(beneficiary.getUser().getUsername()))
-                .collect(Collectors.toList());*/
-        beneficiaries = listBeneficiary;
+        if (listBeneficiaryNotNullUser != null && fieldContactUser != null){
+            final String fcuUsername = fieldContactUser.getUsername();
+            beneficiaries = listBeneficiaryNotNullUser.stream()
+                    .filter(beneficiary -> fcuUsername.equals(beneficiary.getUser().getUsername()))
+                    .sorted(Comparator.comparing(Beneficiary::getName))
+                    .collect(Collectors.toList());
+        } else {
+            beneficiaries = null;
+        }
+
+        Set<ProjectMember> listMembers = projectService.getById(UUID.fromString(projectId)).getProjectMembers();
+        // Get distinct objects by key
+        List<ProjectMember> listMembersUnique = listMembers.stream()
+                .filter( distinctByKey(p -> p.getMember()) )
+                .collect( Collectors.toList() );
+
+        members.clear();
+        for (ProjectMember projectMember: listMembersUnique){
+            members.add(projectMember.getMember());
+        }
+        members.sort(Comparator.comparing(Member::getName));
+    }
+
+    //Utility function
+    private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    // Utility to modify project's balance according to transaction
+    private Project setProjectBalance(Project project, BigDecimal amount, boolean isIn ){
+        BigDecimal balance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+        if (isIn){
+            balance = balance.add(amount);
+        } else {
+            balance = balance.subtract(amount);
+        }
+        project.setBalance(balance);
+        return project;
     }
 }

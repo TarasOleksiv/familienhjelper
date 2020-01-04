@@ -1,19 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: Taras
-  Date: 20.12.2017
-  Time: 20:17
+  Date: 09.12.2019
+  Time: 14:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <html>
 <head>
-    <title>Transaction Details</title>
+    <title>Edit Transaction</title>
 
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -27,71 +26,82 @@
         <div class="col-sm-2">
             <jsp:include page="includes/menu.jsp" />
         </div>
-
         <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
 
-                    <form class="form-edit" action="<c:url value="/projects/${project.id}/transactions/${transaction.id}"/>" method="POST">
-                        <input type="hidden" name="_method" value="delete"/>
+                    <form id="transactionEdit" class="form-edit" action="<c:url value="/projects/${project.id}/transactions/${transaction.id}"/>" method="POST">
+                        <input type="hidden" name="_method" value="put"/>
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <input type="hidden" name="transactionId" value="${transaction.id}"/>
-
-                        <table class="table-show">
+                        <table class="table-input">
                             <CAPTION>Project ${project.name}</CAPTION>
-                            <CAPTION>Transaction details:</CAPTION>
+                            <CAPTION>Edit transaction</CAPTION>
                             <tr>
                                 <td>Date:</td>
-                                <td colspan="2"><fmt:formatDate value="${transaction.tradingDate}" pattern="dd.MM.yyyy" /></td>
+                                <td><fmt:formatDate value="${transaction.tradingDate}" pattern="dd.MM.yyyy" /></td>
                             </tr>
                             <tr>
                                 <td>Amount:</td>
-                                <td colspan="2">${transaction.amount}</td>
+                                <td>${transaction.amount}</td>
                             </tr>
                             <tr>
                                 <td>Currency:</td>
-                                <td colspan="2">${transaction.currency.name}</td>
+                                <td>${transaction.currency.name}</td>
                             </tr>
                             <tr>
                                 <td>Amount NOK:</td>
-                                <td colspan="2">${transaction.amountNOK}</td>
+                                <td>${transaction.amountNOK}</td>
                             </tr>
                             <c:choose>
                                 <c:when test="${transaction.isIncome==true}">
                                     <tr>
                                         <td>From Donor:</td>
-                                        <td colspan="2">${transaction.member.name}</td>
+                                        <td>${transaction.member.name}</td>
                                     </tr>
                                     <tr>
                                         <td>To:</td>
-                                        <td colspan="2">This project</td>
+                                        <td>This project</td>
                                     </tr>
                                 </c:when>
                                 <c:otherwise>
                                     <tr>
                                         <td>From:</td>
-                                        <td colspan="2">This project</td>
+                                        <td>This project</td>
                                     </tr>
                                     <tr>
                                         <td>To Beneficiary:</td>
-                                        <td colspan="2">${transaction.beneficiary.name}</td>
+                                        <td>${transaction.beneficiary.name}</td>
                                     </tr>
                                 </c:otherwise>
                             </c:choose>
+
                             <tr>
                                 <td>Type:</td>
-                                <td colspan="2">${transaction.transactionType.name}</td>
+                                <td>
+                                    <select name="transactionTypeId">
+                                        <c:forEach var="transactionType" items="${listTransactionTypes}">
+                                            <c:choose>
+                                                <c:when test="${transaction.transactionType.id == transactionType.id}">
+                                                    <option value="${transactionType.id}" selected><c:out value="${transactionType.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${transactionType.id}"><c:out value="${transactionType.name}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Description:</td>
-                                <td colspan="2">
-                                    <textarea rows="4" cols="25" name="description" maxlength="192" readonly>${transaction.description}</textarea>
+                                <td>
+                                    <textarea rows="4" cols="25" name="description" form="transactionEdit" maxlength="192">${transaction.description}</textarea>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}/transactions">Cancel</a></td>
-                                <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a></td>
-                                <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}">Cancel</a></td>
+                                <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
                             </tr>
                         </table>
                     </form>

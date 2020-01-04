@@ -162,4 +162,44 @@ CREATE TABLE images (
 )
 ;
 
+-- 13. Create table transaction_types
+CREATE TABLE transaction_types (
+  id UUID NOT NULL,
+  name VARCHAR(48),
+  PRIMARY KEY (id)
+)
+;
+
+-- 14. Create table currency_rates
+CREATE TABLE currency_rates (
+  id UUID NOT NULL,
+  sourceCurrency VARCHAR(3) NOT NULL,
+  targetCurrency VARCHAR(3) NOT NULL,
+  rate DECIMAL(11,2) NOT NULL,
+  PRIMARY KEY (id)
+)
+;
+
+-- 15. Create table transactions
+CREATE TABLE transactions (
+  id UUID NOT NULL,
+  isIncome BOOLEAN NOT NULL,
+  projectId UUID NOT NULL,
+  amount DECIMAL(11,2) NOT NULL,
+  currencyId UUID NOT NULL,
+  tradingDate DATE NOT NULL,
+  amountNOK DECIMAL(11,2) NOT NULL,
+  fromMemberId UUID NULL,
+  toBeneficiaryId UUID NULL,
+  typeId UUID NOT NULL,
+  description VARCHAR(192) NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_PROJECT_ID FOREIGN KEY (projectId) REFERENCES projects (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_CURRENCY_ID FOREIGN KEY (currencyId) REFERENCES currency (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_MEMBER_ID FOREIGN KEY (fromMemberId) REFERENCES members (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_BENEFICIARY_ID FOREIGN KEY (toBeneficiaryId) REFERENCES beneficiaries (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_TYPE_ID FOREIGN KEY (typeId) REFERENCES transaction_types (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+;
+
 

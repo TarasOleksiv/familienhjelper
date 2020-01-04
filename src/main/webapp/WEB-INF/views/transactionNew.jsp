@@ -29,29 +29,22 @@
         <div class=class="col-sm-10">
             <c:if test="${not empty pageContext.request.userPrincipal}">
 
-                    <form id="transactionNew" class="form-edit" action="<c:url value="/projects/${projectId}/transactions"/>" method="POST">
+                    <form id="transactionNew" class="form-edit" action="<c:url value="/projects/${project.id}/transactions"/>" method="POST">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden" name="isIncome" value="${isIncome}"/>
                         <table class="table-input">
+                            <CAPTION>Project ${project.name}</CAPTION>
                             <CAPTION>Create new transaction</CAPTION>
                             <tr>
-                                <td>In/Out</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${transaction.isIncome}">In</c:when>
-                                        <c:otherwise>Out</c:otherwise>
-                                    </c:choose>
-                                </td>
+                                <td>Date:</td>
+                                <td><input type="date" name="tradingDate" value="${transaction.tradingDate}" required></td>
                             </tr>
                             <tr>
-                                <td>Date</td>
-                                <td><input type="date" name="tradingDate" value="${transaction.tradingDate}"></td>
+                                <td>Amount:</td>
+                                <td><input type="number" step="0.01" min="0" name="amount" value="${transaction.amount}" required></td>
                             </tr>
                             <tr>
-                                <td>Amount</td>
-                                <td><input type="number" step="0.01" min="0" name="amount" value="${transaction.amount}"></td>
-                            </tr>
-                            <tr>
-                                <td>Currency</td>
+                                <td>Currency:</td>
                                 <td>
                                     <select name="currencyId">
                                         <c:forEach var="currency" items="${listCurrency}">
@@ -64,32 +57,42 @@
                             <c:choose>
                                 <c:when test="${'true'.equals(isIncome)}">
                                     <tr>
-                                        <td>From Donor</td>
+                                        <td>From Donor:</td>
                                         <td>
                                             <select name="memberId">
                                                 <c:forEach var="member" items="${listMembers}">
-                                                    <option value="${member.member.id}"><c:out value="${member.member.name}"/></option>
+                                                    <option value="${member.id}"><c:out value="${member.name}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <div class="has-error">${messages.donor}</div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>This project</td>
                                     </tr>
                                 </c:when>
                                 <c:otherwise>
                                     <tr>
-                                        <td>To Beneficiary</td>
+                                        <td>From:</td>
+                                        <td>This project</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To Beneficiary:</td>
                                         <td>
                                             <select name="beneficiaryId">
                                                 <c:forEach var="beneficiary" items="${listBeneficiaries}">
                                                     <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <div class="has-error">${messages.beneficiary}</div>
                                         </td>
                                     </tr>
                                 </c:otherwise>
                             </c:choose>
 
                             <tr>
-                                <td>Type</td>
+                                <td>Type:</td>
                                 <td>
                                     <select name="transactionTypeId">
                                         <c:forEach var="transactionType" items="${listTransactionTypes}">
@@ -99,14 +102,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Description</td>
+                                <td>Description:</td>
                                 <td>
                                     <textarea form="transactionNew" rows="4" cols="25" name="description" maxlength="192" readonly>${transaction.description}</textarea>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${projectId}/transactions">Cancel</a></td>
+                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}/transactions">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Submit" name="Add"/></td>
                             </tr>
                         </table>

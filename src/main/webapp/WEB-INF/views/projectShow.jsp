@@ -78,7 +78,20 @@
                             </tr>
                             <tr>
                                 <td>Balance</td>
-                                <td colspan="2">${project.balance}</td>
+                                <td>
+                                    <div id="NOK">${currencyBalanceMap.NOK}</div>
+                                    <div id="UAH" class="hidden_div">${currencyBalanceMap.UAH}</div>
+                                    <div id="RUB" class="hidden_div">${currencyBalanceMap.RUB}</div>
+                                    <div id="EUR" class="hidden_div">${currencyBalanceMap.EUR}</div>
+                                    <div id="USD" class="hidden_div">${currencyBalanceMap.USD}</div>
+                                </td>
+                                <td>
+                                    <select name="currencyId" onchange="showCurrency(this)" style="width:70px">
+                                        <c:forEach var="currency" items="${listCurrency}">
+                                            <option value="${currency.name}"><c:out value="${currency.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/donors">Donors</a></td>
@@ -104,6 +117,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+<script src="${contextPath}/resources/js/app.js"></script>
 
 </body>
 </html>

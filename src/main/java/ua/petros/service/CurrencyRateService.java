@@ -16,4 +16,6 @@ public interface CurrencyRateService {
 
     void delete(CurrencyRate currencyRate);
 
+    CurrencyRate findByTargetCurrency(String targetCurrency);
+
 }
