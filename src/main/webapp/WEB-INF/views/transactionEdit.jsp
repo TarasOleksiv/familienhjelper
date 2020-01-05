@@ -85,7 +85,13 @@
                                                     <option value="${transactionType.id}" selected><c:out value="${transactionType.name}"/></option>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <option value="${transactionType.id}"><c:out value="${transactionType.name}"/></option>
+                                                    <c:choose>
+                                                        <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT') && transactionType.isDonation}">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${transactionType.id}"><c:out value="${transactionType.name}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>

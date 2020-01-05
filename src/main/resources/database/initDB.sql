@@ -166,6 +166,7 @@ CREATE TABLE images (
 CREATE TABLE transaction_types (
   id UUID NOT NULL,
   name VARCHAR(48),
+  isDonation BOOLEAN,
   PRIMARY KEY (id)
 )
 ;

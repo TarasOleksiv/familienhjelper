@@ -3,6 +3,7 @@ package ua.petros.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.petros.model.*;
+import ua.petros.model.Currency;
 import ua.petros.service.*;
 
 import java.math.BigDecimal;
@@ -55,6 +56,18 @@ public class TransactionValidator {
             if (beneficiary == null) {
                 messages.put("beneficiary", "Beneficiary is missing");
             }
+        }
+
+        // Check currency.
+        Currency currency = transaction.getCurrency();
+        if (currency == null) {
+            messages.put("currency", "Please choose currency from the list");
+        }
+
+        // Check type.
+        TransactionType transactionType = transaction.getTransactionType();
+        if (transactionType == null) {
+            messages.put("transactionType", "Please choose transaction type from the list");
         }
 
         return messages;

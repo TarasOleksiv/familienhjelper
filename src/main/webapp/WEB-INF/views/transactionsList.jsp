@@ -35,8 +35,15 @@
                           <tr>
                               <td><input class="btn btn-primary btn-sm" type="submit" value="Add transaction" name="Submit"/></td>
                               <td>
-                                  <input type="radio" name="isIncome" value="true" checked> Income<br>
-                                  <input type="radio" name="isIncome" value="false"> Outcome
+                                  <c:choose>
+                                      <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                          <input type="radio" name="isIncome" value="false" checked> Expense
+                                      </c:when>
+                                      <c:otherwise>
+                                          <input type="radio" name="isIncome" value="true" checked> Donation<br>
+                                          <input type="radio" name="isIncome" value="false"> Expense
+                                      </c:otherwise>
+                                  </c:choose>
                               </td>
                           </tr>
                       </table>

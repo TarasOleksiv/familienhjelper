@@ -23,6 +23,9 @@ public class TransactionType {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "isDonation")
+    private boolean isDonation;
+
     @OneToMany(mappedBy = "transactionType", fetch = FetchType.EAGER)
     private Set<Transaction> transactions;
 
@@ -48,5 +51,13 @@ public class TransactionType {
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public boolean getIsDonation() {
+        return isDonation;
+    }
+
+    public void setIsDonation(boolean isDonation) {
+        this.isDonation = isDonation;
     }
 }

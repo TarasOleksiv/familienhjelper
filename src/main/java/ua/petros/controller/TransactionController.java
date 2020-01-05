@@ -88,7 +88,9 @@ public class TransactionController {
         model.addAttribute("listCurrency", currencyService.getAll());
         model.addAttribute("listMembers", members);
         model.addAttribute("listBeneficiaries", beneficiaries);
-        model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
+        List<TransactionType> transactionTypes = transactionTypeService.getAll();
+        transactionTypes.sort(Comparator.comparing(TransactionType::getIsDonation).reversed());
+        model.addAttribute("listTransactionTypes", transactionTypes);
         model.addAttribute("isIncome", isIncome);
         model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
         return "transactionNew";
@@ -128,8 +130,12 @@ public class TransactionController {
             }
         }
         transaction.setTradingDate(date);
-        transaction.setCurrency(currencyService.getById(UUID.fromString(currencyId)));
-        transaction.setTransactionType(transactionTypeService.getById(UUID.fromString(transactionTypeId)));
+        if (currencyId != null && !currencyId.trim().isEmpty()) {
+            transaction.setCurrency(currencyService.getById(UUID.fromString(currencyId)));
+        }
+        if (transactionTypeId != null && !transactionTypeId.trim().isEmpty()) {
+            transaction.setTransactionType(transactionTypeService.getById(UUID.fromString(transactionTypeId)));
+        }
         transaction.setProject(projectService.getById(UUID.fromString(projectId)));
         if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
             transaction.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
@@ -138,16 +144,16 @@ public class TransactionController {
             transaction.setMember(memberService.getById(UUID.fromString(memberId)));
         }
 
-        String targetCurrency = currencyService.getById(UUID.fromString(currencyId)).getName();
-        BigDecimal rate = currencyRateService.findByTargetCurrency(targetCurrency).getRate();
-        BigDecimal amountNOKBigDecimal = amountBigDecimal.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        transaction.setAmountNOK(amountNOKBigDecimal);
-
         // validate transaction
         Map<String, String> messages = transactionValidator.validate(transaction);
 
         // If no errors, create transaction and change project balance
         if (messages.isEmpty()) {
+            String targetCurrency = currencyService.getById(UUID.fromString(currencyId)).getName();
+            BigDecimal rate = currencyRateService.findByTargetCurrency(targetCurrency).getRate();
+            BigDecimal amountNOKBigDecimal = amountBigDecimal.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            transaction.setAmountNOK(amountNOKBigDecimal);
+
             Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOKBigDecimal,isIn);
             transactionService.save(transaction);
             projectService.save(project);
@@ -160,9 +166,11 @@ public class TransactionController {
             model.addAttribute("listCurrency", currencyService.getAll());
             model.addAttribute("listMembers", members);
             model.addAttribute("listBeneficiaries", beneficiaries);
-            model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
+            List<TransactionType> transactionTypes = transactionTypeService.getAll();
+            transactionTypes.sort(Comparator.comparing(TransactionType::getIsDonation).reversed());
+            model.addAttribute("listTransactionTypes", transactionTypes);
             model.addAttribute("isIncome", isIncome);
-            model.addAttribute("projectId", projectId);
+            model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
             return "transactionNew";
         }
 
@@ -178,7 +186,9 @@ public class TransactionController {
                                          @PathVariable("transactionId") String transactionId
                                          ) {
         model.addAttribute("transaction", transactionService.getById(UUID.fromString(transactionId)));
-        model.addAttribute("listTransactionTypes", transactionTypeService.getAll());
+        List<TransactionType> transactionTypes = transactionTypeService.getAll();
+        transactionTypes.sort(Comparator.comparing(TransactionType::getIsDonation).reversed());
+        model.addAttribute("listTransactionTypes", transactionTypes);
         model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
         return "transactionEdit";
     }

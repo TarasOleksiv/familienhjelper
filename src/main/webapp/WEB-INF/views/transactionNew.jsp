@@ -47,10 +47,19 @@
                                 <td>Currency:</td>
                                 <td>
                                     <select name="currencyId">
+                                        <option></option>
                                         <c:forEach var="currency" items="${listCurrency}">
-                                            <option value="${currency.id}"><c:out value="${currency.name}"/></option>
+                                            <c:choose>
+                                                <c:when test="${transaction.currency.id == currency.id}">
+                                                    <option value="${currency.id}" selected><c:out value="${currency.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${currency.id}"><c:out value="${currency.name}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </select>
+                                    <div class="has-error">${messages.currency}</div>
                                 </td>
                             </tr>
 
@@ -81,8 +90,16 @@
                                         <td>To Beneficiary:</td>
                                         <td>
                                             <select name="beneficiaryId">
+                                                <option></option>
                                                 <c:forEach var="beneficiary" items="${listBeneficiaries}">
-                                                    <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                                    <c:choose>
+                                                        <c:when test="${transaction.beneficiary.id == beneficiary.id}">
+                                                            <option value="${beneficiary.id}" selected><c:out value="${beneficiary.name}"/></option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:forEach>
                                             </select>
                                             <div class="has-error">${messages.beneficiary}</div>
@@ -95,16 +112,31 @@
                                 <td>Type:</td>
                                 <td>
                                     <select name="transactionTypeId">
+                                        <option></option>
                                         <c:forEach var="transactionType" items="${listTransactionTypes}">
-                                            <option value="${transactionType.id}"><c:out value="${transactionType.name}"/></option>
+                                            <c:choose>
+                                                <c:when test="${transaction.transactionType.id == transactionType.id}">
+                                                    <option value="${transactionType.id}" selected><c:out value="${transactionType.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:choose>
+                                                        <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT') && transactionType.isDonation}">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${transactionType.id}"><c:out value="${transactionType.name}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </select>
+                                    <div class="has-error">${messages.transactionType}</div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description:</td>
                                 <td>
-                                    <textarea form="transactionNew" rows="4" cols="25" name="description" maxlength="192" readonly>${transaction.description}</textarea>
+                                    <textarea form="transactionNew" rows="4" cols="25" name="description" maxlength="192">${transaction.description}</textarea>
                                 </td>
                             </tr>
 

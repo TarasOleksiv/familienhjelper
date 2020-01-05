@@ -58,18 +58,14 @@ INSERT INTO donor_types (id, name) VALUES
 ;
 
 -- 08. Populate transaction_types;
-INSERT INTO transaction_types (id, name) VALUES
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Donation'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Regular donation'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Fund raiser'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Norsk Tipping'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Transfer fee'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Field expense'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Expense'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Individual'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Family'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Activity'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'Institution')
+INSERT INTO transaction_types (id, name, isdonation) VALUES
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Transfer', TRUE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Cash', FALSE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Food', FALSE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Medical', FALSE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Repair', FALSE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Field expense', FALSE),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Other', FALSE)
 ;
 
 -- 09. Populate currency_rates;
