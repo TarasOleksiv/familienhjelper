@@ -136,7 +136,7 @@ public class TransactionController {
         if (transactionTypeId != null && !transactionTypeId.trim().isEmpty()) {
             transaction.setTransactionType(transactionTypeService.getById(UUID.fromString(transactionTypeId)));
         }
-        transaction.setProject(projectService.getById(UUID.fromString(projectId)));
+        Project project = projectService.getById(UUID.fromString(projectId));
         if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
             transaction.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
         }
@@ -154,9 +154,10 @@ public class TransactionController {
             BigDecimal amountNOKBigDecimal = amountBigDecimal.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_EVEN);
             transaction.setAmountNOK(amountNOKBigDecimal);
 
-            Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOKBigDecimal,isIn);
+            Project projectUpdated = setProjectBalance(project,amountNOKBigDecimal,isIn);
+            transaction.setProject(projectUpdated);
+            projectService.save(projectUpdated);
             transactionService.save(transaction);
-            projectService.save(project);
         } else {
             // back to the new transaction form
             initializeModelAttributes(authentication, projectId);
@@ -220,7 +221,7 @@ public class TransactionController {
         boolean isIn = !transaction.getIsIncome();
         Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOK,isIn);
         projectService.save(project);
-        transactionService.delete(transactionService.getById(UUID.fromString(transactionId)));
+        transactionService.delete(transaction);
         return "redirect:/projects/" + projectId + "/transactions";
     }
 
