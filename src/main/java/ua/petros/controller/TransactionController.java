@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.*;
 import ua.petros.service.*;
+import ua.petros.validator.BalanceValidator;
 import ua.petros.validator.TransactionValidator;
 
 import java.math.BigDecimal;
@@ -55,21 +56,32 @@ public class TransactionController {
     @Autowired
     private TransactionValidator transactionValidator;
 
+    @Autowired
+    private BalanceValidator balanceValidator;
+
     private User userPrincipal;
     private List<Beneficiary> beneficiaries;
     private List<Member> members = new ArrayList<>();
 
     // Show all transactions for particular project
     @RequestMapping(value = "/projects/{projectId}/transactions", method = {RequestMethod.GET})
-    public String showMembers(Model model, @PathVariable("projectId") String projectId){
-        model.addAttribute("project",projectService.getById(UUID.fromString(projectId)));
+    public String showTransactions(Model model, @PathVariable("projectId") String projectId){
+        Project project = projectService.getById(UUID.fromString(projectId));
+        BigDecimal projectBalance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+        BigDecimal transactionsBalance = balanceValidator.recalculateBalance(project);
+        if (projectBalance.compareTo(transactionsBalance) != 0){
+            project.setBalance(transactionsBalance);
+            projectService.save(project);
+        }
+
+        model.addAttribute("project",project);
         model.addAttribute("listTransactions",transactionService.findByProjectId(UUID.fromString(projectId)));
         return "transactionsList";
     }
 
     // Show particular transaction for particular project
     @RequestMapping(value = "/projects/{projectId}/transactions/{transactionId}", method = {RequestMethod.GET})
-    public String showProjectImage(Model model,
+    public String showTransaction(Model model,
                                    @PathVariable("projectId") String projectId,
                                    @PathVariable("transactionId") String transactionId){
         model.addAttribute("project",projectService.getById(UUID.fromString(projectId)));
@@ -258,7 +270,7 @@ public class TransactionController {
         members.sort(Comparator.comparing(Member::getName));
     }
 
-    //Utility function
+    //Utility function to get distinct objects by key
     private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
         Map<Object, Boolean> map = new ConcurrentHashMap<>();
         return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;

@@ -10,6 +10,7 @@ import ua.petros.service.BeneficiaryService;
 import ua.petros.service.ProjectService;
 import ua.petros.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,5 +62,15 @@ public class ProjectValidator {
         }
 
         return messages;
+    }
+
+    public BigDecimal getTotalBalance(List<Project>projects){
+        BigDecimal totalBalance = new BigDecimal(0);
+        BigDecimal projectBalance = new BigDecimal(0);
+        for (Project project: projects){
+            projectBalance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+            totalBalance = totalBalance.add(projectBalance);
+        }
+        return totalBalance;
     }
 }

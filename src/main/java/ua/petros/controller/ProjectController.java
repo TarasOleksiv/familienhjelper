@@ -13,6 +13,7 @@ import ua.petros.model.CurrencyRate;
 import ua.petros.model.Project;
 import ua.petros.model.User;
 import ua.petros.service.*;
+import ua.petros.validator.BalanceValidator;
 import ua.petros.validator.ProjectValidator;
 
 import java.math.BigDecimal;
@@ -47,25 +48,38 @@ public class ProjectController {
     @Autowired
     private ProjectValidator projectValidator;
 
+    @Autowired
+    private BalanceValidator balanceValidator;
+
     private User userPrincipal;
     private List<User> fieldContactUsers;
     private List<User> fuUsers;
 
     // Show all projects
     @RequestMapping(value = "/projects", method = {RequestMethod.GET})
-    public String showMembers(Model model, Authentication authentication) {
+    public String showProjects(Model model, Authentication authentication) {
         List<Project> listProject = projectValidator.getUserProjectList(authentication);
+        BigDecimal totalBalance = projectValidator.getTotalBalance(listProject);
         model.addAttribute("list", listProject);
+        model.addAttribute("totalBalance",totalBalance);
         return "projectsList";
     }
 
     //Show project
     @RequestMapping(value = "/projects/{projectId}", method = {RequestMethod.GET})
     public String showProject(Model model, @PathVariable("projectId") String projectId) {
-        Map<String,BigDecimal> currencyBalanceMap = getCurrencyBalanceMap(projectService.getById(UUID.fromString(projectId)));
+        Project project = projectService.getById(UUID.fromString(projectId));
+        BigDecimal projectBalance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+        BigDecimal transactionsBalance = balanceValidator.recalculateBalance(project);
+        if (projectBalance.compareTo(transactionsBalance) != 0){
+            project.setBalance(transactionsBalance);
+            projectService.save(project);
+        }
+
+        Map<String,BigDecimal> currencyBalanceMap = getCurrencyBalanceMap(project);
         model.addAttribute("listCurrency", currencyService.getAll());
         model.addAttribute("currencyBalanceMap",currencyBalanceMap);
-        model.addAttribute("project", projectService.getById(UUID.fromString(projectId)));
+        model.addAttribute("project", project);
         return "projectShow";
     }
 

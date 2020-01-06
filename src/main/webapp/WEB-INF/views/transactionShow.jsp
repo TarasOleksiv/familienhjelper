@@ -89,7 +89,7 @@
                             </tr>
 
                             <tr>
-                                <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}/transactions">Cancel</a></td>
+                                <td><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/transactions">Transactions</a></td>
                                 <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
                             </tr>

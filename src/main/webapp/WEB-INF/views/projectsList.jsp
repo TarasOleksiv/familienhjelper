@@ -27,9 +27,15 @@
           <header>
               <div class="container">
                   <h4>Projects</h4>
-                  <p>
-                      <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>
-                  </p>
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>
+                      </div>
+                      <div class="col-xs-8">
+                          <strong>Total Balance: ${totalBalance} NOK</strong>
+                      </div>
+                  </div>
+                  <p></p>
               </div>
           </header>
           <form action="<c:url value="/projects"/>" method="POST">
@@ -41,6 +47,7 @@
                       <tr>
                           <th></th>
                           <th>Name</th>
+                          <th>Balance</th>
                           <th>FU</th>
                           <th>Field contact</th>
                           <th>Status</th>
@@ -56,6 +63,7 @@
                               </a>
                           </td>
                           <td>${list.name}</td>
+                          <td>${list.balance}</td>
                           <td>${list.fuUser.username}</td>
                           <td>${list.fieldContactUser.username}</td>
                           <td>${list.status.name}</td>
