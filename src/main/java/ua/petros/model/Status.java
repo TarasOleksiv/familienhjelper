@@ -49,4 +49,9 @@ public class Status {
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

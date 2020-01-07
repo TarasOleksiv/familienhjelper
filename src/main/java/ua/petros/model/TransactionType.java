@@ -60,4 +60,9 @@ public class TransactionType {
     public void setIsDonation(boolean isDonation) {
         this.isDonation = isDonation;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

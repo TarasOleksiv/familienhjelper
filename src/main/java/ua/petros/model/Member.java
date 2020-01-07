@@ -124,4 +124,9 @@ public class Member {
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

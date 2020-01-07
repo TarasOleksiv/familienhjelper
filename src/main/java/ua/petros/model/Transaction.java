@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "transactions")
 @Proxy(lazy = false)
-public class Transaction {
+public class Transaction implements Comparable<Transaction>{
     
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -144,5 +144,10 @@ public class Transaction {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    @Override
+    public int compareTo(Transaction t) {
+        return this.project.getName().compareTo(t.project.getName());
     }
 }

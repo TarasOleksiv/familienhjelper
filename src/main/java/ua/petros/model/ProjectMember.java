@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "project_member")
 @Proxy(lazy = false)
-public class ProjectMember implements Serializable {
+public class ProjectMember implements Serializable, Comparable<ProjectMember> {
 
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -84,5 +84,10 @@ public class ProjectMember implements Serializable {
 
     public void setStopPledge(Date stopPledge) {
         this.stopPledge = stopPledge;
+    }
+
+    @Override
+    public int compareTo(ProjectMember p) {
+        return this.project.getName().compareTo(p.project.getName());
     }
 }

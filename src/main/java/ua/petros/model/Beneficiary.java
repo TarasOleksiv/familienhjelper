@@ -132,4 +132,9 @@ public class Beneficiary {
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

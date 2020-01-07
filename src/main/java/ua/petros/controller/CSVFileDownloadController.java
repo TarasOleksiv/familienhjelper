@@ -8,19 +8,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
-import ua.petros.model.Beneficiary;
-import ua.petros.model.Member;
-import ua.petros.model.User;
-import ua.petros.service.BeneficiaryService;
-import ua.petros.service.MemberService;
-import ua.petros.service.UserService;
+import ua.petros.model.*;
+import ua.petros.service.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This Spring controller class implements a CSV file download functionality.
@@ -38,6 +36,15 @@ public class CSVFileDownloadController {
 
 	@Autowired
 	private BeneficiaryService beneficiaryService;
+
+	@Autowired
+	private ProjectService projectService;
+
+	@Autowired
+	private TransactionService transactionService;
+
+	@Autowired
+	private ProjectMemberService projectMemberService;
 
     // Show reports page
     @RequestMapping(value = "/reports", method = {RequestMethod.GET})
@@ -147,6 +154,115 @@ public class CSVFileDownloadController {
 
 		for (Beneficiary beneficiary : beneficiaries) {
 			csvWriter.write(beneficiary, fieldmapping);
+		}
+
+		csvWriter.close();
+	}
+
+	@RequestMapping(value = "/reports/projects", method = {RequestMethod.GET})
+	public void downloadCSVProjects(HttpServletResponse response) throws IOException {
+
+		String csvFileName = "projects.csv";
+
+		response.setContentType("text/csv");
+
+		// creates mock data
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"",
+				csvFileName);
+		response.setHeader(headerKey, headerValue);
+
+		List<Project>projects = projectService.getAll();
+
+		Writer writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+		writer.write('\uFEFF'); // BOM for UTF-*
+
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
+				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+		String[] header = { "Name", "Balance NOK", "Start Date",
+				"Stop Date", "Status", "FU", "Field Contact" };
+
+		String[] fieldmapping = { "Name", "Balance", "StartDate",
+				"StopDate", "Status", "fuUser", "fieldContactUser" };
+
+		csvWriter.writeHeader(header);
+
+		for (Project project : projects) {
+			csvWriter.write(project, fieldmapping);
+		}
+
+		csvWriter.close();
+	}
+
+	@RequestMapping(value = "/reports/project/members", method = {RequestMethod.GET})
+	public void downloadCSVProjectMembers(HttpServletResponse response) throws IOException {
+
+		String csvFileName = "projectDonors.csv";
+
+		response.setContentType("text/csv");
+
+		// creates mock data
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"",
+				csvFileName);
+		response.setHeader(headerKey, headerValue);
+
+		List<ProjectMember>projectMembers = projectMemberService.getAll();
+		projectMembers.sort(Comparator.naturalOrder());
+
+		Writer writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+		writer.write('\uFEFF'); // BOM for UTF-*
+
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
+				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+		String[] header = { "Project", "Donor", "Pledge", "Start Pledge",	"Stop Pledge" };
+
+		String[] fieldmapping = { "Project", "Member", "Pledge", "StartPledge",	"StopPledge" };
+
+		csvWriter.writeHeader(header);
+
+		for (ProjectMember projectMember : projectMembers) {
+			csvWriter.write(projectMember, fieldmapping);
+		}
+
+		csvWriter.close();
+	}
+
+
+	@RequestMapping(value = "/reports/transactions", method = {RequestMethod.GET})
+	public void downloadCSVTransactions(HttpServletResponse response) throws IOException {
+
+		String csvFileName = "transactions.csv";
+
+		response.setContentType("text/csv");
+
+		// creates mock data
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"",
+				csvFileName);
+		response.setHeader(headerKey, headerValue);
+
+		List<Transaction>transactions = transactionService.getAll();
+		transactions.sort(Comparator.naturalOrder());
+
+		Writer writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+		writer.write('\uFEFF'); // BOM for UTF-*
+
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
+				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+		String[] header = { "Project", "Date", "Amount",
+				"Currency", "Amount NOK", "From Donor", "To Beneficiary", "Transaction Type" };
+
+		String[] fieldmapping = { "project", "tradingDate", "amount",
+				"currency", "amountNOK", "member", "beneficiary", "transactionType" };
+
+		csvWriter.writeHeader(header);
+
+		for (Transaction transaction : transactions) {
+			csvWriter.write(transaction, fieldmapping);
 		}
 
 		csvWriter.close();

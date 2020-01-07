@@ -35,7 +35,7 @@
                     <h4>Reports</h4>
                     <form action="/reports/users" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                        <table class="table-radio">
+                        <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export users" name="Submit"/></td>
                                 <td>
@@ -48,7 +48,7 @@
                     </form>
                     <form action="/reports/members" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                        <table class="table-radio">
+                        <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export donors" name="Submit"/></td>
                                 <td>
@@ -61,9 +61,48 @@
                     </form>
                     <form action="/reports/beneficiaries" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                        <table class="table-radio">
+                        <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export beneficiaries" name="Submit"/></td>
+                                <td>
+                                    <select name="exportType">
+                                        <option value="csv">csv</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <form action="/reports/projects" method="GET">
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <table class="table-radio table-select">
+                            <tr>
+                                <td><input class="btn btn-primary btn-sm" type="submit" value="Export projects" name="Submit"/></td>
+                                <td>
+                                    <select name="exportType">
+                                        <option value="csv">csv</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <form action="/reports/project/members" method="GET">
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <table class="table-radio table-select">
+                            <tr>
+                                <td><input class="btn btn-primary btn-sm" type="submit" value="Export project donors" name="Submit"/></td>
+                                <td>
+                                    <select name="exportType">
+                                        <option value="csv">csv</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <form action="/reports/transactions" method="GET">
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <table class="table-radio table-select">
+                            <tr>
+                                <td><input class="btn btn-primary btn-sm" type="submit" value="Export transactions" name="Submit"/></td>
                                 <td>
                                     <select name="exportType">
                                         <option value="csv">csv</option>
