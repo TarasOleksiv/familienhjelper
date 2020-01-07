@@ -49,6 +49,9 @@
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/currencyrates">Currency Rates</a>
                 </li>
+                <li class="list-group-item">
+                    <a href="${pageContext.request.contextPath}/reports">Reports</a>
+                </li>
             </div>
         </c:if>
         <c:if test="${pageContext.request.isUserInRole('ROLE_FU')}">

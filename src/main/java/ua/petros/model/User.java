@@ -195,4 +195,9 @@ public class User {
     public void setProjectsFU(Set<Project> projectsFU) {
         this.projectsFU = projectsFU;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

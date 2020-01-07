@@ -60,4 +60,9 @@ public class Currency {
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

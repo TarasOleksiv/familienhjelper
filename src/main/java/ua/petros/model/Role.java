@@ -1,6 +1,8 @@
 package ua.petros.model;
 
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
@@ -8,6 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
+@Proxy(lazy = false)
 public class Role {
 
     //@Id
@@ -22,7 +25,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role() {
@@ -53,11 +56,14 @@ public class Role {
     }
 
     @Override
-    public String toString() {
+    /*public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", users=" + users +
                 '}';
+    }*/
+    public String toString() {
+        return name;
     }
 }

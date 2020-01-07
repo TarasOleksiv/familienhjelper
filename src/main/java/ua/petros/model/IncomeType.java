@@ -49,4 +49,9 @@ public class IncomeType {
     public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
         this.beneficiaries = beneficiaries;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

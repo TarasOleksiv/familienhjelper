@@ -49,4 +49,9 @@ public class DonorType {
     public void setMembers(Set<Member> members) {
         this.members = members;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
