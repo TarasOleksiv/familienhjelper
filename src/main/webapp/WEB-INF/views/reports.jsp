@@ -33,79 +33,85 @@
             <header>
                 <div class="container">
                     <h4>Reports</h4>
-                    <form action="/reports/users" method="GET">
+                    <form id="exportUsers" action="/reports/users/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export users" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportUsersSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <form action="/reports/members" method="GET">
+                    <form id="exportMembers" action="/reports/members/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export donors" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportMembersSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <form action="/reports/beneficiaries" method="GET">
+                    <form id="exportBeneficiaries" action="/reports/beneficiaries/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export beneficiaries" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportBeneficiariesSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <form action="/reports/projects" method="GET">
+                    <form id="exportProjects" action="/reports/projects/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export projects" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportProjectsSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <form action="/reports/project/members" method="GET">
+                    <form id="exportProjectMembers" action="/reports/project/members/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export project donors" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportProjectMembersSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <form action="/reports/transactions" method="GET">
+                    <form id="exportTransactions" action="/reports/transactions/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export transactions" name="Submit"/></td>
                                 <td>
-                                    <select name="exportType">
+                                    <select id="exportTransactionsSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
+                                        <option value="excel">excel</option>
                                     </select>
                                 </td>
                             </tr>

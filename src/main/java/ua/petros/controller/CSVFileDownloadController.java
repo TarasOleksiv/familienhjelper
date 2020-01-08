@@ -52,7 +52,7 @@ public class CSVFileDownloadController {
         return "reports";
     }
 
-	@RequestMapping(value = "/reports/users", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/users/csv", method = {RequestMethod.GET})
 	public void downloadCSVusers(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "users.csv";
@@ -90,7 +90,7 @@ public class CSVFileDownloadController {
 		csvWriter.close();
 	}
 
-	@RequestMapping(value = "/reports/members", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/members/csv", method = {RequestMethod.GET})
 	public void downloadCSVMembers(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "donors.csv";
@@ -123,7 +123,7 @@ public class CSVFileDownloadController {
 		csvWriter.close();
 	}
 
-	@RequestMapping(value = "/reports/beneficiaries", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/beneficiaries/csv", method = {RequestMethod.GET})
 	public void downloadCSVBeneficiaries(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "beneficiaries.csv";
@@ -159,7 +159,7 @@ public class CSVFileDownloadController {
 		csvWriter.close();
 	}
 
-	@RequestMapping(value = "/reports/projects", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/projects/csv", method = {RequestMethod.GET})
 	public void downloadCSVProjects(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "projects.csv";
@@ -195,7 +195,7 @@ public class CSVFileDownloadController {
 		csvWriter.close();
 	}
 
-	@RequestMapping(value = "/reports/project/members", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/project/members/csv", method = {RequestMethod.GET})
 	public void downloadCSVProjectMembers(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "projectDonors.csv";
@@ -231,7 +231,7 @@ public class CSVFileDownloadController {
 	}
 
 
-	@RequestMapping(value = "/reports/transactions", method = {RequestMethod.GET})
+	@RequestMapping(value = "/reports/transactions/csv", method = {RequestMethod.GET})
 	public void downloadCSVTransactions(HttpServletResponse response) throws IOException {
 
 		String csvFileName = "transactions.csv";

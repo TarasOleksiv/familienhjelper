@@ -4,7 +4,8 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
-import ua.petros.model.Book;
+import ua.petros.model.Member;
+import ua.petros.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +18,7 @@ import java.util.Map;
  *
  */
 
-// https://stackoverflow.com/questions/37983946/abstractexcelview-is-deprecated-in-spring-based-application
-
-public class ExcelBuilder extends AbstractXlsxView {
-
-	// private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
+public class ExcelMemberBuilder extends AbstractXlsxView {
 
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model,
@@ -29,14 +26,14 @@ public class ExcelBuilder extends AbstractXlsxView {
 			throws Exception {
 
 		// change the file name
-		response.setHeader("Content-Disposition", "attachment; filename=\"my-xls-file.xlsx\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"members.xlsx\"");
 
 		// get data model which is passed by the Spring container
-		List<Book> listBooks = (List<Book>) model.get("listBooks");
+		List<Member> listMembers = (List<Member>) model.get("listMembers");
 		
 		// create a new Excel sheet
-		Sheet sheet = workbook.createSheet("Java Books");
-		sheet.setDefaultColumnWidth(30);
+		Sheet sheet = workbook.createSheet("Members");
+		sheet.setDefaultColumnWidth(20);
 		
 		// create style for header cells
 		CellStyle style = workbook.createCellStyle();
@@ -50,32 +47,44 @@ public class ExcelBuilder extends AbstractXlsxView {
 		
 		// create header row
 		Row header = sheet.createRow(0);
-		
-		header.createCell(0).setCellValue("Book Title");
+
+		// "Name", "Email",
+		//				"Mobile", "City", "Account", "Bank", "DonorType"
+
+		header.createCell(0).setCellValue("Name");
 		header.getCell(0).setCellStyle(style);
-		
-		header.createCell(1).setCellValue("Author");
+
+		header.createCell(1).setCellValue("Email");
 		header.getCell(1).setCellStyle(style);
 		
-		header.createCell(2).setCellValue("ISBN");
+		header.createCell(2).setCellValue("Mobile");
 		header.getCell(2).setCellStyle(style);
-		
-		header.createCell(3).setCellValue("Published Date");
+
+		header.createCell(3).setCellValue("City");
 		header.getCell(3).setCellStyle(style);
-		
-		header.createCell(4).setCellValue("Price");
+
+		header.createCell(4).setCellValue("Account");
 		header.getCell(4).setCellStyle(style);
-		
+
+		header.createCell(5).setCellValue("Bank");
+		header.getCell(5).setCellStyle(style);
+
+		header.createCell(6).setCellValue("Donor Type");
+		header.getCell(6).setCellStyle(style);
 		// create data rows
 		int rowCount = 1;
 		
-		for (Book aBook : listBooks) {
+		for (Member member : listMembers) {
 			Row aRow = sheet.createRow(rowCount++);
-			aRow.createCell(0).setCellValue(aBook.getTitle());
-			aRow.createCell(1).setCellValue(aBook.getAuthor());
-			aRow.createCell(2).setCellValue(aBook.getIsbn());
-			aRow.createCell(3).setCellValue(aBook.getPublishedDate());
-			aRow.createCell(4).setCellValue(aBook.getPrice());
+			aRow.createCell(0).setCellValue(member.getName());
+			aRow.createCell(1).setCellValue(member.getEmail());
+			aRow.createCell(2).setCellValue(member.getMobile());
+			aRow.createCell(3).setCellValue(member.getCity());
+			aRow.createCell(4).setCellValue(member.getAccount());
+			aRow.createCell(5).setCellValue(member.getBank());
+			if (member.getDonorType() != null){
+				aRow.createCell(6).setCellValue(member.getDonorType().getName());
+			}
 		}
 	}
 
