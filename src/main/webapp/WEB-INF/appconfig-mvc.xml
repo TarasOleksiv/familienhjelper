@@ -16,7 +16,13 @@
         </property>
     </bean>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="viewResolver1" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="order" value="1"/>
+        <property name="basename" value="views"/>
+    </bean>
+
+    <bean id="viewResolver2" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"/>
         <property name="prefix">
             <value>/WEB-INF/views/</value>
         </property>
