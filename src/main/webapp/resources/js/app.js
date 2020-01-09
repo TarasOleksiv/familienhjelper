@@ -115,3 +115,17 @@ function setLink(element) {
         document.getElementById('exportTransactions').setAttribute("action","/reports/transactions/" + action);
     }
 }
+
+function showUserFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('userFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionUser').hidden = true;
+        document.getElementById('csvOptionUser').selected = true;
+
+    } else {
+        element.value = 0;
+        document.getElementById('userFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionUser').hidden = false;
+    }
+}

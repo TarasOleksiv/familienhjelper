@@ -39,10 +39,30 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export users" name="Submit"/></td>
                                 <td>
-                                    <select id="exportUsersSelect" name="exportType" onchange="setLink(this)">
-                                        <option value="csv">csv</option>
-                                        <option value="excel">excel</option>
+                                    <select class="select-narrow" id="exportUsersSelect" name="exportType" onchange="setLink(this)">
+                                        <option id="csvOptionUser" value="csv">csv</option>
+                                        <option id="excelOptionUser" value="excel">excel</option>
                                     </select>
+                                </td>
+                                <td><button class="btn btn-info btn-sm" type="button"
+                                            id="showFields" name="showFields" value="0"
+                                            onclick="showUserFields(this)">Fields</button>
+                                </td>
+                                <td>
+                                    <div id="userFieldsDiv" class="hidden_div">
+                                        <select class="select-normal" name="userFields" size="5" multiple="multiple" tabindex="1">
+                                            <option value="Username" selected>Username</option>
+                                            <option value="First Name">First Name</option>
+                                            <option value="Last Name">Last Name</option>
+                                            <option value="Email">Email</option>
+                                            <option value="Mobile1">Mobile1</option>
+                                            <option value="Mobile2">Mobile2</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Account">Account</option>
+                                            <option value="Bank">Bank</option>
+                                            <option value="Role">Role</option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -53,7 +73,7 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export donors" name="Submit"/></td>
                                 <td>
-                                    <select id="exportMembersSelect" name="exportType" onchange="setLink(this)">
+                                    <select class="select-narrow" id="exportMembersSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
                                         <option value="excel">excel</option>
                                     </select>
@@ -67,7 +87,7 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export beneficiaries" name="Submit"/></td>
                                 <td>
-                                    <select id="exportBeneficiariesSelect" name="exportType" onchange="setLink(this)">
+                                    <select class="select-narrow" id="exportBeneficiariesSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
                                         <option value="excel">excel</option>
                                     </select>
@@ -81,7 +101,7 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export projects" name="Submit"/></td>
                                 <td>
-                                    <select id="exportProjectsSelect" name="exportType" onchange="setLink(this)">
+                                    <select class="select-narrow" id="exportProjectsSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
                                         <option value="excel">excel</option>
                                     </select>
@@ -95,7 +115,7 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export project donors" name="Submit"/></td>
                                 <td>
-                                    <select id="exportProjectMembersSelect" name="exportType" onchange="setLink(this)">
+                                    <select class="select-narrow" id="exportProjectMembersSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
                                         <option value="excel">excel</option>
                                     </select>
@@ -109,7 +129,7 @@
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export transactions" name="Submit"/></td>
                                 <td>
-                                    <select id="exportTransactionsSelect" name="exportType" onchange="setLink(this)">
+                                    <select class="select-narrow" id="exportTransactionsSelect" name="exportType" onchange="setLink(this)">
                                         <option value="csv">csv</option>
                                         <option value="excel">excel</option>
                                     </select>
