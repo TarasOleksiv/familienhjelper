@@ -122,10 +122,12 @@ function showUserFields(element) {
         document.getElementById('userFieldsDiv').style.display = 'block';
         document.getElementById('excelOptionUser').hidden = true;
         document.getElementById('csvOptionUser').selected = true;
+        document.getElementById('allUserFields').value = 0;
 
     } else {
         element.value = 0;
         document.getElementById('userFieldsDiv').style.display = 'none';
         document.getElementById('excelOptionUser').hidden = false;
+        document.getElementById('allUserFields').value = 1;
     }
 }

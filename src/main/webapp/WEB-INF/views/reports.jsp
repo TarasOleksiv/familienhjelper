@@ -35,6 +35,7 @@
                     <h4>Reports</h4>
                     <form id="exportUsers" action="/reports/users/csv" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden"  name="allFields"  value="1" id="allUserFields"/>
                         <table class="table-radio table-select">
                             <tr>
                                 <td><input class="btn btn-primary btn-sm" type="submit" value="Export users" name="Submit"/></td>

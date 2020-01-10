@@ -3,21 +3,23 @@ package ua.petros.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import ua.petros.model.*;
+import ua.petros.report.UserFields;
 import ua.petros.service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,7 +55,15 @@ public class CSVFileDownloadController {
     }
 
 	@RequestMapping(value = "/reports/users/csv", method = {RequestMethod.GET})
-	public void downloadCSVusers(HttpServletResponse response) throws IOException {
+	public void downloadCSVusers(HttpServletResponse response, HttpServletRequest request,
+								 @ModelAttribute("allFields") String allFields) throws IOException {
+
+		List<String>userFields = new ArrayList<>();
+		if (request.getParameterValues("userFields") == null){
+			userFields = Collections.emptyList();
+		} else {
+			userFields = Arrays.asList(request.getParameterValues("userFields"));
+		}
 
 		String csvFileName = "users.csv";
 
@@ -75,11 +85,23 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Username", "First Name", "Last Name", "Email",
-				"Mobile1", "Mobile2", "Address", "Account", "Bank", "Role" };
+		Map<String,String>fieldMap = UserFields.fieldMap;
+		String[] header = new String[fieldMap.size()];
+		String[] fieldMapping = new String[fieldMap.size()];
 
-		String[] fieldMapping = new String[] { "Username", "FirstName", "LastName", "Email",
-				"Mobile1", "Mobile2", "Address", "Account", "Bank", "Roles" };
+		if (allFields.equals("1")){
+			int i = 0;
+			for (Map.Entry<String, String> entry : fieldMap.entrySet()) {
+				header[i] = entry.getKey();
+				fieldMapping[i++] = entry.getValue();
+			}
+		} else {
+			int i = 0;
+			for (Map.Entry<String, String> entry : UserFields.getFields(userFields).entrySet()) {
+				header[i] = entry.getKey();
+				fieldMapping[i++] = entry.getValue();
+			}
+		}
 
 		csvWriter.writeHeader(header);
 
