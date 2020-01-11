@@ -50,7 +50,7 @@ public class ExcelProjectBuilder extends AbstractXlsxView {
 		Row header = sheet.createRow(0);
 
 		// "Name", "Balance NOK", "Start Date",
-		//				"Stop Date", "Status", "FU", "Field Contact"
+		//				"Stop Date", "Status", "FU", "Field Contact", "Description", "Feedback"
 
 		header.createCell(0).setCellValue("Name");
 		header.getCell(0).setCellStyle(style);
@@ -72,6 +72,13 @@ public class ExcelProjectBuilder extends AbstractXlsxView {
 
 		header.createCell(6).setCellValue("Field Contact");
 		header.getCell(6).setCellStyle(style);
+
+		header.createCell(7).setCellValue("Description");
+		header.getCell(7).setCellStyle(style);
+
+		header.createCell(8).setCellValue("Feedback");
+		header.getCell(8).setCellStyle(style);
+
 		// create data rows
 		int rowCount = 1;
 		
@@ -100,6 +107,8 @@ public class ExcelProjectBuilder extends AbstractXlsxView {
 				String lastName = (project.getFieldContactUser().getLastName() == null ? "N/A" : project.getFieldContactUser().getLastName());
 				aRow.createCell(6).setCellValue(firstName + " " + lastName);
 			}
+			aRow.createCell(7).setCellValue(project.getDescription());
+			aRow.createCell(8).setCellValue(project.getFeedback());
 		}
 	}
 

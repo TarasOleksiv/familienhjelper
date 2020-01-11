@@ -56,24 +56,25 @@ public class ExcelBeneficiaryBuilder extends AbstractXlsxView {
 
 		header.createCell(1).setCellValue("Family");
 		header.getCell(1).setCellStyle(style);
-		
-		header.createCell(2).setCellValue("Description");
+
+		header.createCell(2).setCellValue("Income");
 		header.getCell(2).setCellStyle(style);
 
-		header.createCell(3).setCellValue("Income");
+		header.createCell(3).setCellValue("Income Type");
 		header.getCell(3).setCellStyle(style);
 
-		header.createCell(4).setCellValue("Income Type");
+		header.createCell(4).setCellValue("Currency");
 		header.getCell(4).setCellStyle(style);
 
-		header.createCell(5).setCellValue("Currency");
+		header.createCell(5).setCellValue("Born");
 		header.getCell(5).setCellStyle(style);
 
-		header.createCell(6).setCellValue("Born");
+		header.createCell(6).setCellValue("Field Contact");
 		header.getCell(6).setCellStyle(style);
 
-		header.createCell(7).setCellValue("Field Contact");
+		header.createCell(7).setCellValue("Description");
 		header.getCell(7).setCellStyle(style);
+
 		// create data rows
 		int rowCount = 1;
 		
@@ -81,24 +82,24 @@ public class ExcelBeneficiaryBuilder extends AbstractXlsxView {
 			Row aRow = sheet.createRow(rowCount++);
 			aRow.createCell(0).setCellValue(beneficiary.getName());
 			aRow.createCell(1).setCellValue(beneficiary.getFamily());
-			aRow.createCell(2).setCellValue(beneficiary.getDescription());
 			if (beneficiary.getIncome() != null){
-				aRow.createCell(3).setCellValue(beneficiary.getIncome().toString());
+				aRow.createCell(2).setCellValue(beneficiary.getIncome().toString());
 			}
 			if (beneficiary.getIncomeType() != null){
-				aRow.createCell(4).setCellValue(beneficiary.getIncomeType().getName());
+				aRow.createCell(3).setCellValue(beneficiary.getIncomeType().getName());
 			}
 			if (beneficiary.getCurrency() != null){
-				aRow.createCell(5).setCellValue(beneficiary.getCurrency().getName());
+				aRow.createCell(4).setCellValue(beneficiary.getCurrency().getName());
 			}
 			if (beneficiary.getDatefield() != null){
-				aRow.createCell(6).setCellValue(new SimpleDateFormat("dd.MM.yyyy").format(beneficiary.getDatefield()));
+				aRow.createCell(5).setCellValue(new SimpleDateFormat("dd.MM.yyyy").format(beneficiary.getDatefield()));
 			}
 			if (beneficiary.getUser() != null){
 				String firstName = (beneficiary.getUser().getFirstName() == null ? "N/A" : beneficiary.getUser().getFirstName());
 				String lastName = (beneficiary.getUser().getLastName() == null ? "N/A" : beneficiary.getUser().getLastName());
-				aRow.createCell(7).setCellValue(firstName + " " + lastName);
+				aRow.createCell(6).setCellValue(firstName + " " + lastName);
 			}
+			aRow.createCell(7).setCellValue(beneficiary.getDescription());
 		}
 	}
 

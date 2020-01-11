@@ -10,7 +10,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import ua.petros.model.*;
-import ua.petros.report.UserFields;
+import ua.petros.report.*;
 import ua.petros.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,15 +58,8 @@ public class CSVFileDownloadController {
 	public void downloadCSVusers(HttpServletResponse response, HttpServletRequest request,
 								 @ModelAttribute("allFields") String allFields) throws IOException {
 
-		List<String>userFields = new ArrayList<>();
-		if (request.getParameterValues("userFields") == null){
-			userFields = Collections.emptyList();
-		} else {
-			userFields = Arrays.asList(request.getParameterValues("userFields"));
-		}
-
+		List<String>chosenFields = getChosenFields(request,"userFields");
 		String csvFileName = "users.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -85,38 +78,25 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		Map<String,String>fieldMap = UserFields.fieldMap;
-		String[] header = new String[fieldMap.size()];
-		String[] fieldMapping = new String[fieldMap.size()];
+		UserFields userFields = new UserFields();
 
-		if (allFields.equals("1")){
-			int i = 0;
-			for (Map.Entry<String, String> entry : fieldMap.entrySet()) {
-				header[i] = entry.getKey();
-				fieldMapping[i++] = entry.getValue();
-			}
-		} else {
-			int i = 0;
-			for (Map.Entry<String, String> entry : UserFields.getFields(userFields).entrySet()) {
-				header[i] = entry.getKey();
-				fieldMapping[i++] = entry.getValue();
-			}
-		}
+		Map<String,String[]> map = getHeadersAndMappings(userFields,allFields,chosenFields);
 
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (User user : users) {
-			csvWriter.write(user, fieldMapping);
+			csvWriter.write(user, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
 	}
 
 	@RequestMapping(value = "/reports/members/csv", method = {RequestMethod.GET})
-	public void downloadCSVMembers(HttpServletResponse response) throws IOException {
+	public void downloadCSVMembers(HttpServletResponse response, HttpServletRequest request,
+								   @ModelAttribute("allFields") String allFields) throws IOException {
 
+		List<String>chosenFields = getChosenFields(request,"memberFields");
 		String csvFileName = "donors.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -133,23 +113,24 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Name", "Email",
-				"Mobile", "City", "Account", "Bank", "DonorType" };
+		MemberFields memberFields = new MemberFields();
+		Map<String,String[]> map = getHeadersAndMappings(memberFields,allFields,chosenFields);
 
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (Member member : members) {
-			csvWriter.write(member, header);
+			csvWriter.write(member, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
 	}
 
 	@RequestMapping(value = "/reports/beneficiaries/csv", method = {RequestMethod.GET})
-	public void downloadCSVBeneficiaries(HttpServletResponse response) throws IOException {
+	public void downloadCSVBeneficiaries(HttpServletResponse response, HttpServletRequest request,
+										 @ModelAttribute("allFields") String allFields) throws IOException {
 
+		List<String>chosenFields = getChosenFields(request,"beneficiaryFields");
 		String csvFileName = "beneficiaries.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -166,26 +147,24 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Name", "Family", "Description",
-				"Income", "Income Type", "Currency", "Born", "Field Contact" };
+		BeneficiaryFields beneficiaryFields = new BeneficiaryFields();
+		Map<String,String[]> map = getHeadersAndMappings(beneficiaryFields,allFields,chosenFields);
 
-		String[] fieldmapping = { "Name", "Family", "Description",
-				"Income", "IncomeType", "Currency", "Datefield", "User" };
-
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (Beneficiary beneficiary : beneficiaries) {
-			csvWriter.write(beneficiary, fieldmapping);
+			csvWriter.write(beneficiary, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
 	}
 
 	@RequestMapping(value = "/reports/projects/csv", method = {RequestMethod.GET})
-	public void downloadCSVProjects(HttpServletResponse response) throws IOException {
+	public void downloadCSVProjects(HttpServletResponse response, HttpServletRequest request,
+									@ModelAttribute("allFields") String allFields) throws IOException {
 
+		List<String>chosenFields = getChosenFields(request,"projectFields");
 		String csvFileName = "projects.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -202,26 +181,24 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Name", "Balance NOK", "Start Date",
-				"Stop Date", "Status", "FU", "Field Contact" };
+		ProjectFields projectFields = new ProjectFields();
+		Map<String,String[]> map = getHeadersAndMappings(projectFields,allFields,chosenFields);
 
-		String[] fieldmapping = { "Name", "Balance", "StartDate",
-				"StopDate", "Status", "fuUser", "fieldContactUser" };
-
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (Project project : projects) {
-			csvWriter.write(project, fieldmapping);
+			csvWriter.write(project, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
 	}
 
 	@RequestMapping(value = "/reports/project/members/csv", method = {RequestMethod.GET})
-	public void downloadCSVProjectMembers(HttpServletResponse response) throws IOException {
+	public void downloadCSVProjectMembers(HttpServletResponse response, HttpServletRequest request,
+										  @ModelAttribute("allFields") String allFields) throws IOException {
 
+		List<String>chosenFields = getChosenFields(request,"projectMemberFields");
 		String csvFileName = "projectDonors.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -239,14 +216,13 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Project", "Donor", "Pledge", "Start Pledge",	"Stop Pledge" };
+		ProjectMemberFields projectMemberFields = new ProjectMemberFields();
+		Map<String,String[]> map = getHeadersAndMappings(projectMemberFields,allFields,chosenFields);
 
-		String[] fieldmapping = { "Project", "Member", "Pledge", "StartPledge",	"StopPledge" };
-
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (ProjectMember projectMember : projectMembers) {
-			csvWriter.write(projectMember, fieldmapping);
+			csvWriter.write(projectMember, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
@@ -254,10 +230,11 @@ public class CSVFileDownloadController {
 
 
 	@RequestMapping(value = "/reports/transactions/csv", method = {RequestMethod.GET})
-	public void downloadCSVTransactions(HttpServletResponse response) throws IOException {
+	public void downloadCSVTransactions(HttpServletResponse response, HttpServletRequest request,
+										@ModelAttribute("allFields") String allFields) throws IOException {
 
+		List<String>chosenFields = getChosenFields(request,"transactionFields");
 		String csvFileName = "transactions.csv";
-
 		response.setContentType("text/csv");
 
 		// creates mock data
@@ -275,18 +252,51 @@ public class CSVFileDownloadController {
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(writer,
 				CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
 
-		String[] header = { "Project", "Date", "Amount",
-				"Currency", "Amount NOK", "From Donor", "To Beneficiary", "Transaction Type" };
+		TransactionFields transactionFields = new TransactionFields();
+		Map<String,String[]> map = getHeadersAndMappings(transactionFields,allFields,chosenFields);
 
-		String[] fieldmapping = { "project", "tradingDate", "amount",
-				"currency", "amountNOK", "member", "beneficiary", "transactionType" };
-
-		csvWriter.writeHeader(header);
+		csvWriter.writeHeader(map.get("header"));
 
 		for (Transaction transaction : transactions) {
-			csvWriter.write(transaction, fieldmapping);
+			csvWriter.write(transaction, map.get("fieldMapping"));
 		}
 
 		csvWriter.close();
+	}
+
+	private List<String> getChosenFields(HttpServletRequest request, String fieldsList){
+		List<String>chosenFields = new ArrayList<>();
+		if (request.getParameterValues(fieldsList) == null){
+			chosenFields = Collections.emptyList();
+		} else {
+			chosenFields = Arrays.asList(request.getParameterValues(fieldsList));
+		}
+
+		return chosenFields;
+	}
+
+	private Map<String,String[]> getHeadersAndMappings(AbstractFields abstractFields, String allFields, List<String>chosenFields){
+		Map<String,String>fieldMap = abstractFields.getFieldMap();
+		String[] header = new String[fieldMap.size()];
+		String[] fieldMapping = new String[fieldMap.size()];
+
+		if (allFields.equals("1")){
+			int i = 0;
+			for (Map.Entry<String, String> entry : fieldMap.entrySet()) {
+				header[i] = entry.getKey();
+				fieldMapping[i++] = entry.getValue();
+			}
+		} else {
+			int i = 0;
+			for (Map.Entry<String, String> entry : abstractFields.getFields(chosenFields).entrySet()) {
+				header[i] = entry.getKey();
+				fieldMapping[i++] = entry.getValue();
+			}
+		}
+
+		Map<String,String[]> map = new HashMap<>();
+		map.put("header",header);
+		map.put("fieldMapping",fieldMapping);
+		return map;
 	}
 }

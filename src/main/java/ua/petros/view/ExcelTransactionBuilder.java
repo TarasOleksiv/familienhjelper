@@ -50,7 +50,7 @@ public class ExcelTransactionBuilder extends AbstractXlsxView {
 		Row header = sheet.createRow(0);
 
 		// "Project", "Date", "Amount",
-		//				"Currency", "Amount NOK", "From Donor", "To Beneficiary", "Transaction Type"
+		//				"Currency", "Amount NOK", "From Donor", "To Beneficiary", "Transaction Type", "Description"
 
 		header.createCell(0).setCellValue("Project");
 		header.getCell(0).setCellStyle(style);
@@ -75,6 +75,10 @@ public class ExcelTransactionBuilder extends AbstractXlsxView {
 
 		header.createCell(7).setCellValue("Transaction Type");
 		header.getCell(7).setCellStyle(style);
+
+		header.createCell(8).setCellValue("Description");
+		header.getCell(8).setCellStyle(style);
+
 		// create data rows
 		int rowCount = 1;
 		
@@ -102,6 +106,7 @@ public class ExcelTransactionBuilder extends AbstractXlsxView {
 			if (transaction.getTransactionType() != null){
 				aRow.createCell(7).setCellValue(transaction.getTransactionType().getName());
 			}
+			aRow.createCell(8).setCellValue(transaction.getDescription());
 		}
 	}
 

@@ -123,11 +123,97 @@ function showUserFields(element) {
         document.getElementById('excelOptionUser').hidden = true;
         document.getElementById('csvOptionUser').selected = true;
         document.getElementById('allUserFields').value = 0;
-
+        setLink(document.getElementById('exportUsersSelect'));
     } else {
         element.value = 0;
         document.getElementById('userFieldsDiv').style.display = 'none';
         document.getElementById('excelOptionUser').hidden = false;
         document.getElementById('allUserFields').value = 1;
+        setLink(document.getElementById('exportUsersSelect'));
+    }
+}
+
+function showMemberFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('memberFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionMember').hidden = true;
+        document.getElementById('csvOptionMember').selected = true;
+        document.getElementById('allMemberFields').value = 0;
+        setLink(document.getElementById('exportMembersSelect'));
+    } else {
+        element.value = 0;
+        document.getElementById('memberFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionMember').hidden = false;
+        document.getElementById('allMemberFields').value = 1;
+        setLink(document.getElementById('exportMembersSelect'));
+    }
+}
+
+function showBeneficiaryFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('beneficiaryFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionBeneficiary').hidden = true;
+        document.getElementById('csvOptionBeneficiary').selected = true;
+        document.getElementById('allBeneficiaryFields').value = 0;
+        setLink(document.getElementById('exportBeneficiariesSelect'));
+    } else {
+        element.value = 0;
+        document.getElementById('beneficiaryFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionBeneficiary').hidden = false;
+        document.getElementById('allBeneficiaryFields').value = 1;
+        setLink(document.getElementById('exportBeneficiariesSelect'));
+    }
+}
+
+function showProjectFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('projectFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionProject').hidden = true;
+        document.getElementById('csvOptionProject').selected = true;
+        document.getElementById('allProjectFields').value = 0;
+        setLink(document.getElementById('exportProjectsSelect'));
+    } else {
+        element.value = 0;
+        document.getElementById('projectFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionProject').hidden = false;
+        document.getElementById('allProjectFields').value = 1;
+        setLink(document.getElementById('exportProjectsSelect'));
+    }
+}
+
+function showProjectMemberFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('projectMemberFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionProjectMember').hidden = true;
+        document.getElementById('csvOptionProjectMember').selected = true;
+        document.getElementById('allProjectMemberFields').value = 0;
+        setLink(document.getElementById('exportProjectMembersSelect'));
+    } else {
+        element.value = 0;
+        document.getElementById('projectMemberFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionProjectMember').hidden = false;
+        document.getElementById('allProjectMemberFields').value = 1;
+        setLink(document.getElementById('exportProjectMembersSelect'));
+    }
+}
+
+function showTransactionFields(element) {
+    if (element.value == 0){
+        element.value = 1;
+        document.getElementById('transactionFieldsDiv').style.display = 'block';
+        document.getElementById('excelOptionTransaction').hidden = true;
+        document.getElementById('csvOptionTransaction').selected = true;
+        document.getElementById('allTransactionFields').value = 0;
+        setLink(document.getElementById('exportTransactionsSelect'));
+    } else {
+        element.value = 0;
+        document.getElementById('transactionFieldsDiv').style.display = 'none';
+        document.getElementById('excelOptionTransaction').hidden = false;
+        document.getElementById('allTransactionFields').value = 1;
+        setLink(document.getElementById('exportTransactionsSelect'));
     }
 }
