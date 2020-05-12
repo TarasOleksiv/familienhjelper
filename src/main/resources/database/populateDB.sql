@@ -37,6 +37,7 @@ INSERT INTO statuses (id, name) VALUES
 INSERT INTO income_types (id, name) VALUES
   (uuid_in(md5(random()::text || now()::text)::cstring), 'Salary'),
   (uuid_in(md5(random()::text || now()::text)::cstring), 'Pension'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'Random'),
   (uuid_in(md5(random()::text || now()::text)::cstring), 'None')
 ;
 

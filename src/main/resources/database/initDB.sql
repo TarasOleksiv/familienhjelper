@@ -124,7 +124,7 @@ CREATE TABLE projects (
   description VARCHAR(2000) NULL,
   startDate DATE NULL,
   stopDate DATE NULL,
-  feedback VARCHAR(2000) NULL,
+  feedback VARCHAR(40000) NULL,
   balance DECIMAL(11,2) DEFAULT 0.00 NULL,
   fieldContact_id UUID,
   fu_id UUID,
