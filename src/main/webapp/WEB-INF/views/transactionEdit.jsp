@@ -39,25 +39,58 @@
                             <CAPTION>Edit transaction</CAPTION>
                             <tr>
                                 <td>Date:</td>
-                                <td><fmt:formatDate value="${transaction.tradingDate}" pattern="dd.MM.yyyy" /></td>
+                                <!--td><fmt:formatDate value="${transaction.tradingDate}" pattern="dd.MM.yyyy" /></td-->
+                                <td><input type="date" name="tradingDate" value="${transaction.tradingDate}" required></td>
                             </tr>
                             <tr>
                                 <td>Amount:</td>
-                                <td>${transaction.amount}</td>
+                                <!--td>${transaction.amount}</td-->
+                                <td><input type="number" step="0.01" min="0" name="amount" value="${transaction.amount}" required></td>
                             </tr>
                             <tr>
                                 <td>Currency:</td>
-                                <td>${transaction.currency.name}</td>
+                                <!--td>${transaction.currency.name}</td-->
+                                <td>
+                                    <select name="currencyId">
+                                        <option></option>
+                                        <c:forEach var="currency" items="${listCurrency}">
+                                            <c:choose>
+                                                <c:when test="${transaction.currency.id == currency.id}">
+                                                    <option value="${currency.id}" selected><c:out value="${currency.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${currency.id}"><c:out value="${currency.name}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                    <div class="has-error">${messages.currency}</div>
+                                </td>
                             </tr>
-                            <tr>
+                            <!--tr>
                                 <td>Amount NOK:</td>
                                 <td>${transaction.amountNOK}</td>
-                            </tr>
+                            </tr-->
                             <c:choose>
                                 <c:when test="${transaction.isIncome==true}">
                                     <tr>
                                         <td>From Donor:</td>
-                                        <td>${transaction.member.name}</td>
+                                        <!--td>${transaction.member.name}</td-->
+                                        <td>
+                                            <select name="memberId">
+                                                <c:forEach var="member" items="${listMembers}">
+                                                    <c:choose>
+                                                        <c:when test="${transaction.member.id == member.id}">
+                                                            <option value="${member.id}" selected><c:out value="${member.name}"/></option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${member.id}"><c:out value="${member.name}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </select>
+                                            <div class="has-error">${messages.donor}</div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>To:</td>
@@ -71,7 +104,23 @@
                                     </tr>
                                     <tr>
                                         <td>To Beneficiary:</td>
-                                        <td>${transaction.beneficiary.name}</td>
+                                        <!--td>${transaction.beneficiary.name}</td-->
+                                        <td>
+                                            <select name="beneficiaryId">
+                                                <option></option>
+                                                <c:forEach var="beneficiary" items="${listBeneficiaries}">
+                                                    <c:choose>
+                                                        <c:when test="${transaction.beneficiary.id == beneficiary.id}">
+                                                            <option value="${beneficiary.id}" selected><c:out value="${beneficiary.name}"/></option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </select>
+                                            <div class="has-error">${messages.beneficiary}</div>
+                                        </td>
                                     </tr>
                                 </c:otherwise>
                             </c:choose>
