@@ -77,6 +77,14 @@
                                 <td colspan="2">${beneficiary.user.username} ${beneficiary.user.lastName} ${beneficiary.user.firstName}</td>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td colspan="2">
+                                    <c:if test="${beneficiary.active}">
+                                        <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>
                                 <td><a class="btn btn-warning btn-sm btn-block" href="/beneficiaries/${beneficiary.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>

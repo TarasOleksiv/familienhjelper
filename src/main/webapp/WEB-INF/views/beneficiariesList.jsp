@@ -12,8 +12,6 @@
     <link rel="icon" type="image/png" href="${contextPath}/resources/img/weblogo.png"/>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <!--link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
-    <!--link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css" rel="stylesheet"-->
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <script defer src="${contextPath}/resources/js/all.js"></script>
 
@@ -46,6 +44,7 @@
                           <th>Name</th>
                           <th>Income</th>
                           <th>Field Contact</th>
+                          <th>Active</th>
                       </tr>
                   </c:if>
                   </thead>
@@ -61,6 +60,11 @@
                           <td>${list.name}</td>
                           <td>${list.income}</td>
                           <td>${list.user.username} ${list.user.lastName} ${list.user.firstName}</td>
+                          <td>
+                              <c:if test="${list.active}">
+                                  <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                              </c:if>
+                          </td>
                       </tr>
                   </c:forEach>
                   </tbody>
@@ -70,13 +74,9 @@
     </div>
 </div>
 
-<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script-->
 <script src="${contextPath}/resources/js/jquery-3.3.1.min.js"></script>
 <script src="${contextPath}/resources/js/jquery.dataTables.min.js"></script>
 <script src="${contextPath}/resources/js/dataTables.bootstrap.min.js"></script>
-<!--script src="https://code.jquery.com/jquery-3.3.1.js"></script-->
-<!--script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script-->
-<!--script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script-->
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${contextPath}/resources/js/app.js"></script>
 

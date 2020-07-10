@@ -132,6 +132,32 @@
                             </tr>
 
                             <tr>
+                                <td>Active</td>
+                                <c:choose>
+                                    <c:when test="${project.active}">
+                                        <c:choose>
+                                            <c:when test="${pageContext.request.isUserInRole('ROLE_FU')}">
+                                                <td><input type="checkbox" name="active" value="true" checked onclick="return false;"></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td><input type="checkbox" name="active" value="true" checked></td>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${pageContext.request.isUserInRole('ROLE_FU')}">
+                                                <td><input type="checkbox" name="active" value="true" onclick="return false;"></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td><input type="checkbox" name="active" value="true"></td>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/projects/${project.id}">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
                             </tr>

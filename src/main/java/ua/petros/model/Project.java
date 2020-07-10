@@ -43,6 +43,9 @@ public class Project {
     @Column(name = "feedback")
     private String feedback;
 
+    @Column(name = "active")
+    private boolean active;
+
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
@@ -166,6 +169,14 @@ public class Project {
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

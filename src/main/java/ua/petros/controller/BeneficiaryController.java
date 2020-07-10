@@ -88,7 +88,8 @@ public class BeneficiaryController {
                           @ModelAttribute("datefield") String datefield,
                           @ModelAttribute("incomeTypeId") String incomeTypeId,
                           @ModelAttribute("currencyId") String currencyId,
-                          @ModelAttribute("userId") String userId
+                          @ModelAttribute("userId") String userId,
+                          @ModelAttribute("active") String active
                           ){
 
         // prepare beneficiary info
@@ -98,6 +99,12 @@ public class BeneficiaryController {
         beneficiary.setName(name);
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
+        if(!active.trim().isEmpty()) {
+            beneficiary.setActive(true);
+            }
+            else {
+            beneficiary.setActive(false);
+        }
         if (income != null && !income.trim().isEmpty()) {
             beneficiary.setIncome(new BigDecimal(income));
         }
@@ -191,6 +198,7 @@ public class BeneficiaryController {
                                   @ModelAttribute("incomeTypeId") String incomeTypeId,
                                   @ModelAttribute("currencyId") String currencyId,
                                   @ModelAttribute("userId") String userId,
+                                  @ModelAttribute("active") String active,
                                   @ModelAttribute("beneficiaryId") String beneficiaryId){
 
         // prepare beneficiary info
@@ -199,6 +207,12 @@ public class BeneficiaryController {
         beneficiary.setName(name);
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
+        if(!active.trim().isEmpty()) {
+            beneficiary.setActive(true);
+        }
+        else {
+            beneficiary.setActive(false);
+        }
         if (income != null && !income.trim().isEmpty()) {
             beneficiary.setIncome(new BigDecimal(income));
         }

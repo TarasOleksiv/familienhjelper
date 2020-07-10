@@ -111,6 +111,14 @@
                                 </td>
                             </tr>
 
+                            <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN') ||
+                                pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                <tr>
+                                    <td>Active</td>
+                                    <td><input type="checkbox" name="active" value="true"></td>
+                                </tr>
+                            </c:if>
+
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/projects">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Submit" name="Add"/></td>

@@ -77,6 +77,14 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td colspan="2">
+                                    <c:if test="${project.active}">
+                                        <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Balance</td>
                                 <td>
                                     <div id="NOK">${currencyBalanceMap.NOK}</div>

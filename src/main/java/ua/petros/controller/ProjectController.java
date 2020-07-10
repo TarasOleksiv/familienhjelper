@@ -104,7 +104,8 @@ public class ProjectController {
                              @ModelAttribute("statusName") String statusName,
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
-                             @ModelAttribute("feedback") String feedback
+                             @ModelAttribute("feedback") String feedback,
+                             @ModelAttribute("active") String active
     ) {
 
         // prepare project info
@@ -114,7 +115,12 @@ public class ProjectController {
         project.setName(name);
         project.setDescription(description);
         project.setFeedback(feedback);
-
+        if(!active.trim().isEmpty()) {
+            project.setActive(true);
+        }
+        else {
+            project.setActive(false);
+        }
         Date dateStart = null;
         if (startDate != null && !startDate.trim().isEmpty()) {
             try {
@@ -200,6 +206,7 @@ public class ProjectController {
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
                              @ModelAttribute("feedback") String feedback,
+                             @ModelAttribute("active") String active,
                              @ModelAttribute("projectId") String projectId
     ) {
 
@@ -209,7 +216,12 @@ public class ProjectController {
         project.setName(name);
         project.setDescription(description);
         project.setFeedback(feedback);
-
+        if(!active.trim().isEmpty()) {
+            project.setActive(true);
+        }
+        else {
+            project.setActive(false);
+        }
         Date dateStart = null;
         if (startDate != null && !startDate.trim().isEmpty()) {
             try {

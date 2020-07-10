@@ -34,6 +34,9 @@ public class Beneficiary {
     @Column(name = "income")
     private BigDecimal income;
 
+    @Column(name = "active")
+    private boolean active;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "datefield")
     private Date datefield;
@@ -52,6 +55,14 @@ public class Beneficiary {
 
     @OneToMany(mappedBy = "beneficiary", fetch = FetchType.EAGER)
     private Set<Transaction> transactions;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public UUID getId() {
         return id;

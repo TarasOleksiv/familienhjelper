@@ -98,6 +98,13 @@
                                     </select>
                                 </td>
                             </tr>
+                            <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN') ||
+                                pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                <tr>
+                                    <td>Active</td>
+                                    <td><input type="checkbox" name="active" value="true"></td>
+                                </tr>
+                            </c:if>
 
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>

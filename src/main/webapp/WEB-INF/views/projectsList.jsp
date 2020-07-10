@@ -51,6 +51,7 @@
                           <th>FU</th>
                           <th>Field contact</th>
                           <th>Status</th>
+                          <th>Active</th>
                       </tr>
                       </thead>
                   </c:if>
@@ -67,6 +68,11 @@
                           <td>${list.fuUser.username}</td>
                           <td>${list.fieldContactUser.username}</td>
                           <td>${list.status.name}</td>
+                          <td>
+                              <c:if test="${list.active}">
+                                  <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                              </c:if>
+                          </td>
                       </tr>
                   </c:forEach>
                   </tbody>
