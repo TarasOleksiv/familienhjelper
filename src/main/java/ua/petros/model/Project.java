@@ -46,6 +46,9 @@ public class Project {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "imageFolderLink")
+    private String imageFolderLink;
+
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
@@ -177,6 +180,14 @@ public class Project {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getImageFolderLink() {
+        return imageFolderLink;
+    }
+
+    public void setImageFolderLink(String imageFolderLink) {
+        this.imageFolderLink = imageFolderLink;
     }
 
     @Override

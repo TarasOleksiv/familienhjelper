@@ -126,6 +126,7 @@ CREATE TABLE projects (
   startDate DATE NULL,
   stopDate DATE NULL,
   feedback VARCHAR(40000) NULL,
+  imageFolderLink VARCHAR(1000) NULL,
   balance DECIMAL(11,2) DEFAULT 0.00 NULL,
   active BOOLEAN NOT NULL DEFAULT TRUE,
   fieldContact_id UUID,

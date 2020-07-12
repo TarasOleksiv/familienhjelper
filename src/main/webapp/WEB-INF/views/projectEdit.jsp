@@ -130,6 +130,12 @@
                                     <textarea rows="6" cols="25" name="feedback" form="projectEdit" maxlength="2000">${project.feedback}</textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Link to images</td>
+                                <td>
+                                    <textarea rows="6" cols="25" name="imageFolderLink" form="projectEdit" maxlength="2000">${project.imageFolderLink}</textarea>
+                                </td>
+                            </tr>
 
                             <tr>
                                 <td>Active</td>

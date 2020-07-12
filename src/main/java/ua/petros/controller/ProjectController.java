@@ -105,6 +105,7 @@ public class ProjectController {
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
                              @ModelAttribute("feedback") String feedback,
+                             @ModelAttribute("imageFolderLink") String imageFolderLink,
                              @ModelAttribute("active") String active
     ) {
 
@@ -115,6 +116,7 @@ public class ProjectController {
         project.setName(name);
         project.setDescription(description);
         project.setFeedback(feedback);
+        project.setImageFolderLink(imageFolderLink);
         if(!active.trim().isEmpty()) {
             project.setActive(true);
         }
@@ -206,6 +208,7 @@ public class ProjectController {
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
                              @ModelAttribute("feedback") String feedback,
+                              @ModelAttribute("imageFolderLink") String imageFolderLink,
                              @ModelAttribute("active") String active,
                              @ModelAttribute("projectId") String projectId
     ) {
@@ -216,6 +219,7 @@ public class ProjectController {
         project.setName(name);
         project.setDescription(description);
         project.setFeedback(feedback);
+        project.setImageFolderLink(imageFolderLink);
         if(!active.trim().isEmpty()) {
             project.setActive(true);
         }

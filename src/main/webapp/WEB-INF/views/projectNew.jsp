@@ -110,6 +110,12 @@
                                     <textarea rows="6" cols="25" name="feedback" form="projectNew" maxlength="2000">${project.feedback}</textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Link to images</td>
+                                <td>
+                                    <textarea rows="6" cols="25" name="imageFolderLink" form="projectNew" maxlength="2000">${project.imageFolderLink}</textarea>
+                                </td>
+                            </tr>
 
                             <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN') ||
                                 pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
