@@ -105,13 +105,27 @@
                                 <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/donors">Donors</a></td>
                             </tr>
                             <tr>
-                                <td colspan="1"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/images">Images</a></td>
                                 <c:choose>
-                                    <c:when test="${empty project.imageFolderLink}">
-                                        <td colspan="2"><a class="btn btn-primary btn-sm btn-block" disabled>Images Folder Link</a></td>
+                                    <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                                        <c:choose>
+                                            <c:when test="${empty project.imageFolderLink}">
+                                                <td colspan="3"><a class="btn btn-primary btn-sm btn-block" disabled>Images Folder Link</a></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td colspan="3"><a class="btn btn-primary btn-sm btn-block" target="_blank" href="${project.imageFolderLink}">Images Folder Link</a></td>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:when>
                                     <c:otherwise>
-                                        <td colspan="2"><a class="btn btn-primary btn-sm btn-block" target="_blank" href="${project.imageFolderLink}">Images Folder Link</a></td>
+                                        <td colspan="1"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/images">Images</a></td>
+                                        <c:choose>
+                                            <c:when test="${empty project.imageFolderLink}">
+                                                <td colspan="2"><a class="btn btn-primary btn-sm btn-block" disabled>Images Folder Link</a></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td colspan="2"><a class="btn btn-primary btn-sm btn-block" target="_blank" href="${project.imageFolderLink}">Images Folder Link</a></td>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:otherwise>
                                 </c:choose>
                             </tr>
