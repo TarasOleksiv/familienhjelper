@@ -106,6 +106,7 @@ CREATE TABLE beneficiaries (
   family VARCHAR(480) NULL,
   income DECIMAL(11,2) NULL,
   description VARCHAR(2000) NULL,
+  imageFolderLink VARCHAR(1000) NULL,
   datefield DATE,
   active BOOLEAN NOT NULL DEFAULT TRUE,
   user_id UUID,

@@ -84,6 +84,7 @@ public class BeneficiaryController {
                           @ModelAttribute("name") String name,
                           @ModelAttribute("family") String family,
                           @ModelAttribute("description") String description,
+                          @ModelAttribute("imageFolderLink") String imageFolderLink,
                           @ModelAttribute("income") String income,
                           @ModelAttribute("datefield") String datefield,
                           @ModelAttribute("incomeTypeId") String incomeTypeId,
@@ -99,6 +100,7 @@ public class BeneficiaryController {
         beneficiary.setName(name);
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
+        beneficiary.setImageFolderLink(imageFolderLink);
         if(!active.trim().isEmpty()) {
             beneficiary.setActive(true);
             }
@@ -193,6 +195,7 @@ public class BeneficiaryController {
                                   @ModelAttribute("name") String name,
                                   @ModelAttribute("family") String family,
                                   @ModelAttribute("description") String description,
+                                  @ModelAttribute("imageFolderLink") String imageFolderLink,
                                   @ModelAttribute("income") String income,
                                   @ModelAttribute("datefield") String datefield,
                                   @ModelAttribute("incomeTypeId") String incomeTypeId,
@@ -207,6 +210,7 @@ public class BeneficiaryController {
         beneficiary.setName(name);
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
+        beneficiary.setImageFolderLink(imageFolderLink);
         if(!active.trim().isEmpty()) {
             beneficiary.setActive(true);
         }

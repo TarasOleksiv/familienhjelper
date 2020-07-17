@@ -85,6 +85,16 @@
                                 </td>
                             </tr>
                             <tr>
+                                <c:choose>
+                                    <c:when test="${empty beneficiary.imageFolderLink}">
+                                        <td colspan="3"><a class="btn btn-primary btn-sm btn-block" disabled>Images Folder Link</a></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td colspan="3"><a class="btn btn-primary btn-sm btn-block" target="_blank" href="${beneficiary.imageFolderLink}">Images Folder Link</a></td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>
                                 <td><a class="btn btn-warning btn-sm btn-block" href="/beneficiaries/${beneficiary.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>

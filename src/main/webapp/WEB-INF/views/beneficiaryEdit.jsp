@@ -59,6 +59,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Link to images</td>
+                                <td>
+                                    <textarea rows="6" cols="25" name="imageFolderLink" form="benEdit" maxlength="2000">${beneficiary.imageFolderLink}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Born</td>
                                 <td><input type="date" name="datefield" value="${beneficiary.datefield}"></td>
                             </tr>

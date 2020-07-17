@@ -41,6 +41,9 @@ public class Beneficiary {
     @Column(name = "datefield")
     private Date datefield;
 
+    @Column(name = "imageFolderLink")
+    private String imageFolderLink;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -142,6 +145,14 @@ public class Beneficiary {
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public String getImageFolderLink() {
+        return imageFolderLink;
+    }
+
+    public void setImageFolderLink(String imageFolderLink) {
+        this.imageFolderLink = imageFolderLink;
     }
 
     @Override
