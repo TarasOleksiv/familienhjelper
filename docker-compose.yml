@@ -43,4 +43,6 @@ services:
       - app-db
     ports:
       - "127.0.0.1:8181:80"
+    volumes:
+    - ./pgadmin4_servsers.json:/pgadmin4/servers.json
     restart: unless-stopped
