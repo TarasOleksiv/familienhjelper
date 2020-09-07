@@ -3,8 +3,13 @@ services:
   app-web:
     build: ./
     container_name: app-web
+    environment:
+      JPDA_ADDRESS: 5005
+      JPDA_TRANSPORT: dt_socket
+      agentlib:jdwp: transport=dt_socket,address=5005,server=y,suspend=y
     ports:
       - "8080:8080"
+      - "5005:5005"
     links:
       - app-db
     restart: unless-stopped
