@@ -27,16 +27,8 @@ services:
     volumes:
       - ./src/main/resources/database/initDB.sql:/docker-entrypoint-initdb.d/initDB.sql
       - ./src/main/resources/database/populateDB.sql:/docker-entrypoint-initdb.d/populateDB.sql
+      - ./postgres-data:/var/lib/postgresql/data/pgdata
     restart: unless-stopped
-
-  app-db-data:
-    image: cogniteev/echo
-    container_name: app-init-db-data
-    command: echo 'Data Container for PostgreSQL'
-    depends_on:
-      - app-db
-    volumes:
-      - /var/lib/postgresql/data
 
   pg-admin:
     image: dpage/pgadmin4:latest
