@@ -23,7 +23,7 @@ public class Status {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
     private Set<Project> projects;
 
     public UUID getId() {

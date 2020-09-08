@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
-@Proxy(lazy = false)
+//@Proxy(lazy = false)
 public class Role {
 
     //@Id
@@ -25,7 +25,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users;
 
     public Role() {

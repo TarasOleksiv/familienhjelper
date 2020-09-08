@@ -26,7 +26,7 @@ public class TransactionType {
     @Column(name = "isDonation")
     private boolean isDonation;
 
-    @OneToMany(mappedBy = "transactionType", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "transactionType", fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
 
     public UUID getId() {

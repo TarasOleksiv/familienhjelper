@@ -56,7 +56,7 @@ public class Beneficiary {
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
-    @OneToMany(mappedBy = "beneficiary", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
 
     public boolean isActive() {

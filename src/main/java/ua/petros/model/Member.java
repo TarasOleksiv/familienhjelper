@@ -39,10 +39,10 @@ public class Member {
     @JoinColumn(name = "donortype_id", referencedColumnName = "id")
     private DonorType donorType;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<ProjectMember> projectMembers;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
 
     public UUID getId() {
