@@ -23,10 +23,10 @@ public class Currency {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "currency", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "currency", fetch = FetchType.LAZY)
     private Set<Beneficiary> beneficiaries;
 
-    @OneToMany(mappedBy = "currency", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "currency", fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
 
     public UUID getId() {

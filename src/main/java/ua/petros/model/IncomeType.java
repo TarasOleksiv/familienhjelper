@@ -23,7 +23,7 @@ public class IncomeType {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "incomeType", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "incomeType", fetch = FetchType.LAZY)
     private Set<Beneficiary> beneficiaries;
 
     public UUID getId() {

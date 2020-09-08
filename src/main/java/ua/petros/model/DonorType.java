@@ -23,7 +23,7 @@ public class DonorType {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "donorType", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "donorType", fetch = FetchType.LAZY)
     private Set<Member> members;
 
     public UUID getId() {

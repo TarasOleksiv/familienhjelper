@@ -59,13 +59,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Beneficiary> beneficiaries;
 
-    @OneToMany(mappedBy = "fieldContactUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "fieldContactUser", fetch = FetchType.LAZY)
     private Set<Project> projectsFieldContact;
 
-    @OneToMany(mappedBy = "fuUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "fuUser", fetch = FetchType.LAZY)
     private Set<Project> projectsFU;
 
     public UUID getId() {
