@@ -225,6 +225,16 @@
                             </tr>
                         </table>
                     </form>
+
+                    <form id="exportProjectsPDF" action="/reports/projects/pdf" method="GET">
+                        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                        <input type="hidden"  name="allFields"  value="1" id="allProjectFieldsPDF"/>
+                        <table class="table-radio table-select">
+                            <tr>
+                                <td><input class="btn btn-primary btn-sm" type="submit" value="Projects to PDF" name="Submit"/></td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </header>
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "projects")
 @Proxy(lazy = false)
-public class Project {
+public class Project implements Comparable<Project> {
 
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -193,5 +193,10 @@ public class Project {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Project p) {
+        return this.getName().compareTo(p.getName());
     }
 }
