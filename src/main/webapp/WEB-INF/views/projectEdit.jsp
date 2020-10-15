@@ -49,7 +49,7 @@
                             <tr>
                                 <td>Description</td>
                                 <td>
-                                    <textarea rows="6" cols="25" name="description" form="projectEdit" maxlength="2000">${project.description}</textarea>
+                                    <textarea rows="6" cols="25" name="description" form="projectEdit" maxlength="40000">${project.description}</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -127,7 +127,7 @@
                             <tr>
                                 <td>Feedback</td>
                                 <td>
-                                    <textarea rows="6" cols="25" name="feedback" form="projectEdit" maxlength="2000">${project.feedback}</textarea>
+                                    <textarea rows="6" cols="25" name="feedback" form="projectEdit" maxlength="40000">${project.feedback}</textarea>
                                 </td>
                             </tr>
                             <tr>

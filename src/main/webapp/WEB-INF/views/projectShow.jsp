@@ -47,7 +47,7 @@
                             <tr>
                                 <td>Description</td>
                                 <td colspan="2">
-                                    <textarea rows="6" cols="25" name="description" maxlength="2000" readonly>${project.description}</textarea>
+                                    <textarea rows="6" cols="25" name="description" maxlength="40000" readonly>${project.description}</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -73,7 +73,7 @@
                             <tr>
                                 <td>Feedback</td>
                                 <td colspan="2">
-                                    <textarea rows="6" cols="25" name="feedback" maxlength="2000" readonly>${project.feedback}</textarea>
+                                    <textarea rows="6" cols="25" name="feedback" maxlength="40000" readonly>${project.feedback}</textarea>
                                 </td>
                             </tr>
                             <tr>

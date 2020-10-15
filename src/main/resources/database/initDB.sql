@@ -123,7 +123,7 @@ CREATE TABLE beneficiaries (
 CREATE TABLE projects (
   id UUID NOT NULL,
   name VARCHAR(45) NOT NULL,
-  description VARCHAR(2000) NULL,
+  description VARCHAR(40000) NULL,
   startDate DATE NULL,
   stopDate DATE NULL,
   feedback VARCHAR(40000) NULL,
