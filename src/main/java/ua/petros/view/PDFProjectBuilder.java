@@ -10,7 +10,9 @@ import ua.petros.model.Transaction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,12 @@ public class PDFProjectBuilder extends AbstractPdfView {
 
 		// get data model which is passed by the Spring container
 		List<Project> listProjects = (List<Project>) model.get("listProjects");
+		Date startDate = (Date) model.get("startDate");
+		Date endDate = (Date) model.get("endDate");
+		String isWholePeriod = (String) model.get("isWholePeriod");
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		String strStartDate = dateFormat.format(startDate);
+		String strEndDate = dateFormat.format(endDate);
 
 		BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font f1 = new Font(bf, 12);
@@ -48,6 +56,12 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			paragraph = new Paragraph("*********************************************************************************************", f2);
 			paragraph.add(new Paragraph(" "));
 			paragraph.add(new Paragraph("Project: " + project.getName(),f2));
+
+			if ("false".equals(isWholePeriod)){
+				paragraph.add(new Paragraph(" "));
+				paragraph.add(new Paragraph("From: " + strStartDate + "       To: " + strEndDate,f2));
+			}
+
 			if (project.getFuUser() != null){
 				firstName = (project.getFuUser().getFirstName() == null ? "" : project.getFuUser().getFirstName());
 				lastName = (project.getFuUser().getLastName() == null ? "" : project.getFuUser().getLastName());
@@ -70,20 +84,22 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			table.setBorder(0);
 			totalAmount = BigDecimal.valueOf(0);
 			for (Transaction transaction : project.getTransactions()){
-				table.addCell(new SimpleDateFormat("dd.MM.yyyy").format(transaction.getTradingDate()));
-				if (transaction.getIsIncome()) {
-					table.addCell(transaction.getMember().getName());
-				} else {
-					table.addCell(transaction.getBeneficiary().getName());
+				if (transaction.getTradingDate().compareTo(startDate)>=0 && transaction.getTradingDate().compareTo(endDate)<=0) {
+					table.addCell(new SimpleDateFormat("dd.MM.yyyy").format(transaction.getTradingDate()));
+					if (transaction.getIsIncome()) {
+						table.addCell(transaction.getMember().getName());
+					} else {
+						table.addCell(transaction.getBeneficiary().getName());
+					}
+					if (transaction.getIsIncome()) {
+						table.addCell(transaction.getAmountNOK().toString());
+						totalAmount = totalAmount.add(transaction.getAmountNOK());
+					} else {
+						table.addCell(BigDecimal.valueOf(-1).multiply(transaction.getAmountNOK()).toString());
+						totalAmount = totalAmount.subtract(transaction.getAmountNOK());
+					}
+					table.addCell("NOK");
 				}
-				if (transaction.getIsIncome()) {
-					table.addCell(transaction.getAmountNOK().toString());
-					totalAmount = totalAmount.add(transaction.getAmountNOK());
-				} else {
-					table.addCell(BigDecimal.valueOf(-1).multiply(transaction.getAmountNOK()).toString());
-					totalAmount = totalAmount.subtract(transaction.getAmountNOK());
-				}
-				table.addCell("NOK");
 			}
 			paragraph.add(new Paragraph("",f1));
 			paragraph.add(table);

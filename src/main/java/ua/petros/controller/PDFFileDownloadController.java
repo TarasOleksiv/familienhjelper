@@ -2,13 +2,16 @@ package ua.petros.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.petros.model.*;
 import ua.petros.service.*;
 
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -22,34 +25,70 @@ import java.util.stream.Collectors;
 public class PDFFileDownloadController {
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private MemberService memberService;
-
-	@Autowired
-	private BeneficiaryService beneficiaryService;
-
-	@Autowired
 	private ProjectService projectService;
-
-	@Autowired
-	private ProjectMemberService projectMemberService;
-
-	@Autowired
-	private TransactionService transactionService;
 
 	/**
 	 * Handle request to download PDF document
 	 */
 
 	@RequestMapping(value = "/reports/projects/pdf", method = RequestMethod.GET)
-	public ModelAndView downloadPDFProjects() {
+	public ModelAndView downloadPDFProjects(
+			@ModelAttribute("projectId") String projectId,
+			@ModelAttribute("isAllProjects") String isAllProjects,
+			@ModelAttribute("isWholePeriod") String isWholePeriod,
+			@ModelAttribute("fromDate") String fromDate,
+			@ModelAttribute("toDate") String toDate
+	) {
 
-		List<Project> listProjects = projectService.getAll();
+		List<Project> listProjects = new ArrayList<>();
+		if ("true".equals(isAllProjects)){
+			listProjects = projectService.getAll();
+		} else {
+			Project project = projectService.getById(UUID.fromString(projectId));
+			listProjects.clear();
+			listProjects.add(project);
+		}
+
 		List<Project> sortedListProjects = listProjects.stream().sorted().collect(Collectors.toList());
 
+		Date startDate= null;
+		if (fromDate != null && !fromDate.trim().isEmpty()) {
+			try {
+				startDate = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				startDate = new SimpleDateFormat("yyyy-MM-dd").parse("1900-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Date endDate= null;
+		if (toDate != null && !toDate.trim().isEmpty()) {
+			try {
+				endDate = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				endDate = new SimpleDateFormat("yyyy-MM-dd").parse("5900-01-01");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		modelMap.put("listProjects",sortedListProjects);
+		modelMap.put("startDate",startDate);
+		modelMap.put("endDate",endDate);
+		modelMap.put("isWholePeriod",isWholePeriod);
+
 		// return a view which will be resolved by a pdf view resolver
-		return new ModelAndView("pdfProjectsView", "listProjects", sortedListProjects);
+		//return new ModelAndView("pdfProjectsView", "listProjects", sortedListProjects);
+		return new ModelAndView("pdfProjectsView", modelMap);
 	}
 }

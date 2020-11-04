@@ -217,3 +217,21 @@ function showTransactionFields(element) {
         setLink(document.getElementById('exportTransactionsSelect'));
     }
 }
+
+function showProjects(element){
+    if (element.value == "false") {
+        document.getElementById('projectsDiv').style.display = 'block';
+    } else {
+        document.getElementById('projectsDiv').style.display = 'none';
+    }
+}
+
+function showPeriod(element){
+    if (element.value == "false") {
+        document.getElementById('fromDiv').style.display = 'block';
+        document.getElementById('toDiv').style.display = 'block';
+    } else {
+        document.getElementById('fromDiv').style.display = 'none';
+        document.getElementById('toDiv').style.display = 'none';
+    }
+}

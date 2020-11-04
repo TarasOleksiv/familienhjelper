@@ -229,9 +229,39 @@
                     <form id="exportProjectsPDF" action="/reports/projects/pdf" method="GET">
                         <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                         <input type="hidden"  name="allFields"  value="1" id="allProjectFieldsPDF"/>
-                        <table class="table-radio table-select">
+                        <table class="table-radio">
+                            <thead><h5>Export projects to PDF</h5></thead>
                             <tr>
-                                <td><input class="btn btn-primary btn-sm" type="submit" value="Projects to PDF" name="Submit"/></td>
+                                <td><input type="radio" name="isAllProjects" value="true" checked onclick="showProjects(this)"> All projects<br>
+                                    <input type="radio" name="isAllProjects" value="false" onclick="showProjects(this)"> Selected project</td>
+                                <td colspan="2"><input type="radio" name="isWholePeriod" value="true" checked onclick="showPeriod(this)"> Whole period<br>
+                                    <input type="radio" name="isWholePeriod" value="false" onclick="showPeriod(this)"> Selected dates</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="projectsDiv" class="hidden_div">
+                                        <select name="projectId">
+                                            <c:forEach var="project" items="${listProjects}">
+                                                <option value="${project.id}"><c:out value="${project.name}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="fromDiv" class="hidden_div">
+                                        <label for="startDate">From:</label>
+                                        <input type="date" name="fromDate" id="startDate">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="toDiv" class="hidden_div">
+                                        <label for="endDate">To:</label>
+                                        <input type="date" name="toDate" id="endDate">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><input class="btn btn-primary btn-sm" type="submit" value="Generate PDF" name="Submit"/></td>
                             </tr>
                         </table>
                     </form>

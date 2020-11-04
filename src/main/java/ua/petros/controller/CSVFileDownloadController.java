@@ -51,6 +51,9 @@ public class CSVFileDownloadController {
     // Show reports page
     @RequestMapping(value = "/reports", method = {RequestMethod.GET})
     public String showReports(Model model){
+		List<Project> listProjects = projectService.getAll();
+		List<Project> sortedListProjects = listProjects.stream().sorted().collect(Collectors.toList());
+		model.addAttribute("listProjects",sortedListProjects);
         return "reports";
     }
 
