@@ -234,6 +234,8 @@
                             <tr>
                                 <td><input type="radio" name="isAllProjects" value="true" checked onclick="showProjects(this)"> All projects<br>
                                     <input type="radio" name="isAllProjects" value="false" onclick="showProjects(this)"> Selected project</td>
+                                <td><input type="radio" name="isAllFieldContacts" value="true" checked onclick="showFieldContacts(this)"> All Field Contacts<br>
+                                    <input type="radio" name="isAllFieldContacts" value="false" onclick="showFieldContacts(this)"> Selected Field Contact</td>
                                 <td colspan="2"><input type="radio" name="isWholePeriod" value="true" checked onclick="showPeriod(this)"> Whole period<br>
                                     <input type="radio" name="isWholePeriod" value="false" onclick="showPeriod(this)"> Selected dates</td>
                             </tr>
@@ -243,6 +245,15 @@
                                         <select name="projectId">
                                             <c:forEach var="project" items="${listProjects}">
                                                 <option value="${project.id}"><c:out value="${project.name}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="fieldContactsDiv" class="hidden_div">
+                                        <select name="fieldContactId">
+                                            <c:forEach var="fieldContact" items="${listFieldContacts}">
+                                                <option value="${fieldContact.id}"><c:out value="${fieldContact.username}: ${fieldContact.lastName} ${fieldContact.firstName}"/></option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -261,7 +272,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3"><input class="btn btn-primary btn-sm" type="submit" value="Generate PDF" name="Submit"/></td>
+                                <td colspan="4"><input class="btn btn-primary btn-sm" type="submit" value="Generate PDF" name="Submit"/></td>
                             </tr>
                         </table>
                     </form>

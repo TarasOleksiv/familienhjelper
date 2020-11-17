@@ -53,7 +53,13 @@ public class CSVFileDownloadController {
     public String showReports(Model model){
 		List<Project> listProjects = projectService.getAll();
 		List<Project> sortedListProjects = listProjects.stream().sorted().collect(Collectors.toList());
+		List<User> listUsers = userService.getAll();
+		List<User> listFieldContactUsers = listUsers.stream()
+				.filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
+				.sorted()
+				.collect(Collectors.toList());
 		model.addAttribute("listProjects",sortedListProjects);
+		model.addAttribute("listFieldContacts",listFieldContactUsers);
         return "reports";
     }
 

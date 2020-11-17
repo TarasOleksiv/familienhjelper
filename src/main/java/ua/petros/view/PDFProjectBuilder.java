@@ -6,6 +6,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 import ua.petros.model.Project;
 import ua.petros.model.Transaction;
+import ua.petros.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 	private BigDecimal totalAmount;
 	private String firstName;
 	private String lastName;
+	private String fieldContactFirstName;
+	private String fieldContactLastName;
 
 	public static final String FONT = "fonts/arial.ttf";
 
@@ -47,14 +50,36 @@ public class PDFProjectBuilder extends AbstractPdfView {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		String strStartDate = dateFormat.format(startDate);
 		String strEndDate = dateFormat.format(endDate);
+		User fieldContact = (User) model.get("fieldContact");
+		fieldContactFirstName = (fieldContact.getFirstName() == null ? "" : fieldContact.getFirstName());
+		fieldContactLastName = (fieldContact.getLastName() == null ? "" : fieldContact.getLastName());
+		String isAllFieldContacts = (String) model.get("isAllFieldContacts");
 
 		BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font f1 = new Font(bf, 12);
 		Font f2 = new Font(bf,12,Font.BOLD);
+
+		if (listProjects.size() == 0){
+			paragraph = new Paragraph("*********************************************************************************************", f2);
+			paragraph.add(new Paragraph(" "));
+			paragraph.add(new Paragraph("Field contact: " + fieldContactFirstName + " " + fieldContactLastName,f1));
+			paragraph.add(new Paragraph(" "));
+			paragraph.add(new Paragraph("No data found", f1));
+			paragraph.add(new Paragraph(" "));
+			paragraph.add(new Paragraph("*********************************************************************************************", f2));
+			document.add(paragraph);
+			return;
+		}
 		
 		for (Project project : listProjects) {
 			paragraph = new Paragraph("*********************************************************************************************", f2);
 			paragraph.add(new Paragraph(" "));
+
+			if ("false".equals(isAllFieldContacts)){
+				paragraph.add(new Paragraph("Field contact: " + fieldContactFirstName + " " + fieldContactLastName,f2));
+				paragraph.add(new Paragraph(" "));
+			}
+
 			paragraph.add(new Paragraph("Project: " + project.getName(),f2));
 
 			if ("false".equals(isWholePeriod)){
@@ -83,8 +108,9 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			table.getDefaultCell().setBorder(0);
 			table.setBorder(0);
 			totalAmount = BigDecimal.valueOf(0);
-			for (Transaction transaction : project.getTransactions()){
-				if (transaction.getTradingDate().compareTo(startDate)>=0 && transaction.getTradingDate().compareTo(endDate)<=0) {
+			for (Transaction transaction : project.getSortedTransactions()){
+				if (("true".equals(isWholePeriod)) ||
+						(transaction.getTradingDate().compareTo(startDate)>=0 && transaction.getTradingDate().compareTo(endDate)<=0)) {
 					table.addCell(new SimpleDateFormat("dd.MM.yyyy").format(transaction.getTradingDate()));
 					if (transaction.getIsIncome()) {
 						table.addCell(transaction.getMember().getName());

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @Proxy(lazy = false)
-public class User {
+public class User implements Comparable<User> {
 
     //@Id
     //@GeneratedValue(generator = "uuid2")
@@ -199,5 +199,10 @@ public class User {
     @Override
     public String toString() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public int compareTo(User u) {
+        return this.getUsername().compareTo(u.getUsername());
     }
 }

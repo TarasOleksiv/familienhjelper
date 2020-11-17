@@ -4,6 +4,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -148,6 +149,9 @@ public class Transaction implements Comparable<Transaction>{
 
     @Override
     public int compareTo(Transaction t) {
-        return this.project.getName().compareTo(t.project.getName());
+        //return this.project.getName().compareTo(t.project.getName());
+        return Comparator.comparing((Transaction tr)-> tr.project.getName())
+                .thenComparing(tr -> tr.getTradingDate())
+                .compare(this, t);
     }
 }

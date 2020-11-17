@@ -235,3 +235,11 @@ function showPeriod(element){
         document.getElementById('toDiv').style.display = 'none';
     }
 }
+
+function showFieldContacts(element){
+    if (element.value == "false") {
+        document.getElementById('fieldContactsDiv').style.display = 'block';
+    } else {
+        document.getElementById('fieldContactsDiv').style.display = 'none';
+    }
+}

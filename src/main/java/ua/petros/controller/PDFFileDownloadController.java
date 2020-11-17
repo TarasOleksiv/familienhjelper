@@ -27,6 +27,9 @@ public class PDFFileDownloadController {
 	@Autowired
 	private ProjectService projectService;
 
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * Handle request to download PDF document
 	 */
@@ -37,7 +40,9 @@ public class PDFFileDownloadController {
 			@ModelAttribute("isAllProjects") String isAllProjects,
 			@ModelAttribute("isWholePeriod") String isWholePeriod,
 			@ModelAttribute("fromDate") String fromDate,
-			@ModelAttribute("toDate") String toDate
+			@ModelAttribute("toDate") String toDate,
+			@ModelAttribute("fieldContactId") String fieldContactId,
+			@ModelAttribute("isAllFieldContacts") String isAllFieldContacts
 	) {
 
 		List<Project> listProjects = new ArrayList<>();
@@ -49,7 +54,16 @@ public class PDFFileDownloadController {
 			listProjects.add(project);
 		}
 
-		List<Project> sortedListProjects = listProjects.stream().sorted().collect(Collectors.toList());
+		List<Project> sortedListProjects;
+
+		if ("true".equals(isAllFieldContacts)) {
+			sortedListProjects = listProjects.stream().sorted().collect(Collectors.toList());
+		} else {
+			sortedListProjects = listProjects.stream().sorted()
+					.filter(project -> Objects.nonNull(project.getFieldContactUser()))
+					.filter(project -> UUID.fromString(fieldContactId).equals(project.getFieldContactUser().getId()))
+					.collect(Collectors.toList());
+		}
 
 		Date startDate= null;
 		if (fromDate != null && !fromDate.trim().isEmpty()) {
@@ -81,11 +95,15 @@ public class PDFFileDownloadController {
 			}
 		}
 
+		User fieldContact = userService.getById(UUID.fromString(fieldContactId));
+
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		modelMap.put("listProjects",sortedListProjects);
 		modelMap.put("startDate",startDate);
 		modelMap.put("endDate",endDate);
 		modelMap.put("isWholePeriod",isWholePeriod);
+		modelMap.put("fieldContact",fieldContact);
+		modelMap.put("isAllFieldContacts",isAllFieldContacts);
 
 		// return a view which will be resolved by a pdf view resolver
 		//return new ModelAndView("pdfProjectsView", "listProjects", sortedListProjects);

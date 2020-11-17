@@ -4,10 +4,8 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Taras on 18-12-2019.
@@ -168,6 +166,10 @@ public class Project implements Comparable<Project> {
 
     public Set<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public List<Transaction> getSortedTransactions() {
+        return transactions.stream().sorted().collect(Collectors.toList());
     }
 
     public void setTransactions(Set<Transaction> transactions) {
