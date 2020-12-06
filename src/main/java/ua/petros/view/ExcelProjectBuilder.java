@@ -67,17 +67,20 @@ public class ExcelProjectBuilder extends AbstractXlsxView {
 		header.createCell(4).setCellValue("Status");
 		header.getCell(4).setCellStyle(style);
 
-		header.createCell(5).setCellValue("FU");
+		header.createCell(5).setCellValue("Beneficiary");
 		header.getCell(5).setCellStyle(style);
 
-		header.createCell(6).setCellValue("Field Contact");
+		header.createCell(6).setCellValue("FU");
 		header.getCell(6).setCellStyle(style);
 
-		header.createCell(7).setCellValue("Description");
+		header.createCell(7).setCellValue("Field Contact");
 		header.getCell(7).setCellStyle(style);
 
-		header.createCell(8).setCellValue("Feedback");
+		header.createCell(8).setCellValue("Description");
 		header.getCell(8).setCellStyle(style);
+
+		header.createCell(9).setCellValue("Feedback");
+		header.getCell(9).setCellStyle(style);
 
 		// create data rows
 		int rowCount = 1;
@@ -97,18 +100,22 @@ public class ExcelProjectBuilder extends AbstractXlsxView {
 			if (project.getStatus() != null){
 				aRow.createCell(4).setCellValue(project.getStatus().getName());
 			}
+			if (project.getBeneficiary() != null){
+				String name = (project.getBeneficiary().getName() == null ? "N/A" : project.getBeneficiary().getName());
+				aRow.createCell(5).setCellValue(name);
+			}
 			if (project.getFuUser() != null){
 				String firstName = (project.getFuUser().getFirstName() == null ? "N/A" : project.getFuUser().getFirstName());
 				String lastName = (project.getFuUser().getLastName() == null ? "N/A" : project.getFuUser().getLastName());
-				aRow.createCell(5).setCellValue(firstName + " " + lastName);
+				aRow.createCell(6).setCellValue(firstName + " " + lastName);
 			}
 			if (project.getFieldContactUser() != null){
 				String firstName = (project.getFieldContactUser().getFirstName() == null ? "N/A" : project.getFieldContactUser().getFirstName());
 				String lastName = (project.getFieldContactUser().getLastName() == null ? "N/A" : project.getFieldContactUser().getLastName());
-				aRow.createCell(6).setCellValue(firstName + " " + lastName);
+				aRow.createCell(7).setCellValue(firstName + " " + lastName);
 			}
-			aRow.createCell(7).setCellValue(project.getDescription());
-			aRow.createCell(8).setCellValue(project.getFeedback());
+			aRow.createCell(8).setCellValue(project.getDescription());
+			aRow.createCell(9).setCellValue(project.getFeedback());
 		}
 	}
 

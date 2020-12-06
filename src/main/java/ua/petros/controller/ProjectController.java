@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.petros.model.*;
 import ua.petros.model.Currency;
-import ua.petros.model.CurrencyRate;
-import ua.petros.model.Project;
-import ua.petros.model.User;
 import ua.petros.service.*;
 import ua.petros.validator.BalanceValidator;
 import ua.petros.validator.ProjectValidator;
@@ -51,9 +49,13 @@ public class ProjectController {
     @Autowired
     private BalanceValidator balanceValidator;
 
+    @Autowired
+    private BeneficiaryService beneficiaryService;
+
     private User userPrincipal;
     private List<User> fieldContactUsers;
     private List<User> fuUsers;
+    private List<Beneficiary> beneficiaries;
 
     // Show all projects
     @RequestMapping(value = "/projects", method = {RequestMethod.GET})
@@ -91,6 +93,7 @@ public class ProjectController {
         model.addAttribute("listFieldContactUsers", fieldContactUsers);
         model.addAttribute("listFuUsers", fuUsers);
         model.addAttribute("listStatuses", statusService.getAll());
+        model.addAttribute("listBeneficiaries", beneficiaries);
         return "projectNew";
     }
 
@@ -104,6 +107,7 @@ public class ProjectController {
                              @ModelAttribute("statusName") String statusName,
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
+                             @ModelAttribute("beneficiaryId") String beneficiaryId,
                              @ModelAttribute("feedback") String feedback,
                              @ModelAttribute("imageFolderLink") String imageFolderLink,
                              @ModelAttribute("active") String active
@@ -113,7 +117,7 @@ public class ProjectController {
         Project project = new Project();
         UUID uuid = UUID.randomUUID();
         project.setId(uuid);
-        project.setName(name);
+        project.setName(name.trim());
         project.setDescription(description);
         project.setFeedback(feedback);
         project.setImageFolderLink(imageFolderLink);
@@ -150,6 +154,9 @@ public class ProjectController {
         if (fuId != null && !fuId.trim().isEmpty()) {
             project.setFuUser(userService.getById(UUID.fromString(fuId)));
         }
+        if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
+            project.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
+        }
 
         // validate project
         Map<String, String> messages = projectValidator.validate(project);
@@ -166,6 +173,7 @@ public class ProjectController {
             model.addAttribute("listFieldContactUsers", fieldContactUsers);
             model.addAttribute("listFuUsers", fuUsers);
             model.addAttribute("listStatuses", statusService.getAll());
+            model.addAttribute("listBeneficiaries", beneficiaries);
             return "projectNew";
         }
 
@@ -194,6 +202,7 @@ public class ProjectController {
         model.addAttribute("listFieldContactUsers", fieldContactUsers);
         model.addAttribute("listFuUsers", fuUsers);
         model.addAttribute("listStatuses", statusService.getAll());
+        model.addAttribute("listBeneficiaries", beneficiaries);
         return "projectEdit";
     }
 
@@ -207,8 +216,9 @@ public class ProjectController {
                              @ModelAttribute("statusName") String statusName,
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
+                             @ModelAttribute("beneficiaryId") String beneficiaryId,
                              @ModelAttribute("feedback") String feedback,
-                              @ModelAttribute("imageFolderLink") String imageFolderLink,
+                             @ModelAttribute("imageFolderLink") String imageFolderLink,
                              @ModelAttribute("active") String active,
                              @ModelAttribute("projectId") String projectId
     ) {
@@ -216,7 +226,7 @@ public class ProjectController {
         // prepare project info
         Project project = new Project();
         project.setId(UUID.fromString(projectId));
-        project.setName(name);
+        project.setName(name.trim());
         project.setDescription(description);
         project.setFeedback(feedback);
         project.setImageFolderLink(imageFolderLink);
@@ -253,6 +263,9 @@ public class ProjectController {
         if (fuId != null && !fuId.trim().isEmpty()) {
             project.setFuUser(userService.getById(UUID.fromString(fuId)));
         }
+        if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
+            project.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
+        }
 
         // validate project
         Map<String, String> messages = projectValidator.validate(project);
@@ -269,6 +282,7 @@ public class ProjectController {
             model.addAttribute("listFieldContactUsers", fieldContactUsers);
             model.addAttribute("listFuUsers", fuUsers);
             model.addAttribute("listStatuses", statusService.getAll());
+            model.addAttribute("listBeneficiaries", beneficiaries);
             return "projectEdit";
         }
 
@@ -286,6 +300,9 @@ public class ProjectController {
         fuUsers = listUsers.stream()
                 .filter(user -> "ROLE_FU".equals(user.getRoles().iterator().next().getName()))
                 .collect(Collectors.toList());
+
+        List<Beneficiary> listBeneficiaries = beneficiaryService.getAll();
+        beneficiaries = listBeneficiaries.stream().sorted().collect(Collectors.toList());
 
         String currentPrincipalName = authentication.getName();
         userPrincipal = userService.findByUsername(currentPrincipalName);

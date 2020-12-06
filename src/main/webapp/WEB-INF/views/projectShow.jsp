@@ -63,6 +63,10 @@
                                 <td colspan="2">${project.status.name}</td>
                             </tr>
                             <tr>
+                                <td>Beneficiary</td>
+                                <td colspan="2">${project.beneficiary.name}</td>
+                            </tr>
+                            <tr>
                                 <td>Field Contact</td>
                                 <td colspan="2">${project.fieldContactUser.username} ${project.fieldContactUser.lastName} ${project.fieldContactUser.firstName}</td>
                             </tr>

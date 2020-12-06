@@ -97,7 +97,7 @@ public class BeneficiaryController {
         Beneficiary beneficiary = new Beneficiary();
         UUID uuid = UUID.randomUUID();
         beneficiary.setId(uuid);
-        beneficiary.setName(name);
+        beneficiary.setName(name.trim());
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
         beneficiary.setImageFolderLink(imageFolderLink);
@@ -207,7 +207,7 @@ public class BeneficiaryController {
         // prepare beneficiary info
         Beneficiary beneficiary = new Beneficiary();
         beneficiary.setId(UUID.fromString(beneficiaryId));
-        beneficiary.setName(name);
+        beneficiary.setName(name.trim());
         beneficiary.setFamily(family);
         beneficiary.setDescription(description);
         beneficiary.setImageFolderLink(imageFolderLink);

@@ -31,6 +31,7 @@ public class PDFProjectBuilder extends AbstractPdfView {
 	private String lastName;
 	private String fieldContactFirstName;
 	private String fieldContactLastName;
+	private String beneficiaryName;
 
 	public static final String FONT = "fonts/arial.ttf";
 
@@ -87,6 +88,14 @@ public class PDFProjectBuilder extends AbstractPdfView {
 				paragraph.add(new Paragraph("From: " + strStartDate + "       To: " + strEndDate,f2));
 			}
 
+			if (project.getBeneficiary() != null){
+				beneficiaryName = (project.getBeneficiary().getName() == null ? "" : project.getBeneficiary().getName());
+			} else {
+				beneficiaryName = "";
+			}
+			paragraph.add(new Paragraph(" ",f1));
+			paragraph.add(new Paragraph("Beneficiary: " + beneficiaryName,f1));
+
 			if (project.getFuUser() != null){
 				firstName = (project.getFuUser().getFirstName() == null ? "" : project.getFuUser().getFirstName());
 				lastName = (project.getFuUser().getLastName() == null ? "" : project.getFuUser().getLastName());
@@ -96,6 +105,7 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			}
 			paragraph.add(new Paragraph(" ",f1));
 			paragraph.add(new Paragraph("FU: " + firstName + " " + lastName,f1));
+
 			if (project.getFieldContactUser() != null){
 				firstName = (project.getFieldContactUser().getFirstName() == null ? "" : project.getFieldContactUser().getFirstName());
 				lastName = (project.getFieldContactUser().getLastName() == null ? "" : project.getFieldContactUser().getLastName());

@@ -48,6 +48,10 @@ public class Project implements Comparable<Project> {
     private String imageFolderLink;
 
     @ManyToOne
+    @JoinColumn(name = "beneficiary_id", referencedColumnName = "id")
+    private Beneficiary beneficiary;
+
+    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
@@ -190,6 +194,14 @@ public class Project implements Comparable<Project> {
 
     public void setImageFolderLink(String imageFolderLink) {
         this.imageFolderLink = imageFolderLink;
+    }
+
+    public Beneficiary getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(Beneficiary beneficiary) {
+        this.beneficiary = beneficiary;
     }
 
     @Override

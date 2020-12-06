@@ -23,6 +23,7 @@ public class ProjectFields extends AbstractFields {
         map.put("Start Date", "StartDate");
         map.put("Stop Date", "StopDate");
         map.put("Status", "Status");
+        map.put("Beneficiary", "Beneficiary");
         map.put("FU", "fuUser");
         map.put("Field Contact", "fieldContactUser");
         map.put("Description", "Description");

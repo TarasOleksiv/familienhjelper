@@ -80,6 +80,24 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Beneficiary</td>
+                                <td>
+                                    <select name="beneficiaryId">
+                                        <option></option>
+                                        <c:forEach var="beneficiary" items="${listBeneficiaries}">
+                                            <c:choose>
+                                                <c:when test="${project.beneficiary.name == beneficiary.name}">
+                                                    <option value="${beneficiary.id}" selected><c:out value="${beneficiary.name}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Field Contact</td>
                                 <td>
                                     <select name="fieldContactId">

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "beneficiaries")
 @Proxy(lazy = false)
-public class Beneficiary {
+public class Beneficiary implements Comparable<Beneficiary> {
 
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -58,6 +58,9 @@ public class Beneficiary {
 
     @OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
+
+    @OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+    private Set<Project> projects;
 
     public boolean isActive() {
         return active;
@@ -155,8 +158,21 @@ public class Beneficiary {
         this.imageFolderLink = imageFolderLink;
     }
 
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Beneficiary b) {
+        return this.getName().compareTo(b.getName());
     }
 }

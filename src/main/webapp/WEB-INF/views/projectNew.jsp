@@ -74,6 +74,17 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Beneficiary</td>
+                                <td>
+                                    <select name="beneficiaryId">
+                                        <option></option>
+                                        <c:forEach var="beneficiary" items="${listBeneficiaries}">
+                                            <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Field Contact</td>
                                 <td>
                                     <select name="fieldContactId">
