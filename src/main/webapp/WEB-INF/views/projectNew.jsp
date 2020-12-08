@@ -82,6 +82,7 @@
                                             <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
                                         </c:forEach>
                                     </select>
+                                    <div class="has-error">${messages.beneficiary}</div>
                                 </td>
                             </tr>
                             <tr>

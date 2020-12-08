@@ -61,6 +61,12 @@ public class ProjectValidator {
             }
         }
 
+        // Check beneficiary
+        Beneficiary beneficiary = project.getBeneficiary();
+        if (beneficiary == null) {
+            messages.put("beneficiary", "Please select beneficiary from the list");
+        }
+
         return messages;
     }
 
