@@ -52,6 +52,12 @@ public class ProjectController {
     @Autowired
     private BeneficiaryService beneficiaryService;
 
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private ProjectMemberService projectMemberService;
+
     private User userPrincipal;
     private List<User> fieldContactUsers;
     private List<User> fuUsers;
@@ -164,6 +170,15 @@ public class ProjectController {
         // If no errors, create project
         if (messages.isEmpty()) {
             projectService.save(project);
+            ProjectMember projectMember = new ProjectMember();
+            UUID uuidPM = UUID.randomUUID();
+            projectMember.setId(uuidPM);
+            projectMember.setProject(project);
+            Member member = memberService.findByName("FU");
+            if (member != null){
+                projectMember.setMember(member);
+                projectMemberService.save(projectMember);
+            }
         } else {
             // back to the new project form
             initializeModelAttributes(authentication);

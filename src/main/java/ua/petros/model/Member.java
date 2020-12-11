@@ -3,6 +3,7 @@ package ua.petros.model;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "members")
 @Proxy(lazy = false)
-public class Member {
+public class Member implements Comparable<Member> {
 
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -128,5 +129,10 @@ public class Member {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Member m) {
+        return this.getName().compareTo(m.getName());
     }
 }

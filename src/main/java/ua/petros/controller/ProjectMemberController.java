@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.petros.model.Member;
 import ua.petros.model.ProjectMember;
 import ua.petros.service.MemberService;
 import ua.petros.service.ProjectMemberService;
@@ -16,7 +17,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by Taras on 18.12.2019.
@@ -45,8 +48,10 @@ public class ProjectMemberController {
     // Show form to add new donor
     @RequestMapping(value = "/projects/{projectId}/donors/new", method = {RequestMethod.GET})
     public String showNewMemberForm(Model model, @PathVariable("projectId") String projectId){
+        List<Member> listMembers = memberService.getAll();
+        List<Member> listMembersSorted = listMembers.stream().sorted().collect(Collectors.toList());
         model.addAttribute("project",projectService.getById(UUID.fromString(projectId)));
-        model.addAttribute("listMembers",memberService.getAll());
+        model.addAttribute("listMembers",listMembersSorted);
         return "projectMemberNew";
     }
 
