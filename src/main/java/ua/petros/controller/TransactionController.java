@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.*;
 import ua.petros.service.*;
 import ua.petros.validator.BalanceValidator;
+import ua.petros.validator.ProjectValidator;
 import ua.petros.validator.TransactionValidator;
 
 import java.math.BigDecimal;
@@ -59,6 +60,9 @@ public class TransactionController {
     @Autowired
     private BalanceValidator balanceValidator;
 
+    @Autowired
+    private ProjectValidator projectValidator;
+
     private User userPrincipal;
     private List<Beneficiary> beneficiaries;
     private List<Member> members = new ArrayList<>();
@@ -74,6 +78,8 @@ public class TransactionController {
             projectService.save(project);
         }
 
+        boolean isTransactionPossible = projectValidator.isTransactionPossible(project);
+        model.addAttribute("isTransactionPossible", isTransactionPossible);
         model.addAttribute("project",project);
         model.addAttribute("listTransactions",transactionService.findByProjectId(UUID.fromString(projectId)));
         return "transactionsList";
@@ -84,6 +90,8 @@ public class TransactionController {
     public String showTransaction(Model model,
                                    @PathVariable("projectId") String projectId,
                                    @PathVariable("transactionId") String transactionId){
+        boolean isTransactionPossible = projectValidator.isTransactionPossible(projectService.getById(UUID.fromString(projectId)));
+        model.addAttribute("isTransactionPossible", isTransactionPossible);
         model.addAttribute("project",projectService.getById(UUID.fromString(projectId)));
         model.addAttribute("transaction",transactionService.getById(UUID.fromString(transactionId)));
         return "transactionShow";

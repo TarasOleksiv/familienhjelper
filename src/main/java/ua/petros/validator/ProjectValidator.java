@@ -79,4 +79,12 @@ public class ProjectValidator {
         }
         return totalBalance;
     }
+
+    // Check ability to create transaction
+    public Boolean isTransactionPossible(Project project){
+        Boolean result = true;
+        result = result && !project.getStatus().getName().equals("idea") && !project.getStatus().getName().equals("closed");
+        result = result && project.isActive();
+        return result;
+    }
 }

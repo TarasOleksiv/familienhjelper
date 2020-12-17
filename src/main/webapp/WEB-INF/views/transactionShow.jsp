@@ -90,8 +90,26 @@
 
                             <tr>
                                 <td><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/transactions">Transactions</a></td>
-                                <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a></td>
-                                <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${isTransactionPossible}">
+                                            <a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn btn-warning btn-sm btn-block disabled" aria-disabled="true" href="/projects/${project.id}/transactions/${transaction.id}/edit">Edit</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${isTransactionPossible}">
+                                            <input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" disabled value="Delete" name="Delete"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
                         </table>
                     </form>

@@ -33,7 +33,16 @@
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <table class="table-radio">
                           <tr>
-                              <td><input class="btn btn-primary btn-sm" type="submit" value="Add transaction" name="Submit"/></td>
+                              <td>
+                                  <c:choose>
+                                      <c:when test="${isTransactionPossible}">
+                                          <input class="btn btn-primary btn-sm" type="submit" value="Add transaction" name="Submit"/>
+                                      </c:when>
+                                      <c:otherwise>
+                                          <input class="btn btn-primary btn-sm" type="submit" disabled value="Add transaction" name="Submit"/>
+                                      </c:otherwise>
+                                  </c:choose>
+                              </td>
                               <td>
                                   <c:choose>
                                       <c:when test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
