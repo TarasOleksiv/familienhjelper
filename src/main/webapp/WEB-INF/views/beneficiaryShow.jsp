@@ -61,6 +61,10 @@
                                 <td colspan="2"><fmt:formatDate value="${beneficiary.datefield}" pattern="dd.MM.yyyy" /></td>
                             </tr>
                             <tr>
+                                <td>Mobile</td>
+                                <td colspan="2">${beneficiary.mobile}</td>
+                            </tr>
+                            <tr>
                                 <td>Income</td>
                                 <td colspan="2">${beneficiary.income}</td>
                             </tr>

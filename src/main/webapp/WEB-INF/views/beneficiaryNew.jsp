@@ -63,6 +63,10 @@
                                 <td><input type="date" name="datefield" value="${beneficiary.datefield}"></td>
                             </tr>
                             <tr>
+                                <td>Mobile</td>
+                                <td><input type="tel" pattern="^\+[0-9 ]+$" placeholder="+99 999 999 9999" name="mobile" value="${beneficiary.mobile}"></td>
+                            </tr>
+                            <tr>
                                 <td>Income</td>
                                 <td><input type="number" step="0.01" min="0" name="income" value="${beneficiary.income}"></td>
                             </tr>

@@ -25,6 +25,9 @@ public class Beneficiary implements Comparable<Beneficiary> {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "mobile")
+    private String mobile;
+
     @Column(name = "family")
     private String family;
 
@@ -164,6 +167,14 @@ public class Beneficiary implements Comparable<Beneficiary> {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     @Override

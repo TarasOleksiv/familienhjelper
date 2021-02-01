@@ -105,6 +105,7 @@ CREATE TABLE beneficiaries (
   name VARCHAR(48) NOT NULL,
   family VARCHAR(480) NULL,
   income DECIMAL(11,2) NULL,
+  mobile VARCHAR(25) NULL,
   description VARCHAR(2000) NULL,
   imageFolderLink VARCHAR(1000) NULL,
   datefield DATE,
