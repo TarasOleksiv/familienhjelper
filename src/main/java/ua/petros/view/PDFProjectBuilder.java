@@ -2,7 +2,9 @@ package ua.petros.view;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfPCell;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 import ua.petros.model.Project;
 import ua.petros.model.Transaction;
@@ -24,9 +26,12 @@ import java.util.Map;
  */
 
 public class PDFProjectBuilder extends AbstractPdfView {
-	private Table table;
+	//private Table table;
+	private PdfPTable table;
 	private Paragraph paragraph;
 	private BigDecimal totalAmount;
+	private BigDecimal totalDonation;
+	private BigDecimal totalExpense;
 	private String firstName;
 	private String lastName;
 	private String fieldContactFirstName;
@@ -40,10 +45,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 									Document document, PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		// change the file name
 		response.setHeader("Content-Disposition", "attachment; filename=\"projects.pdf\"");
 
-		// get data model which is passed by the Spring container
 		List<Project> listProjects = (List<Project>) model.get("listProjects");
 		Date startDate = (Date) model.get("startDate");
 		Date endDate = (Date) model.get("endDate");
@@ -57,8 +60,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 		String isAllFieldContacts = (String) model.get("isAllFieldContacts");
 
 		BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font f1 = new Font(bf, 12);
-		Font f2 = new Font(bf,12,Font.BOLD);
+		Font f1 = new Font(bf, 10);
+		Font f2 = new Font(bf,10,Font.BOLD);
 
 		if (listProjects.size() == 0){
 			paragraph = new Paragraph("*********************************************************************************************", f2);
@@ -73,28 +76,18 @@ public class PDFProjectBuilder extends AbstractPdfView {
 		}
 		
 		for (Project project : listProjects) {
-			paragraph = new Paragraph("*********************************************************************************************", f2);
-			paragraph.add(new Paragraph(" "));
-
-			if ("false".equals(isAllFieldContacts)){
-				paragraph.add(new Paragraph("Field contact: " + fieldContactFirstName + " " + fieldContactLastName,f2));
-				paragraph.add(new Paragraph(" "));
-			}
-
-			paragraph.add(new Paragraph("Project: " + project.getName(),f2));
-
-			if ("false".equals(isWholePeriod)){
-				paragraph.add(new Paragraph(" "));
-				paragraph.add(new Paragraph("From: " + strStartDate + "       To: " + strEndDate,f2));
-			}
+			document.add(new Paragraph("*********************************************************************************************", f2));
+			String projectLine = "Project: " + project.getName();
+			projectLine = "true".equals(isWholePeriod) ? projectLine + "        Period: since start" : projectLine + "       " + "From: " + strStartDate + "       To: " + strEndDate;
+			document.add(new Paragraph(projectLine,f2));
 
 			if (project.getBeneficiary() != null){
 				beneficiaryName = (project.getBeneficiary().getName() == null ? "" : project.getBeneficiary().getName());
 			} else {
 				beneficiaryName = "";
 			}
-			paragraph.add(new Paragraph(" ",f1));
-			paragraph.add(new Paragraph("Beneficiary: " + beneficiaryName,f1));
+
+			document.add(new Paragraph("Beneficiary: " + beneficiaryName,f1));
 
 			if (project.getFuUser() != null){
 				firstName = (project.getFuUser().getFirstName() == null ? "" : project.getFuUser().getFirstName());
@@ -103,8 +96,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 				firstName = "";
 				lastName = "";
 			}
-			paragraph.add(new Paragraph(" ",f1));
-			paragraph.add(new Paragraph("FU: " + firstName + " " + lastName,f1));
+			firstName = updateFirstName(firstName,lastName);
+			String contactLine = "FU: " + firstName + " " + lastName;
 
 			if (project.getFieldContactUser() != null){
 				firstName = (project.getFieldContactUser().getFirstName() == null ? "" : project.getFieldContactUser().getFirstName());
@@ -113,40 +106,52 @@ public class PDFProjectBuilder extends AbstractPdfView {
 				firstName = "";
 				lastName = "";
 			}
-			paragraph.add(new Paragraph("Field contact: " + firstName + " " + lastName,f1));
-			table = new Table(4);
+			firstName = updateFirstName(firstName,lastName);
+			contactLine += "      Field contact: " + firstName + " " + lastName;
+
+			document.add(new Paragraph(contactLine,f1));
+			table = new PdfPTable(4);
 			table.getDefaultCell().setBorder(0);
-			table.setBorder(0);
 			totalAmount = BigDecimal.valueOf(0);
+			totalDonation = BigDecimal.valueOf(0);
+			totalExpense = BigDecimal.valueOf(0);
 			for (Transaction transaction : project.getSortedTransactions()){
 				if (("true".equals(isWholePeriod)) ||
 						(transaction.getTradingDate().compareTo(startDate)>=0 && transaction.getTradingDate().compareTo(endDate)<=0)) {
-					table.addCell(new SimpleDateFormat("dd.MM.yyyy").format(transaction.getTradingDate()));
+					table.addCell(new PdfPCell(new Phrase(new SimpleDateFormat("dd.MM.yyyy").format(transaction.getTradingDate()),f1)));
 					if (transaction.getIsIncome()) {
-						table.addCell(transaction.getMember().getName());
+						table.addCell(new PdfPCell(new Phrase(transaction.getMember().getName(),f1)));
 					} else {
-						table.addCell(transaction.getBeneficiary().getName());
+						table.addCell(new PdfPCell(new Phrase(transaction.getBeneficiary().getName(),f1)));
 					}
 					if (transaction.getIsIncome()) {
-						table.addCell(transaction.getAmountNOK().toString());
+						table.addCell(new PdfPCell(new Phrase(transaction.getAmountNOK().toString(),f1)));
 						totalAmount = totalAmount.add(transaction.getAmountNOK());
+						totalDonation = totalDonation.add(transaction.getAmountNOK());
 					} else {
-						table.addCell(BigDecimal.valueOf(-1).multiply(transaction.getAmountNOK()).toString());
+						table.addCell(new PdfPCell(new Phrase(BigDecimal.valueOf(-1).multiply(transaction.getAmountNOK()).toString(),f1)));
 						totalAmount = totalAmount.subtract(transaction.getAmountNOK());
+						totalExpense = totalExpense.add(transaction.getAmountNOK());
 					}
-					table.addCell("NOK");
+					table.addCell(new PdfPCell(new Phrase("NOK",f1)));
 				}
 			}
-			paragraph.add(new Paragraph("",f1));
-			paragraph.add(table);
-			paragraph.add(new Paragraph("_________________________________________________________________",f1));
-			paragraph.add(new Paragraph("Total amount NOK                                                 " + totalAmount.toString() + " NOK",f1));
-			paragraph.add(new Paragraph(" "));
-			paragraph.add(new Paragraph(" "));
-			document.add(paragraph);
 
+			document.add(new Paragraph(" ",f1));
+			document.add(table);
+
+			totalExpense = BigDecimal.valueOf(-1).multiply(totalExpense);
+			document.add(new Paragraph("Donation: " + totalDonation.toString() + " NOK" + "     " + "Expense: " + totalExpense.toString() + " NOK",f1));
+			document.add(new Paragraph("_________________________________________________________________",f1));
+			document.add(new Paragraph("Balance for the period:                                                 " + totalAmount.toString() + " NOK",f1));
+			document.add(new Paragraph("==============================================================",f1));
+			document.add(new Paragraph(" ",f1));
 		}
+	}
 
+	private String updateFirstName(String firstName, String lastName){
+		return
+				"".equals(firstName) && "".equals(lastName) ? "N/A" : firstName;
 	}
 
 }
