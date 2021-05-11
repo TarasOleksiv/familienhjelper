@@ -30,6 +30,9 @@ public class PDFFileDownloadController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private BeneficiaryService beneficiaryService;
+
 	/**
 	 * Handle request to download PDF document
 	 */
@@ -42,7 +45,10 @@ public class PDFFileDownloadController {
 			@ModelAttribute("fromDate") String fromDate,
 			@ModelAttribute("toDate") String toDate,
 			@ModelAttribute("fieldContactId") String fieldContactId,
-			@ModelAttribute("isAllFieldContacts") String isAllFieldContacts
+			@ModelAttribute("isAllFieldContacts") String isAllFieldContacts,
+			@ModelAttribute("beneficiaryId") String beneficiaryId,
+			@ModelAttribute("isAllBeneficiaries") String isAllBeneficiaries,
+			@ModelAttribute("projectStatus") String projectStatus
 	) {
 
 		List<Project> listProjects = new ArrayList<>();
@@ -63,6 +69,35 @@ public class PDFFileDownloadController {
 					.filter(project -> Objects.nonNull(project.getFieldContactUser()))
 					.filter(project -> UUID.fromString(fieldContactId).equals(project.getFieldContactUser().getId()))
 					.collect(Collectors.toList());
+		}
+
+		List<Project> projects;
+		if ("true".equals(isAllBeneficiaries)) {
+			projects = sortedListProjects;
+		} else {
+			projects = sortedListProjects.stream()
+					.filter(project -> Objects.nonNull(project.getBeneficiary()))
+					.filter(project -> UUID.fromString(beneficiaryId).equals(project.getBeneficiary().getId()))
+					.collect(Collectors.toList());
+		}
+
+		List<Project> projectResultList;
+		switch(projectStatus) {
+			case "all":
+				projectResultList = projects;
+				break;
+			case "closed":
+				projectResultList = projects.stream()
+						.filter(project -> "closed".equals(project.getStatus().getName()))
+						.collect(Collectors.toList());
+				break;
+			case "exceptClosed":
+				projectResultList = projects.stream()
+						.filter(project -> !"closed".equals(project.getStatus().getName()))
+						.collect(Collectors.toList());
+				break;
+			default:
+				projectResultList = projects;
 		}
 
 		Date startDate= null;
@@ -96,14 +131,17 @@ public class PDFFileDownloadController {
 		}
 
 		User fieldContact = userService.getById(UUID.fromString(fieldContactId));
+		Beneficiary beneficiary = beneficiaryService.getById(UUID.fromString(beneficiaryId));
 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		modelMap.put("listProjects",sortedListProjects);
+		modelMap.put("listProjects",projectResultList);
 		modelMap.put("startDate",startDate);
 		modelMap.put("endDate",endDate);
 		modelMap.put("isWholePeriod",isWholePeriod);
 		modelMap.put("fieldContact",fieldContact);
 		modelMap.put("isAllFieldContacts",isAllFieldContacts);
+		modelMap.put("beneficiary", beneficiary);
+		modelMap.put("isAllBeneficiaries",isAllBeneficiaries);
 
 		// return a view which will be resolved by a pdf view resolver
 		//return new ModelAndView("pdfProjectsView", "listProjects", sortedListProjects);

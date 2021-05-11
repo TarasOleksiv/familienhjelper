@@ -272,6 +272,26 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><input type="radio" name="isAllBeneficiaries" value="true" checked onclick="showBeneficiaries(this)"> All Beneficiaries<br>
+                                    <input type="radio" name="isAllBeneficiaries" value="false" onclick="showBeneficiaries(this)"> Selected Beneficiary</td>
+                                <td colspan="3">
+                                    <input type="radio" name="projectStatus" value="exceptClosed" checked> All projects except closed<br>
+                                    <input type="radio" name="projectStatus" value="all"> All projects<br>
+                                    <input type="radio" name="projectStatus" value="closed"> Closed projects</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="beneficiaryDiv" class="hidden_div">
+                                        <select name="beneficiaryId">
+                                            <c:forEach var="beneficiary" items="${listBeneficiaries}">
+                                                <option value="${beneficiary.id}"><c:out value="${beneficiary.name}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td colspan="3"> </td>
+                            </tr>
+                            <tr>
                                 <td colspan="4"><input class="btn btn-primary btn-sm" type="submit" value="Generate PDF" name="Submit"/></td>
                             </tr>
                         </table>

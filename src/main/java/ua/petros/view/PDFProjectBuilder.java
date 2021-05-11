@@ -6,6 +6,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfPCell;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
+import ua.petros.model.Beneficiary;
 import ua.petros.model.Project;
 import ua.petros.model.Transaction;
 import ua.petros.model.User;
@@ -32,6 +33,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 	private BigDecimal totalAmount;
 	private BigDecimal totalDonation;
 	private BigDecimal totalExpense;
+	private BigDecimal beneficiaryDonation;
+	private BigDecimal beneficiaryExpense;
 	private String firstName;
 	private String lastName;
 	private String fieldContactFirstName;
@@ -57,16 +60,19 @@ public class PDFProjectBuilder extends AbstractPdfView {
 		User fieldContact = (User) model.get("fieldContact");
 		fieldContactFirstName = (fieldContact.getFirstName() == null ? "" : fieldContact.getFirstName());
 		fieldContactLastName = (fieldContact.getLastName() == null ? "" : fieldContact.getLastName());
+		Beneficiary beneficiarySelected = (Beneficiary) model.get("beneficiary");
+		String beneficiarySelectedName = (beneficiarySelected.getName() == null ? "" : beneficiarySelected.getName());
 		String isAllFieldContacts = (String) model.get("isAllFieldContacts");
+		String isAllBeneficiaries = (String) model.get("isAllBeneficiaries");
 
 		BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font f1 = new Font(bf, 10);
 		Font f2 = new Font(bf,10,Font.BOLD);
+		beneficiaryDonation = BigDecimal.valueOf(0);
+		beneficiaryExpense = BigDecimal.valueOf(0);
 
 		if (listProjects.size() == 0){
 			paragraph = new Paragraph("*********************************************************************************************", f2);
-			paragraph.add(new Paragraph(" "));
-			paragraph.add(new Paragraph("Field contact: " + fieldContactFirstName + " " + fieldContactLastName,f1));
 			paragraph.add(new Paragraph(" "));
 			paragraph.add(new Paragraph("No data found", f1));
 			paragraph.add(new Paragraph(" "));
@@ -80,6 +86,7 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			String projectLine = "Project: " + project.getName();
 			projectLine = "true".equals(isWholePeriod) ? projectLine + "        Period: since start" : projectLine + "       " + "From: " + strStartDate + "       To: " + strEndDate;
 			document.add(new Paragraph(projectLine,f2));
+			document.add(new Paragraph("Status: " + project.getStatus().getName(),f1));
 
 			if (project.getBeneficiary() != null){
 				beneficiaryName = (project.getBeneficiary().getName() == null ? "" : project.getBeneficiary().getName());
@@ -110,7 +117,7 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			contactLine += "      Field contact: " + firstName + " " + lastName;
 
 			document.add(new Paragraph(contactLine,f1));
-			table = new PdfPTable(4);
+			table = new PdfPTable(5);
 			table.getDefaultCell().setBorder(0);
 			totalAmount = BigDecimal.valueOf(0);
 			totalDonation = BigDecimal.valueOf(0);
@@ -128,12 +135,15 @@ public class PDFProjectBuilder extends AbstractPdfView {
 						table.addCell(new PdfPCell(new Phrase(transaction.getAmountNOK().toString(),f1)));
 						totalAmount = totalAmount.add(transaction.getAmountNOK());
 						totalDonation = totalDonation.add(transaction.getAmountNOK());
+						beneficiaryDonation = beneficiaryDonation.add(transaction.getAmountNOK());
 					} else {
 						table.addCell(new PdfPCell(new Phrase(BigDecimal.valueOf(-1).multiply(transaction.getAmountNOK()).toString(),f1)));
 						totalAmount = totalAmount.subtract(transaction.getAmountNOK());
 						totalExpense = totalExpense.add(transaction.getAmountNOK());
+						beneficiaryExpense = beneficiaryExpense.add(transaction.getAmountNOK());
 					}
 					table.addCell(new PdfPCell(new Phrase("NOK",f1)));
+					table.addCell(new PdfPCell(new Phrase(transaction.getDescription(),f1)));
 				}
 			}
 
@@ -146,6 +156,14 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			document.add(new Paragraph("Balance for the period:                                                 " + totalAmount.toString() + " NOK",f1));
 			document.add(new Paragraph("==============================================================",f1));
 			document.add(new Paragraph(" ",f1));
+		}
+
+		if ("false".equals(isAllBeneficiaries)) {
+			beneficiaryExpense = BigDecimal.valueOf(-1).multiply(beneficiaryExpense);
+			document.add(new Paragraph("*********************************************************************************************", f2));
+			document.add(new Paragraph("Totals for the beneficiary: " + beneficiarySelectedName,f2));
+			document.add(new Paragraph("Total Donation: " + beneficiaryDonation.toString() + " NOK" + "     " + "Total Expense: " + beneficiaryExpense.toString() + " NOK",f1));
+			document.add(new Paragraph("*********************************************************************************************", f2));
 		}
 	}
 

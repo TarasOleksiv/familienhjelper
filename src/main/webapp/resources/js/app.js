@@ -243,3 +243,11 @@ function showFieldContacts(element){
         document.getElementById('fieldContactsDiv').style.display = 'none';
     }
 }
+
+function showBeneficiaries(element){
+    if (element.value == "false") {
+        document.getElementById('beneficiaryDiv').style.display = 'block';
+    } else {
+        document.getElementById('beneficiaryDiv').style.display = 'none';
+    }
+}

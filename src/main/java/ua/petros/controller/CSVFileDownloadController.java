@@ -58,8 +58,10 @@ public class CSVFileDownloadController {
 				.filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
 				.sorted()
 				.collect(Collectors.toList());
+		List<Beneficiary> listBeneficiaries = beneficiaryService.getAll().stream().sorted().collect(Collectors.toList());
 		model.addAttribute("listProjects",sortedListProjects);
 		model.addAttribute("listFieldContacts",listFieldContactUsers);
+		model.addAttribute("listBeneficiaries",listBeneficiaries);
         return "reports";
     }
 
