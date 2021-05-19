@@ -29,22 +29,6 @@ public class BalanceValidator {
         return transactionsDonation;
     }
 
-    /*private BigDecimal getTransactionsBalance(Set<Transaction>transactions){
-        BigDecimal result = new BigDecimal(0);
-        if (transactions != null || !transactions.isEmpty()){
-            BigDecimal transactionBalance = new BigDecimal(0);
-            for (Transaction transaction: transactions){
-                if(transaction.getIsIncome()){
-                    transactionBalance = transactionBalance.add(transaction.getAmountNOK());
-                } else {
-                    transactionBalance = transactionBalance.subtract(transaction.getAmountNOK());
-                }
-            }
-            result = transactionBalance;
-        }
-        return result;
-    }*/
-
     private Amount getTransactionsBalance(Set<Transaction>transactions){
         Amount result = new Amount(new BigDecimal(0), new BigDecimal(0));
         if (transactions != null || !transactions.isEmpty()){
