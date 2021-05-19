@@ -130,6 +130,7 @@ CREATE TABLE projects (
   feedback VARCHAR(40000) NULL,
   imageFolderLink VARCHAR(1000) NULL,
   balance DECIMAL(11,2) DEFAULT 0.00 NULL,
+  donation DECIMAL(11,2) DEFAULT 0.00 NULL,
   active BOOLEAN NOT NULL DEFAULT TRUE,
   beneficiary_id UUID,
   fieldContact_id UUID,

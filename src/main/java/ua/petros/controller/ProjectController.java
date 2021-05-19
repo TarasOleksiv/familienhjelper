@@ -78,9 +78,15 @@ public class ProjectController {
     public String showProject(Model model, @PathVariable("projectId") String projectId) {
         Project project = projectService.getById(UUID.fromString(projectId));
         BigDecimal projectBalance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
+        BigDecimal projectDonation = (project.getDonation() == null? new BigDecimal(0): project.getDonation());
         BigDecimal transactionsBalance = balanceValidator.recalculateBalance(project);
+        BigDecimal transactionsDonation = balanceValidator.recalculateDonation(project);
         if (projectBalance.compareTo(transactionsBalance) != 0){
             project.setBalance(transactionsBalance);
+            projectService.save(project);
+        }
+        if (projectDonation.compareTo(transactionsDonation) != 0){
+            project.setDonation(transactionsDonation);
             projectService.save(project);
         }
 

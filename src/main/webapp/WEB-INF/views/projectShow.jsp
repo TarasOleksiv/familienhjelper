@@ -106,6 +106,11 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Donation</td>
+                                <td>${project.donation}</td>
+                                <td>NOK</td>
+                            </tr>
+                            <tr>
                                 <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/donors">Donors</a></td>
                             </tr>
                             <tr>

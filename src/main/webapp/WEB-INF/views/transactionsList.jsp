@@ -29,6 +29,7 @@
               <div class="container">
                   <h4>Project: ${project.name}</h4>
                   <h5>Balance: ${project.balance==null?0.00:project.balance} NOK</h5>
+                  <h5>Donation: ${project.donation==null?0.00:project.donation} NOK</h5>
                   <form action="/projects/${projectId}/transactions/new" method="GET">
                       <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                       <table class="table-radio">

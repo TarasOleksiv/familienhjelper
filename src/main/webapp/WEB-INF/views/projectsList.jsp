@@ -48,6 +48,7 @@
                           <th></th>
                           <th>Name</th>
                           <th>Balance</th>
+                          <th>Donation</th>
                           <th>FU</th>
                           <th>Field contact</th>
                           <th>Status</th>
@@ -65,6 +66,7 @@
                           </td>
                           <td>${list.name}</td>
                           <td>${list.balance}</td>
+                          <td>${list.donation}</td>
                           <td>${list.fuUser.username}</td>
                           <td>${list.fieldContactUser.username}</td>
                           <td>${list.status.name}</td>

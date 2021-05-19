@@ -77,6 +77,12 @@ public class TransactionController {
             project.setBalance(transactionsBalance);
             projectService.save(project);
         }
+        BigDecimal projectDonation = (project.getDonation() == null? new BigDecimal(0): project.getDonation());
+        BigDecimal transactionsDonation = balanceValidator.recalculateDonation(project);
+        if (projectDonation.compareTo(transactionsDonation) != 0){
+            project.setDonation(transactionsDonation);
+            projectService.save(project);
+        }
 
         boolean isTransactionPossible = projectValidator.isTransactionPossible(project);
         model.addAttribute("isTransactionPossible", isTransactionPossible);
@@ -175,6 +181,9 @@ public class TransactionController {
             transaction.setAmountNOK(amountNOKBigDecimal);
 
             Project projectUpdated = setProjectBalance(project,amountNOKBigDecimal,isIn);
+            if (isIn) {
+                projectUpdated = setProjectDonation(projectUpdated,amountNOKBigDecimal,true);
+            }
             transaction.setProject(projectUpdated);
             projectService.save(projectUpdated);
             transactionService.save(transaction);
@@ -308,6 +317,9 @@ public class TransactionController {
         BigDecimal amountNOK = transaction.getAmountNOK();
         boolean isIn = !transaction.getIsIncome();
         Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOK,isIn);
+        if (!isIn) {
+            project = setProjectDonation(project,amountNOK,false);
+        }
         projectService.save(project);
         transactionService.delete(transaction);
         return "redirect:/projects/" + projectId + "/transactions";
@@ -353,7 +365,7 @@ public class TransactionController {
     }
 
     // Utility to modify project's balance according to transaction
-    private Project setProjectBalance(Project project, BigDecimal amount, boolean isIn ){
+    private Project setProjectBalance(Project project, BigDecimal amount, boolean isIn){
         BigDecimal balance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
         if (isIn){
             balance = balance.add(amount);
@@ -361,6 +373,18 @@ public class TransactionController {
             balance = balance.subtract(amount);
         }
         project.setBalance(balance);
+        return project;
+    }
+
+    // Utility to modify project's donation according to transaction
+    private Project setProjectDonation(Project project, BigDecimal amount, boolean tobeAdded ){
+        BigDecimal donation = (project.getDonation() == null? new BigDecimal(0): project.getDonation());
+        if (tobeAdded){
+            donation = donation.add(amount);
+        } else {
+            donation = donation.subtract(amount);
+        }
+        project.setDonation(donation);
         return project;
     }
 }

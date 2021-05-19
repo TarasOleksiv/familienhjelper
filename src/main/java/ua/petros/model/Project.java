@@ -30,6 +30,9 @@ public class Project implements Comparable<Project> {
     @Column(name = "balance")
     private BigDecimal balance;
 
+    @Column(name = "donation")
+    private BigDecimal donation;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "startDate")
     private Date startDate;
@@ -170,6 +173,14 @@ public class Project implements Comparable<Project> {
 
     public Set<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public BigDecimal getDonation() {
+        return donation;
+    }
+
+    public void setDonation(BigDecimal donation) {
+        this.donation = donation;
     }
 
     public List<Transaction> getSortedTransactions() {
