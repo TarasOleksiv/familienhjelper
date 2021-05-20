@@ -27,6 +27,13 @@
           <header>
               <div class="container">
                   <h4>Projects</h4>
+                  <c:if test="${not empty pageContext.request.userPrincipal}">
+                      <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+                          <p>
+                              <a class="btn btn-primary btn-sm" href="/projects/donation">Recalculate Donation</a>
+                          </p>
+                      </c:if>
+                  </c:if>
                   <div class="row">
                       <div class="col-xs-4">
                           <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>

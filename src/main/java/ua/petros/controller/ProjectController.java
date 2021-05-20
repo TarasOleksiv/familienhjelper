@@ -73,6 +73,20 @@ public class ProjectController {
         return "projectsList";
     }
 
+    // Recalculate donation for all projects
+    @RequestMapping(value = "/projects/donation", method = {RequestMethod.GET})
+    public String recalculateProjectsDonation(Model model, Authentication authentication) {
+        List<Project> listProject = projectValidator.getUserProjectList(authentication);
+        BigDecimal totalBalance = projectValidator.getTotalBalance(listProject);
+        for (Project project: listProject){
+            project.setDonation(balanceValidator.recalculateDonation(project));
+            projectService.save(project);
+        }
+        model.addAttribute("list", listProject);
+        model.addAttribute("totalBalance",totalBalance);
+        return "projectsList";
+    }
+
     //Show project
     @RequestMapping(value = "/projects/{projectId}", method = {RequestMethod.GET})
     public String showProject(Model model, @PathVariable("projectId") String projectId) {

@@ -27,6 +27,13 @@
           <header>
               <div class="container">
                   <h4>Beneficiaries</h4>
+                  <c:if test="${not empty pageContext.request.userPrincipal}">
+                        <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+                            <p>
+                                <a class="btn btn-primary btn-sm" href="/beneficiaries/donation">Recalculate Total Help</a>
+                            </p>
+                        </c:if>
+                  </c:if>
                   <p>
                       <a class="btn btn-primary btn-sm" href="/beneficiaries/new">Add New Beneficiary</a>
                   </p>
@@ -43,6 +50,7 @@
                           <th></th>
                           <th>Name</th>
                           <th>Income</th>
+                          <th>Total help</th>
                           <th>Field Contact</th>
                           <th>Active</th>
                       </tr>
@@ -58,7 +66,17 @@
                               </a>
                           </td>
                           <td>${list.name}</td>
-                          <td>${list.income}</td>
+                          <td>
+                              <c:choose>
+                                <c:when test="${empty list.income}">
+
+                                </c:when>
+                                <c:otherwise>
+                                    ${list.income} ${list.currency}
+                                </c:otherwise>
+                              </c:choose>
+                          </td>
+                          <td>${list.donation} NOK</td>
                           <td>${list.user.username} ${list.user.lastName} ${list.user.firstName}</td>
                           <td>
                               <c:if test="${list.active}">

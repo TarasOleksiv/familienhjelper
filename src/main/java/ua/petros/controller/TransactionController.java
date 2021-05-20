@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ua.petros.model.*;
 import ua.petros.service.*;
 import ua.petros.validator.BalanceValidator;
+import ua.petros.validator.BeneficiaryValidator;
 import ua.petros.validator.ProjectValidator;
 import ua.petros.validator.TransactionValidator;
 
@@ -62,6 +63,9 @@ public class TransactionController {
 
     @Autowired
     private ProjectValidator projectValidator;
+
+    @Autowired
+    private BeneficiaryValidator beneficiaryValidator;
 
     private User userPrincipal;
     private List<Beneficiary> beneficiaries;
@@ -187,6 +191,11 @@ public class TransactionController {
             transaction.setProject(projectUpdated);
             projectService.save(projectUpdated);
             transactionService.save(transaction);
+            Beneficiary beneficiary = projectUpdated.getBeneficiary();
+            if (beneficiary != null){
+                beneficiary.setDonation(beneficiaryValidator.recalculateTotalDonation(beneficiary));
+                beneficiaryService.save(beneficiary);
+            }
         } else {
             // back to the new transaction form
             initializeModelAttributes(authentication, projectId);
@@ -322,6 +331,11 @@ public class TransactionController {
         }
         projectService.save(project);
         transactionService.delete(transaction);
+        Beneficiary beneficiary = project.getBeneficiary();
+        if (beneficiary != null){
+            beneficiary.setDonation(beneficiaryValidator.recalculateTotalDonation(beneficiary));
+            beneficiaryService.save(beneficiary);
+        }
         return "redirect:/projects/" + projectId + "/transactions";
     }
 

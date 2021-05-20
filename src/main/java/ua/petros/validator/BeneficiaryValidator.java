@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import ua.petros.model.Beneficiary;
+import ua.petros.model.Project;
 import ua.petros.model.User;
 import ua.petros.service.BeneficiaryService;
+import ua.petros.service.ProjectService;
 import ua.petros.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,12 @@ public class BeneficiaryValidator {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private BalanceValidator balanceValidator;
 
     public List<Beneficiary> getUserBeneficiaryList(Authentication authentication){
         String currentPrincipalName = authentication.getName();
@@ -57,5 +66,18 @@ public class BeneficiaryValidator {
         }
 
         return messages;
+    }
+
+    public BigDecimal recalculateTotalDonation(Beneficiary beneficiary){
+        BigDecimal totalDonation = new BigDecimal(0);
+        List<Project> projectsAll = projectService.getAll();
+        List<Project> projects = Optional.ofNullable(projectsAll.stream()
+                .filter(p -> (p.getBeneficiary() != null && p.getBeneficiary().getId().equals(beneficiary.getId())))
+                .collect(Collectors.toList())).orElse(Collections.emptyList());
+        for (Project p: projects){
+            totalDonation = totalDonation.add(balanceValidator.recalculateDonation(p));
+        }
+
+        return totalDonation;
     }
 }

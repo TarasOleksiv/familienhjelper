@@ -47,6 +47,9 @@ public class Beneficiary implements Comparable<Beneficiary> {
     @Column(name = "imageFolderLink")
     private String imageFolderLink;
 
+    @Column(name = "donation")
+    private BigDecimal donation;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -175,6 +178,14 @@ public class Beneficiary implements Comparable<Beneficiary> {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public BigDecimal getDonation() {
+        return donation;
+    }
+
+    public void setDonation(BigDecimal donation) {
+        this.donation = donation;
     }
 
     @Override
