@@ -118,6 +118,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 
 			document.add(new Paragraph(contactLine,f1));
 			table = new PdfPTable(5);
+			table.setWidthPercentage(100);
+			table.setWidths(new float[]{2,4,2,1,8});
 			table.getDefaultCell().setBorder(0);
 			totalAmount = BigDecimal.valueOf(0);
 			totalDonation = BigDecimal.valueOf(0);
