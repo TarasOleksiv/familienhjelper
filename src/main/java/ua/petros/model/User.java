@@ -51,6 +51,9 @@ public class User implements Comparable<User> {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "active")
+    private boolean active;
+
     @Transient
     private String confirmPassword;
 
@@ -194,6 +197,14 @@ public class User implements Comparable<User> {
 
     public void setProjectsFU(Set<Project> projectsFU) {
         this.projectsFU = projectsFU;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override
