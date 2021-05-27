@@ -124,6 +124,7 @@ public class UserController {
                           @ModelAttribute("account") String account,
                           @ModelAttribute("roleName") String roleName,
                           @ModelAttribute("password") String password,
+                          @ModelAttribute("active") String active,
                           @ModelAttribute("userId") String userId){
 
         // prepare user info
@@ -149,6 +150,12 @@ public class UserController {
         Set<Role> roles = new HashSet<>();
         roles.add(roleDao.findByName(roleName));
         user.setRoles(roles);
+        if(!active.trim().isEmpty()) {
+            user.setActive(true);
+        }
+        else {
+            user.setActive(false);
+        }
 
         // validate user
         boolean checkPassword = (userId == null || userId.isEmpty());

@@ -51,6 +51,7 @@
                         <th>Email</th>
                         <th>Mobile1</th>
                         <th>Role</th>
+                        <th>Active</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,6 +75,11 @@
                             <td>${list.mobile1}</td>
                             <c:set var="userrole" value="${list.roles.stream().findFirst().get().name}"/>
                             <td>${userrole.substring(userrole.indexOf('_')+1).toLowerCase()}</td>
+                            <td>
+                                <c:if test="${list.active}">
+                                    <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                                </c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>

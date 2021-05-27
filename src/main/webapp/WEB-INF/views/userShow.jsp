@@ -82,6 +82,14 @@
                                 <td colspan="2">${user.roles.stream().findFirst().get().name}</td>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td colspan="2">
+                                    <c:if test="${user.active}">
+                                        <img src="${contextPath}/resources/img/icons8-green-circle-16.png">
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/users">Cancel</a></td>
                                 <td><a class="btn btn-warning btn-sm btn-block" href="/users/${user.id}/edit">Edit</a></td>
                                 <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>

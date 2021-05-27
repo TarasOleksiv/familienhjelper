@@ -109,6 +109,17 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <c:choose>
+                                    <c:when test="${user.active}">
+                                        <td><input type="checkbox" name="active" value="true" checked></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td><input type="checkbox" name="active" value="true"></td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/users/${user.id}">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Save" name="Save"/></td>
                             </tr>

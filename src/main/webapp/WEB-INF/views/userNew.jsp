@@ -95,6 +95,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td><input type="checkbox" name="active" value="true"></td>
+                            </tr>
+                            <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/users">Cancel</a></td>
                                 <td><input class="btn btn-success btn-sm btn-block" type="submit" value="Submit" name="Add"/></td>
                             </tr>

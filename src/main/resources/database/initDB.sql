@@ -31,6 +31,7 @@ CREATE TABLE users (
   id UUID NOT NULL,
   username VARCHAR(48) NOT NULL,
   password VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
   firstname VARCHAR(48),
   lastname VARCHAR(48),
   email VARCHAR(96) NULL,
