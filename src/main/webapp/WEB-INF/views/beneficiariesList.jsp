@@ -33,10 +33,12 @@
                                 <a class="btn btn-primary btn-sm" href="/beneficiaries/donation">Recalculate Total Help</a>
                             </p>
                         </c:if>
+                        <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                            <p>
+                                <a class="btn btn-primary btn-sm" href="/beneficiaries/new">Add New Beneficiary</a>
+                            </p>
+                        </c:if>
                   </c:if>
-                  <p>
-                      <a class="btn btn-primary btn-sm" href="/beneficiaries/new">Add New Beneficiary</a>
-                  </p>
               </div>
           </header>
           <form action="<c:url value="/beneficiaries"/>" method="POST">

@@ -36,7 +36,9 @@
                   </c:if>
                   <div class="row">
                       <div class="col-xs-4">
-                          <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>
+                          <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                              <a class="btn btn-primary btn-sm" href="/projects/new">Add New Project</a>
+                          </c:if>
                       </div>
                       <div class="col-xs-8">
                           <strong>Total Balance: ${totalBalance} NOK</strong>

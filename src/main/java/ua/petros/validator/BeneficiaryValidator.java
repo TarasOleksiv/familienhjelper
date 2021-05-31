@@ -45,6 +45,13 @@ public class BeneficiaryValidator {
             return listResultBeneficiary;
         }
 
+        if ("ROLE_HELPER".equals(user.getRoles().iterator().next().getName())){
+            List<Beneficiary>listResBeneficiary = listBeneficiary.stream()
+                    .filter(beneficiary -> (beneficiary.getHelperUser() != null && beneficiary.getHelperUser().getId().equals(user.getId())))
+                    .collect(Collectors.toList());
+            return listResBeneficiary;
+        }
+
         return listBeneficiary;
 
     }

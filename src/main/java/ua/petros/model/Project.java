@@ -66,6 +66,10 @@ public class Project implements Comparable<Project> {
     @JoinColumn(name = "fu_id", referencedColumnName = "id")
     private User fuUser;
 
+    @ManyToOne
+    @JoinColumn(name = "helper_id", referencedColumnName = "id")
+    private User helperUser;
+
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     private Set<ProjectMember> projectMembers;
 
@@ -213,6 +217,14 @@ public class Project implements Comparable<Project> {
 
     public void setBeneficiary(Beneficiary beneficiary) {
         this.beneficiary = beneficiary;
+    }
+
+    public User getHelperUser() {
+        return helperUser;
+    }
+
+    public void setHelperUser(User helperUser) {
+        this.helperUser = helperUser;
     }
 
     @Override

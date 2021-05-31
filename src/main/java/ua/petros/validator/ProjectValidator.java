@@ -40,6 +40,12 @@ public class ProjectValidator {
                     .collect(Collectors.toList());
             return listResultProject;
         }
+        if ("ROLE_HELPER".equals(user.getRoles().iterator().next().getName())){
+            List<Project>listResProject = listProject.stream()
+                    .filter(project -> (project.getHelperUser() != null && project.getHelperUser().getId().equals(user.getId())))
+                    .collect(Collectors.toList());
+            return listResProject;
+        }
 
         return listProject;
 

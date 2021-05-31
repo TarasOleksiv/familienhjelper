@@ -44,9 +44,10 @@
                           <input type="hidden" name="_method" value="delete"/>
                           <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
                           <input type="hidden" name="imageId" value="${image.id}"/>
-
-                          <a class="btn btn-warning btn-sm" href="/projects/${projectId}/images/${image.id}/edit">Edit image</a>
-                          <button class="btn btn-sm btn-danger">Delete image</button>
+                          <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                              <a class="btn btn-warning btn-sm" href="/projects/${projectId}/images/${image.id}/edit">Edit image</a>
+                              <button class="btn btn-sm btn-danger">Delete image</button>
+                          </c:if>
                       </form>
                       </div>
                   </div>

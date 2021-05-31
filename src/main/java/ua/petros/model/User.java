@@ -64,11 +64,17 @@ public class User implements Comparable<User> {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Beneficiary> beneficiaries;
 
+    @OneToMany(mappedBy = "helperUser", fetch = FetchType.LAZY)
+    private Set<Beneficiary> beneficiariesHelper;
+
     @OneToMany(mappedBy = "fieldContactUser", fetch = FetchType.LAZY)
     private Set<Project> projectsFieldContact;
 
     @OneToMany(mappedBy = "fuUser", fetch = FetchType.LAZY)
     private Set<Project> projectsFU;
+
+    @OneToMany(mappedBy = "helperUser", fetch = FetchType.LAZY)
+    private Set<Project> projectsHelper;
 
     public UUID getId() {
         return id;
@@ -204,6 +210,22 @@ public class User implements Comparable<User> {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Set<Beneficiary> getBeneficiariesHelper() {
+        return beneficiariesHelper;
+    }
+
+    public void setBeneficiariesHelper(Set<Beneficiary> beneficiariesHelper) {
+        this.beneficiariesHelper = beneficiariesHelper;
+    }
+
+    public Set<Project> getProjectsHelper() {
+        return projectsHelper;
+    }
+
+    public void setProjectsHelper(Set<Project> projectsHelper) {
+        this.projectsHelper = projectsHelper;
     }
 
     @Override

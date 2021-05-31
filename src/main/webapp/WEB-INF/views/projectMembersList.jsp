@@ -30,9 +30,11 @@
                   <h4>Project: ${project.name}</h4>
                   <h4>Donors</h4>
                   <c:if test="${listDonors.size()<8}">
-                        <p>
-                            <a class="btn btn-primary btn-sm" href="/projects/${projectId}/donors/new">Add Donor</a>
-                        </p>
+                        <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                            <p>
+                                <a class="btn btn-primary btn-sm" href="/projects/${projectId}/donors/new">Add Donor</a>
+                            </p>
+                        </c:if>
                   </c:if>
                   <p>
                       <a class="btn btn-primary btn-sm" href="/projects/${projectId}">Back to Project</a>
@@ -47,7 +49,9 @@
                   <thead>
                   <c:if test="${listDonors.size()>0}">
                       <tr>
-                          <th></th>
+                          <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                            <th></th>
+                          </c:if>
                           <th>Name</th>
                           <th>Pledge</th>
                           <th>Start pledge</th>
@@ -58,11 +62,13 @@
                   <tbody>
                   <c:forEach items="${listDonors}" var="list">
                       <tr>
-                          <td>
-                              <a href="/projects/${projectId}/donors/${list.id}/delete">
-                                  <img src="${contextPath}/resources/img/icons8-delete-16.png">
-                              </a>
-                          </td>
+                          <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                              <td>
+                                  <a href="/projects/${projectId}/donors/${list.id}/delete">
+                                      <img src="${contextPath}/resources/img/icons8-delete-16.png">
+                                  </a>
+                              </td>
+                          </c:if>
                           <td>${list.member.name}</td>
                           <td>${list.pledge}</td>
                           <td><fmt:formatDate value="${list.startPledge}" pattern="dd.MM.yyyy" /></td>

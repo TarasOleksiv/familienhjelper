@@ -8,14 +8,14 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true">
-        <intercept-url pattern="/" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT')"/>
+        <intercept-url pattern="/" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT', 'ROLE_HELPER')"/>
         <intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/currencyrates/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/reports/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/members/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU')"/>
-        <intercept-url pattern="/beneficiaries/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT')"/>
-        <intercept-url pattern="/transactions/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT')"/>
-        <intercept-url pattern="/projects/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT')"/>
+        <intercept-url pattern="/beneficiaries/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT', 'ROLE_HELPER')"/>
+        <intercept-url pattern="/transactions/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT', 'ROLE_HELPER')"/>
+        <intercept-url pattern="/projects/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_FU', 'ROLE_FIELDCONTACT', 'ROLE_HELPER')"/>
 
         <form-login login-page="/login" default-target-url="/index" authentication-failure-url="/login?error"
                     username-parameter="username" password-parameter="password"/>

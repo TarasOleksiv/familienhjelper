@@ -135,6 +135,27 @@
                                     </select>
                                 </td>
                             </tr>
+                            <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN') ||
+                                pageContext.request.isUserInRole('ROLE_FU')}">
+                                <tr>
+                                    <td>Helper</td>
+                                    <td>
+                                        <select name="helperId">
+                                            <option></option>
+                                            <c:forEach var="user" items="${listHelperUsers}">
+                                                <c:choose>
+                                                    <c:when test="${beneficiary.helperUser.id == user.id}">
+                                                        <option value="${user.id}" selected><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${user.id}"><c:out value="${user.username}: ${user.lastName} ${user.firstName}"/></option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </c:if>
 
                             <tr>
                                 <td>Active</td>

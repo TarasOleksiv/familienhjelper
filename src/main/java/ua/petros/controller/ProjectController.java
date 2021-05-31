@@ -61,6 +61,7 @@ public class ProjectController {
     private User userPrincipal;
     private List<User> fieldContactUsers;
     private List<User> fuUsers;
+    private List<User> helperUsers;
     private List<Beneficiary> beneficiaries;
 
     // Show all projects
@@ -118,6 +119,7 @@ public class ProjectController {
         model.addAttribute("userPrincipal", userPrincipal);
         model.addAttribute("listFieldContactUsers", fieldContactUsers);
         model.addAttribute("listFuUsers", fuUsers);
+        model.addAttribute("listHelperUsers", helperUsers);
         model.addAttribute("listStatuses", statusService.getAll());
         model.addAttribute("listBeneficiaries", beneficiaries);
         return "projectNew";
@@ -133,6 +135,7 @@ public class ProjectController {
                              @ModelAttribute("statusName") String statusName,
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
+                             @ModelAttribute("helperId") String helperId,
                              @ModelAttribute("beneficiaryId") String beneficiaryId,
                              @ModelAttribute("feedback") String feedback,
                              @ModelAttribute("imageFolderLink") String imageFolderLink,
@@ -180,6 +183,9 @@ public class ProjectController {
         if (fuId != null && !fuId.trim().isEmpty()) {
             project.setFuUser(userService.getById(UUID.fromString(fuId)));
         }
+        if (helperId != null && !helperId.trim().isEmpty()) {
+            project.setHelperUser(userService.getById(UUID.fromString(helperId)));
+        }
         if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
             project.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
         }
@@ -207,6 +213,7 @@ public class ProjectController {
             model.addAttribute("project", project);
             model.addAttribute("listFieldContactUsers", fieldContactUsers);
             model.addAttribute("listFuUsers", fuUsers);
+            model.addAttribute("listHelperUsers", helperUsers);
             model.addAttribute("listStatuses", statusService.getAll());
             model.addAttribute("listBeneficiaries", beneficiaries);
             return "projectNew";
@@ -236,6 +243,7 @@ public class ProjectController {
         model.addAttribute("userPrincipal", userPrincipal);
         model.addAttribute("listFieldContactUsers", fieldContactUsers);
         model.addAttribute("listFuUsers", fuUsers);
+        model.addAttribute("listHelperUsers", helperUsers);
         model.addAttribute("listStatuses", statusService.getAll());
         model.addAttribute("listBeneficiaries", beneficiaries);
         return "projectEdit";
@@ -251,6 +259,7 @@ public class ProjectController {
                              @ModelAttribute("statusName") String statusName,
                              @ModelAttribute("fieldContactId") String fieldContactId,
                              @ModelAttribute("fuId") String fuId,
+                             @ModelAttribute("helperId") String helperId,
                              @ModelAttribute("beneficiaryId") String beneficiaryId,
                              @ModelAttribute("feedback") String feedback,
                              @ModelAttribute("imageFolderLink") String imageFolderLink,
@@ -298,6 +307,9 @@ public class ProjectController {
         if (fuId != null && !fuId.trim().isEmpty()) {
             project.setFuUser(userService.getById(UUID.fromString(fuId)));
         }
+        if (helperId != null && !helperId.trim().isEmpty()) {
+            project.setHelperUser(userService.getById(UUID.fromString(helperId)));
+        }
         if (beneficiaryId != null && !beneficiaryId.trim().isEmpty()) {
             project.setBeneficiary(beneficiaryService.getById(UUID.fromString(beneficiaryId)));
         }
@@ -316,6 +328,7 @@ public class ProjectController {
             model.addAttribute("project", project);
             model.addAttribute("listFieldContactUsers", fieldContactUsers);
             model.addAttribute("listFuUsers", fuUsers);
+            model.addAttribute("listHelperUsers", helperUsers);
             model.addAttribute("listStatuses", statusService.getAll());
             model.addAttribute("listBeneficiaries", beneficiaries);
             return "projectEdit";
@@ -334,6 +347,9 @@ public class ProjectController {
                 .collect(Collectors.toList());
         fuUsers = listUsers.stream()
                 .filter(user -> "ROLE_FU".equals(user.getRoles().iterator().next().getName()))
+                .collect(Collectors.toList());
+        helperUsers = listUsers.stream()
+                .filter(user -> "ROLE_HELPER".equals(user.getRoles().iterator().next().getName()))
                 .collect(Collectors.toList());
 
         List<Beneficiary> listBeneficiaries = beneficiaryService.getAll();

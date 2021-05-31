@@ -75,6 +75,10 @@
                                 <td colspan="2">${project.fuUser.username} ${project.fuUser.lastName} ${project.fuUser.firstName}</td>
                             </tr>
                             <tr>
+                                <td>Helper</td>
+                                <td colspan="2">${project.helperUser.username} ${project.helperUser.lastName} ${project.helperUser.firstName}</td>
+                            </tr>
+                            <tr>
                                 <td>Feedback</td>
                                 <td colspan="2">
                                     <textarea rows="6" cols="25" name="feedback" maxlength="40000" readonly>${project.feedback}</textarea>
@@ -143,8 +147,10 @@
                             </tr>
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/projects">Cancel</a></td>
-                                <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/edit">Edit</a></td>
-                                <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                                    <td><a class="btn btn-warning btn-sm btn-block" href="/projects/${project.id}/edit">Edit</a></td>
+                                    <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                </c:if>
                             </tr>
                         </table>
                     </form>

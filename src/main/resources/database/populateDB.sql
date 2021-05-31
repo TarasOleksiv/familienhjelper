@@ -3,7 +3,8 @@
 INSERT INTO roles (id, name) VALUES
   (uuid_in(md5(random()::text || now()::text)::cstring), 'ROLE_ADMIN'),
   (uuid_in(md5(random()::text || now()::text)::cstring), 'ROLE_FIELDCONTACT'),
-  (uuid_in(md5(random()::text || now()::text)::cstring), 'ROLE_FU')
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'ROLE_FU'),
+  (uuid_in(md5(random()::text || now()::text)::cstring), 'ROLE_HELPER')
 ;
 
 -- 02. Populate users;

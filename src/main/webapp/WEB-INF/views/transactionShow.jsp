@@ -90,6 +90,7 @@
 
                             <tr>
                                 <td><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/transactions">Transactions</a></td>
+                                <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
                                 <td>
                                     <c:choose>
                                         <c:when test="${isTransactionPossible}">
@@ -110,6 +111,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
+                                </c:if>
                             </tr>
                         </table>
                     </form>

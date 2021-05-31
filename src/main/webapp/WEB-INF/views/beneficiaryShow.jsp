@@ -85,6 +85,10 @@
                                 <td colspan="2">${beneficiary.user.username} ${beneficiary.user.lastName} ${beneficiary.user.firstName}</td>
                             </tr>
                             <tr>
+                                <td>Helper</td>
+                                <td colspan="2">${beneficiary.helperUser.username} ${beneficiary.helperUser.lastName} ${beneficiary.helperUser.firstName}</td>
+                            </tr>
+                            <tr>
                                 <td>Active</td>
                                 <td colspan="2">
                                     <c:if test="${beneficiary.active}">
@@ -104,8 +108,10 @@
                             </tr>
                             <tr>
                                 <td><a class="btn btn-cancel btn-sm btn-block" href="/beneficiaries">Cancel</a></td>
-                                <td><a class="btn btn-warning btn-sm btn-block" href="/beneficiaries/${beneficiary.id}/edit">Edit</a></td>
-                                <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
+                                    <td><a class="btn btn-warning btn-sm btn-block" href="/beneficiaries/${beneficiary.id}/edit">Edit</a></td>
+                                    <td><input id="delete" class="btn btn-danger btn-sm btn-block" type="submit" value="Delete" name="Delete"/></td>
+                                </c:if>
                             </tr>
                         </table>
                     </form>

@@ -80,6 +80,9 @@ public class BeneficiaryController {
         List<User>resultUsers = listUsers.stream()
                 .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
                 .collect(Collectors.toList());
+        List<User>helperUsers = listUsers.stream()
+                .filter(user -> "ROLE_HELPER".equals(user.getRoles().iterator().next().getName()))
+                .collect(Collectors.toList());
         List<Currency>listCurrency = currencyService.getAll();
         List<Currency>resultCurrency = listCurrency.stream()
                 .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
@@ -88,6 +91,7 @@ public class BeneficiaryController {
         User userPrincipal = userService.findByUsername(currentPrincipalName);
         model.addAttribute("userPrincipal",userPrincipal);
         model.addAttribute("listUsers",resultUsers);
+        model.addAttribute("listHelperUsers",helperUsers);
         model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
         model.addAttribute("listCurrency",resultCurrency);
         return "beneficiaryNew";
@@ -106,6 +110,7 @@ public class BeneficiaryController {
                           @ModelAttribute("incomeTypeId") String incomeTypeId,
                           @ModelAttribute("currencyId") String currencyId,
                           @ModelAttribute("userId") String userId,
+                          @ModelAttribute("helperId") String helperId,
                           @ModelAttribute("active") String active
                           ){
 
@@ -141,6 +146,9 @@ public class BeneficiaryController {
         if (userId != null && !userId.trim().isEmpty()) {
             beneficiary.setUser(userService.getById(UUID.fromString(userId)));
         }
+        if (helperId != null && !helperId.trim().isEmpty()) {
+            beneficiary.setHelperUser(userService.getById(UUID.fromString(helperId)));
+        }
 
         // validate beneficiary
         Map<String, String> messages = beneficiaryValidator.validate(beneficiary);
@@ -154,6 +162,9 @@ public class BeneficiaryController {
             List<User>resultUsers = listUsers.stream()
                     .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
                     .collect(Collectors.toList());
+            List<User>helperUsers = listUsers.stream()
+                    .filter(user -> "ROLE_HELPER".equals(user.getRoles().iterator().next().getName()))
+                    .collect(Collectors.toList());
             List<Currency>listCurrency = currencyService.getAll();
             List<Currency>resultCurrency = listCurrency.stream()
                     .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
@@ -164,6 +175,7 @@ public class BeneficiaryController {
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
             model.addAttribute("listUsers",resultUsers);
+            model.addAttribute("listHelperUsers",helperUsers);
             model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
             model.addAttribute("listCurrency",resultCurrency);
             return "beneficiaryNew";
@@ -193,6 +205,9 @@ public class BeneficiaryController {
         List<User>resultUsers = listUsers.stream()
                 .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
                 .collect(Collectors.toList());
+        List<User>helperUsers = listUsers.stream()
+                .filter(user -> "ROLE_HELPER".equals(user.getRoles().iterator().next().getName()))
+                .collect(Collectors.toList());
         List<Currency>listCurrency = currencyService.getAll();
         List<Currency>resultCurrency = listCurrency.stream()
                 .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
@@ -201,6 +216,7 @@ public class BeneficiaryController {
         User userPrincipal = userService.findByUsername(currentPrincipalName);
         model.addAttribute("userPrincipal",userPrincipal);
         model.addAttribute("listUsers",resultUsers);
+        model.addAttribute("listHelperUsers",helperUsers);
         model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
         model.addAttribute("listCurrency",resultCurrency);
         return "beneficiaryEdit";
@@ -219,6 +235,7 @@ public class BeneficiaryController {
                                   @ModelAttribute("incomeTypeId") String incomeTypeId,
                                   @ModelAttribute("currencyId") String currencyId,
                                   @ModelAttribute("userId") String userId,
+                                  @ModelAttribute("helperId") String helperId,
                                   @ModelAttribute("active") String active,
                                   @ModelAttribute("beneficiaryId") String beneficiaryId){
 
@@ -254,6 +271,9 @@ public class BeneficiaryController {
         if (userId != null && !userId.trim().isEmpty()) {
             beneficiary.setUser(userService.getById(UUID.fromString(userId)));
         }
+        if (helperId != null && !helperId.trim().isEmpty()) {
+            beneficiary.setHelperUser(userService.getById(UUID.fromString(helperId)));
+        }
 
         // validate beneficiary
         Map<String, String> messages = beneficiaryValidator.validate(beneficiary);
@@ -267,6 +287,9 @@ public class BeneficiaryController {
             List<User>resultUsers = listUsers.stream()
                     .filter(user -> "ROLE_FIELDCONTACT".equals(user.getRoles().iterator().next().getName()))
                     .collect(Collectors.toList());
+            List<User>helperUsers = listUsers.stream()
+                    .filter(user -> "ROLE_HELPER".equals(user.getRoles().iterator().next().getName()))
+                    .collect(Collectors.toList());
             List<Currency>listCurrency = currencyService.getAll();
             List<Currency>resultCurrency = listCurrency.stream()
                     .filter(currency -> "UAH".equals(currency.getName()) || "RUB".equals(currency.getName()))
@@ -277,6 +300,7 @@ public class BeneficiaryController {
             model.addAttribute("messages", messages);
             model.addAttribute("beneficiary",beneficiary);
             model.addAttribute("listUsers",resultUsers);
+            model.addAttribute("listHelperUsers",helperUsers);
             model.addAttribute("listIncomeTypes",incomeTypeService.getAll());
             model.addAttribute("listCurrency",resultCurrency);
             return "beneficiaryEdit";

@@ -29,9 +29,11 @@
                   <h4>Project: ${project.name}</h4>
                   <h4>Images</h4>
                   <c:if test="${listImages.size()<8}">
+                  <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
                       <p>
                           <a class="btn btn-primary btn-sm" href="/projects/${projectId}/images/new">Add image</a>
                       </p>
+                  </c:if>
                   </c:if>
                   <p>
                       <a class="btn btn-primary btn-sm" href="/projects/${projectId}">Back to Project</a>

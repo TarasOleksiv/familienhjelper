@@ -66,13 +66,16 @@
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
-                <%--<li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
-                </li>--%>
             </div>
         </c:if>
-        <c:if test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
-            <p class="lead">Field Contact</p>
+        <c:if test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT') ||
+                                pageContext.request.isUserInRole('ROLE_HELPER')}">
+            <c:if test="${pageContext.request.isUserInRole('ROLE_FIELDCONTACT')}">
+                <p class="lead">Field Contact</p>
+            </c:if>
+            <c:if test="${pageContext.request.isUserInRole('ROLE_HELPER')}">
+                <p class="lead">Helper</p>
+            </c:if>
             <div class="list-group">
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/beneficiaries">Beneficiaries</a>
@@ -80,9 +83,6 @@
                 <li class="list-group-item">
                     <a href="${pageContext.request.contextPath}/projects">Projects</a>
                 </li>
-                <%--<li class="list-group-item">
-                    <a href="${pageContext.request.contextPath}/transactions">Transactions</a>
-                </li>--%>
             </div>
         </c:if>
     </c:if>
