@@ -115,6 +115,11 @@
                                 <td>NOK</td>
                             </tr>
                             <tr>
+                                <td>Expense</td>
+                                <td>${project.expense}</td>
+                                <td>NOK</td>
+                            </tr>
+                            <tr>
                                 <td colspan="3"><a class="btn btn-primary btn-sm btn-block" href="/projects/${project.id}/donors">Donors</a></td>
                             </tr>
                             <tr>

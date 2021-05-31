@@ -88,20 +88,40 @@ public class ProjectController {
         return "projectsList";
     }
 
+    // Recalculate expense for all projects
+    @RequestMapping(value = "/projects/expense", method = {RequestMethod.GET})
+    public String recalculateProjectsExpense(Model model, Authentication authentication) {
+        List<Project> listProject = projectValidator.getUserProjectList(authentication);
+        BigDecimal totalBalance = projectValidator.getTotalBalance(listProject);
+        for (Project project: listProject){
+            project.setExpense(balanceValidator.recalculateExpense(project));
+            projectService.save(project);
+        }
+        model.addAttribute("list", listProject);
+        model.addAttribute("totalBalance",totalBalance);
+        return "projectsList";
+    }
+
     //Show project
     @RequestMapping(value = "/projects/{projectId}", method = {RequestMethod.GET})
     public String showProject(Model model, @PathVariable("projectId") String projectId) {
         Project project = projectService.getById(UUID.fromString(projectId));
         BigDecimal projectBalance = (project.getBalance() == null? new BigDecimal(0): project.getBalance());
         BigDecimal projectDonation = (project.getDonation() == null? new BigDecimal(0): project.getDonation());
+        BigDecimal projectExpense = (project.getExpense() == null? new BigDecimal(0): project.getExpense());
         BigDecimal transactionsBalance = balanceValidator.recalculateBalance(project);
         BigDecimal transactionsDonation = balanceValidator.recalculateDonation(project);
+        BigDecimal transactionsExpense = balanceValidator.recalculateExpense(project);
         if (projectBalance.compareTo(transactionsBalance) != 0){
             project.setBalance(transactionsBalance);
             projectService.save(project);
         }
         if (projectDonation.compareTo(transactionsDonation) != 0){
             project.setDonation(transactionsDonation);
+            projectService.save(project);
+        }
+        if (projectExpense.compareTo(transactionsExpense) != 0){
+            project.setExpense(transactionsExpense);
             projectService.save(project);
         }
 

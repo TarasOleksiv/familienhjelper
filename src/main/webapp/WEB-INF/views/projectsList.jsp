@@ -32,6 +32,9 @@
                           <p>
                               <a class="btn btn-primary btn-sm" href="/projects/donation">Recalculate Donation</a>
                           </p>
+                          <p>
+                              <a class="btn btn-primary btn-sm" href="/projects/expense">Recalculate Expense</a>
+                          </p>
                       </c:if>
                   </c:if>
                   <div class="row">
@@ -58,6 +61,7 @@
                           <th>Name</th>
                           <th>Balance</th>
                           <th>Donation</th>
+                          <th>Expense</th>
                           <th>FU</th>
                           <th>Field contact</th>
                           <th>Status</th>
@@ -76,6 +80,7 @@
                           <td>${list.name}</td>
                           <td>${list.balance}</td>
                           <td>${list.donation}</td>
+                          <td>${list.expense}</td>
                           <td>${list.fuUser.username}</td>
                           <td>${list.fieldContactUser.username}</td>
                           <td>${list.status.name}</td>

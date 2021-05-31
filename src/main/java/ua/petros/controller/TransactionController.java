@@ -87,6 +87,12 @@ public class TransactionController {
             project.setDonation(transactionsDonation);
             projectService.save(project);
         }
+        BigDecimal projectExpense = (project.getExpense() == null? new BigDecimal(0): project.getExpense());
+        BigDecimal transactionsExpense = balanceValidator.recalculateExpense(project);
+        if (projectExpense.compareTo(transactionsExpense) != 0){
+            project.setExpense(transactionsExpense);
+            projectService.save(project);
+        }
 
         boolean isTransactionPossible = projectValidator.isTransactionPossible(project);
         model.addAttribute("isTransactionPossible", isTransactionPossible);
@@ -187,6 +193,8 @@ public class TransactionController {
             Project projectUpdated = setProjectBalance(project,amountNOKBigDecimal,isIn);
             if (isIn) {
                 projectUpdated = setProjectDonation(projectUpdated,amountNOKBigDecimal,true);
+            } else {
+                projectUpdated = setProjectExpense(projectUpdated,amountNOKBigDecimal,true);
             }
             transaction.setProject(projectUpdated);
             projectService.save(projectUpdated);
@@ -328,6 +336,8 @@ public class TransactionController {
         Project project = setProjectBalance(projectService.getById(UUID.fromString(projectId)),amountNOK,isIn);
         if (!isIn) {
             project = setProjectDonation(project,amountNOK,false);
+        } else {
+            project = setProjectExpense(project,amountNOK,false);
         }
         projectService.save(project);
         transactionService.delete(transaction);
@@ -399,6 +409,18 @@ public class TransactionController {
             donation = donation.subtract(amount);
         }
         project.setDonation(donation);
+        return project;
+    }
+
+    // Utility to modify project's expense according to transaction
+    private Project setProjectExpense(Project project, BigDecimal amount, boolean tobeAdded ){
+        BigDecimal expense = (project.getExpense() == null? new BigDecimal(0): project.getExpense());
+        if (tobeAdded){
+            expense = expense.add(amount);
+        } else {
+            expense = expense.subtract(amount);
+        }
+        project.setExpense(expense);
         return project;
     }
 }

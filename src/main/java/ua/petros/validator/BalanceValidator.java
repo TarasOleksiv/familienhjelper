@@ -29,21 +29,31 @@ public class BalanceValidator {
         return transactionsDonation;
     }
 
+    public BigDecimal recalculateExpense(Project project){
+        Set<Transaction> transactions = project.getTransactions();
+        BigDecimal transactionsExpense = getTransactionsBalance(transactions).getExpense();
+
+        return transactionsExpense;
+    }
+
     private Amount getTransactionsBalance(Set<Transaction>transactions){
-        Amount result = new Amount(new BigDecimal(0), new BigDecimal(0));
+        Amount result = new Amount(new BigDecimal(0), new BigDecimal(0), new BigDecimal(0));
         if (transactions != null || !transactions.isEmpty()){
             BigDecimal transactionBalance = new BigDecimal(0);
             BigDecimal transactionDonation = new BigDecimal(0);
+            BigDecimal transactionExpense = new BigDecimal(0);
             for (Transaction transaction: transactions){
                 if(transaction.getIsIncome()){
                     transactionBalance = transactionBalance.add(transaction.getAmountNOK());
                     transactionDonation = transactionDonation.add(transaction.getAmountNOK());
                 } else {
                     transactionBalance = transactionBalance.subtract(transaction.getAmountNOK());
+                    transactionExpense = transactionExpense.add(transaction.getAmountNOK());
                 }
             }
             result.setBalance(transactionBalance);
             result.setDonation(transactionDonation);
+            result.setExpense(transactionExpense);
         }
         return result;
     }
@@ -51,10 +61,12 @@ public class BalanceValidator {
     public class Amount {
         private BigDecimal balance;
         private BigDecimal donation;
+        private BigDecimal expense;
 
-        public Amount(BigDecimal balance, BigDecimal donation) {
+        public Amount(BigDecimal balance, BigDecimal donation, BigDecimal expense) {
             this.balance = balance;
             this.donation = donation;
+            this.expense = expense;
         }
 
         public BigDecimal getBalance() {
@@ -71,6 +83,14 @@ public class BalanceValidator {
 
         public void setDonation(BigDecimal donation) {
             this.donation = donation;
+        }
+
+        public BigDecimal getExpense() {
+            return expense;
+        }
+
+        public void setExpense(BigDecimal expense) {
+            this.expense = expense;
         }
     }
 
