@@ -32,6 +32,9 @@
                             <p>
                                 <a class="btn btn-primary btn-sm" href="/beneficiaries/donation">Recalculate Total Help</a>
                             </p>
+                            <p>
+                                <a class="btn btn-primary btn-sm" href="/beneficiaries/expense">Recalculate Total Expense</a>
+                            </p>
                         </c:if>
                         <c:if test="${!pageContext.request.isUserInRole('ROLE_HELPER')}">
                             <p>
@@ -53,6 +56,7 @@
                           <th>Name</th>
                           <th>Income</th>
                           <th>Total help</th>
+                          <th>Total expense</th>
                           <th>Field Contact</th>
                           <th>Active</th>
                       </tr>
@@ -79,6 +83,7 @@
                               </c:choose>
                           </td>
                           <td>${list.donation} NOK</td>
+                          <td>${list.expense} NOK</td>
                           <td>${list.user.username} ${list.user.lastName} ${list.user.firstName}</td>
                           <td>
                               <c:if test="${list.active}">

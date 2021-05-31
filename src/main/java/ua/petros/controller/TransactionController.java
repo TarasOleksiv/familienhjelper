@@ -202,6 +202,7 @@ public class TransactionController {
             Beneficiary beneficiary = projectUpdated.getBeneficiary();
             if (beneficiary != null){
                 beneficiary.setDonation(beneficiaryValidator.recalculateTotalDonation(beneficiary));
+                beneficiary.setExpense(beneficiaryValidator.recalculateTotalExpense(beneficiary));
                 beneficiaryService.save(beneficiary);
             }
         } else {
@@ -344,6 +345,7 @@ public class TransactionController {
         Beneficiary beneficiary = project.getBeneficiary();
         if (beneficiary != null){
             beneficiary.setDonation(beneficiaryValidator.recalculateTotalDonation(beneficiary));
+            beneficiary.setExpense(beneficiaryValidator.recalculateTotalExpense(beneficiary));
             beneficiaryService.save(beneficiary);
         }
         return "redirect:/projects/" + projectId + "/transactions";

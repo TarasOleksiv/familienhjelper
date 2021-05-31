@@ -87,4 +87,17 @@ public class BeneficiaryValidator {
 
         return totalDonation;
     }
+
+    public BigDecimal recalculateTotalExpense(Beneficiary beneficiary){
+        BigDecimal totalExpense = new BigDecimal(0);
+        List<Project> projectsAll = projectService.getAll();
+        List<Project> projects = Optional.ofNullable(projectsAll.stream()
+                .filter(p -> (p.getBeneficiary() != null && p.getBeneficiary().getId().equals(beneficiary.getId())))
+                .collect(Collectors.toList())).orElse(Collections.emptyList());
+        for (Project p: projects){
+            totalExpense = totalExpense.add(balanceValidator.recalculateExpense(p));
+        }
+
+        return totalExpense;
+    }
 }

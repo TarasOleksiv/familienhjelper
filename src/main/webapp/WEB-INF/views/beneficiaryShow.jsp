@@ -81,6 +81,10 @@
                                 <td colspan="2">${beneficiary.donation} NOK</td>
                             </tr>
                             <tr>
+                                <td>Total expense</td>
+                                <td colspan="2">${beneficiary.expense} NOK</td>
+                            </tr>
+                            <tr>
                                 <td>Field Contact</td>
                                 <td colspan="2">${beneficiary.user.username} ${beneficiary.user.lastName} ${beneficiary.user.firstName}</td>
                             </tr>

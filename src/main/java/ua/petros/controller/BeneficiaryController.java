@@ -63,6 +63,18 @@ public class BeneficiaryController {
         return "beneficiariesList";
     }
 
+    // Recalculate total expense for beneficiaries
+    @RequestMapping(value = "/beneficiaries/expense", method = {RequestMethod.GET})
+    public String recalculateBeneficiariesExpense(Model model, Authentication authentication){
+        List<Beneficiary>listBeneficiary = beneficiaryValidator.getUserBeneficiaryList(authentication);
+        for (Beneficiary beneficiary: listBeneficiary){
+            beneficiary.setExpense(beneficiaryValidator.recalculateTotalExpense(beneficiary));
+            beneficiaryService.save(beneficiary);
+        }
+        model.addAttribute("list",listBeneficiary);
+        return "beneficiariesList";
+    }
+
     //Show beneficiary
     @RequestMapping(value = "/beneficiaries/{beneficiaryId}", method = {RequestMethod.GET})
     public String showBeneficiary(Model model, @PathVariable("beneficiaryId") String beneficiaryId){

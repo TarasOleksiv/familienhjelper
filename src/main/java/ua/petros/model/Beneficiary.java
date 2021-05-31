@@ -50,6 +50,9 @@ public class Beneficiary implements Comparable<Beneficiary> {
     @Column(name = "donation")
     private BigDecimal donation;
 
+    @Column(name = "expense")
+    private BigDecimal expense;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -190,6 +193,14 @@ public class Beneficiary implements Comparable<Beneficiary> {
 
     public void setDonation(BigDecimal donation) {
         this.donation = donation;
+    }
+
+    public BigDecimal getExpense() {
+        return expense;
+    }
+
+    public void setExpense(BigDecimal expense) {
+        this.expense = expense;
     }
 
     public User getHelperUser() {
