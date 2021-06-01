@@ -22,7 +22,19 @@
           <jsp:include page="includes/menu.jsp" />
       </div>
       <div class="col-sm-10">
-
+          <header>
+              <div class="container">
+                  <p align="center">
+                      <img class="img-responsive" src="${contextPath}/resources/img/Familielogo.jpg">
+                  </p>
+                  <p align="center">
+                      <img class="img-responsive" src="${contextPath}/resources/img/slogan_eng.png">
+                  </p>
+                  <p align="center">
+                      <img class="img-responsive" src="${contextPath}/resources/img/slogan_nor.png">
+                  </p>
+              </div>
+          </header>
       </div>
     </div>
   </div>
