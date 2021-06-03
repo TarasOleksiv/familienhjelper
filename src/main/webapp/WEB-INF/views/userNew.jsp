@@ -82,7 +82,14 @@
                                 <td>
                                 <select name="roleName">
                                     <c:forEach var="role" items="${listRoles}">
-                                        <option value="${role.name}"><c:out value="${role.name}"/></option>
+                                        <c:choose>
+                                            <c:when test="${role.name.equals('ROLE_HELPER')}">
+                                                <option value="${role.name}" selected><c:out value="${role.name}"/></option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${role.name}"><c:out value="${role.name}"/></option>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
                                 </select>
                                 </td>
