@@ -1,18 +1,15 @@
 package ua.petros.view;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.*;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 import ua.petros.model.Beneficiary;
 import ua.petros.model.Project;
 import ua.petros.model.Transaction;
-import ua.petros.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,6 +25,8 @@ import java.util.stream.Collectors;
  */
 
 public class PDFProjectBuilder extends AbstractPdfView {
+
+	private static final String FILE_NAME = "projects.pdf";
 	private PdfPTable table;
 	private Paragraph paragraph;
 	private BigDecimal totalAmount;
@@ -47,6 +46,9 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			throws Exception {
 
 		response.setHeader("Content-Disposition", "attachment; filename=\"projects.pdf\"");
+
+		PdfWriter.getInstance(document, new FileOutputStream(FILE_NAME));
+		document.open();
 
 		List<Project> projects = (List<Project>) model.get("listProjects");
 		Map<Beneficiary, List<Project>> mapProjects = projects.stream()
@@ -163,12 +165,39 @@ public class PDFProjectBuilder extends AbstractPdfView {
 			document.add(new Paragraph("Total Donation: " + beneficiaryDonation.toString() + " NOK" + "     " + "Total Expense: " + beneficiaryExpense.toString() + " NOK",f1));
 			document.add(new Paragraph("*********************************************************************************************", f2));
 		}
-
+		document.close();
+		addPageNumbers(FILE_NAME, response);
 	}
 
 	private String updateFirstName(String firstName, String lastName){
 		return
 				"".equals(firstName) && "".equals(lastName) ? "N/A" : firstName;
+	}
+
+	private void addPageNumbers(String inputFileName, HttpServletResponse response) {
+		try {
+			PdfReader reader = new PdfReader(inputFileName);
+			int n = reader.getNumberOfPages();
+
+			PdfStamper stamp = new PdfStamper(reader, response.getOutputStream());
+
+			int i = 0;
+
+			PdfContentByte over;
+			BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+			while (i < n) {
+				i++;
+				over = stamp.getOverContent(i);
+				over.beginText();
+				over.setFontAndSize(bf, 9);
+				over.setTextMatrix(20, 20);
+				over.showText("page " + i);
+				over.endText();
+			}
+			stamp.close();
+		} catch (Exception de) {
+			de.printStackTrace();
+		}
 	}
 
 }
