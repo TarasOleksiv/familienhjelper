@@ -61,8 +61,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 		String strEndDate = dateFormat.format(endDate);
 
 		BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font f1 = new Font(bf, 10);
-		Font f2 = new Font(bf,10,Font.BOLD);
+		Font f1 = new Font(bf, 9);
+		Font f2 = new Font(bf,9,Font.BOLD);
 
 		if (projects.size() == 0){
 			paragraph = new Paragraph("*********************************************************************************************", f2);
@@ -84,8 +84,9 @@ public class PDFProjectBuilder extends AbstractPdfView {
 				document.add(new Paragraph("*********************************************************************************************", f2));
 				String projectLine = "Project: " + project.getName();
 				projectLine = "true".equals(isWholePeriod) ? projectLine + "        Period: since start" : projectLine + "       " + "From: " + strStartDate + "       To: " + strEndDate;
+				projectLine = projectLine + "        Status: " + project.getStatus().getName();
 				document.add(new Paragraph(projectLine,f2));
-				document.add(new Paragraph("Status: " + project.getStatus().getName(),f1));
+				//document.add(new Paragraph("Status: " + project.getStatus().getName(),f1));
 
 				if (project.getBeneficiary() != null){
 					beneficiaryName = (project.getBeneficiary().getName() == null ? "" : project.getBeneficiary().getName());
@@ -93,7 +94,8 @@ public class PDFProjectBuilder extends AbstractPdfView {
 					beneficiaryName = "";
 				}
 
-				document.add(new Paragraph("Beneficiary: " + beneficiaryName,f1));
+				//document.add(new Paragraph("Beneficiary: " + beneficiaryName,f1));
+				String contactLine = "Beneficiary: " + beneficiaryName;
 
 				if (project.getFuUser() != null){
 					firstName = (project.getFuUser().getFirstName() == null ? "" : project.getFuUser().getFirstName());
@@ -103,7 +105,7 @@ public class PDFProjectBuilder extends AbstractPdfView {
 					lastName = "";
 				}
 				firstName = updateFirstName(firstName,lastName);
-				String contactLine = "FU: " + firstName + " " + lastName;
+				contactLine += "      FU: " + firstName + " " + lastName;
 
 				if (project.getFieldContactUser() != null){
 					firstName = (project.getFieldContactUser().getFirstName() == null ? "" : project.getFieldContactUser().getFirstName());
@@ -114,12 +116,13 @@ public class PDFProjectBuilder extends AbstractPdfView {
 				}
 				firstName = updateFirstName(firstName,lastName);
 				contactLine += "      Field contact: " + firstName + " " + lastName;
-
 				document.add(new Paragraph(contactLine,f1));
+
 				table = new PdfPTable(5);
 				table.setWidthPercentage(100);
 				table.setWidths(new float[]{2,4,2,1,8});
 				table.getDefaultCell().setBorder(0);
+				table.setSpacingBefore(5);
 				totalAmount = BigDecimal.valueOf(0);
 				totalDonation = BigDecimal.valueOf(0);
 				totalExpense = BigDecimal.valueOf(0);
@@ -148,22 +151,22 @@ public class PDFProjectBuilder extends AbstractPdfView {
 					}
 				}
 
-				document.add(new Paragraph(" ",f1));
+				//document.add(new Paragraph(" ",f1));
 				document.add(table);
 
 				totalExpense = BigDecimal.valueOf(-1).multiply(totalExpense);
 				document.add(new Paragraph("Donation: " + totalDonation.toString() + " NOK" + "     " + "Expense: " + totalExpense.toString() + " NOK",f1));
-				document.add(new Paragraph("_________________________________________________________________",f1));
-				document.add(new Paragraph("Balance for the period:                                                 " + totalAmount.toString() + " NOK",f1));
-				document.add(new Paragraph("==============================================================",f1));
-				document.add(new Paragraph(" ",f1));
+				//document.add(new Paragraph("_________________________________________________________________",f1));
+				document.add(new Paragraph("Balance for the period:      " + totalAmount.toString() + " NOK",f1));
+				/*document.add(new Paragraph("==============================================================",f1));
+				document.add(new Paragraph(" ",f1));*/
 			}
 
 			beneficiaryExpense = BigDecimal.valueOf(-1).multiply(beneficiaryExpense);
-			document.add(new Paragraph("*********************************************************************************************", f2));
-			document.add(new Paragraph("Totals for the beneficiary: " + beneficiary.getName(),f2));
+			//document.add(new Paragraph("*********************************************************************************************", f2));
+			//document.add(new Paragraph("Totals for the beneficiary: " + beneficiary.getName(),f2));
 			document.add(new Paragraph("Total Donation: " + beneficiaryDonation.toString() + " NOK" + "     " + "Total Expense: " + beneficiaryExpense.toString() + " NOK",f1));
-			document.add(new Paragraph("*********************************************************************************************", f2));
+			//document.add(new Paragraph("*********************************************************************************************", f2));
 		}
 		document.close();
 		addPageNumbers(FILE_NAME, response);
